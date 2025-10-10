@@ -132,22 +132,30 @@
             
             // Force play background music on any user interaction
             let musicStarted = false;
-            document.addEventListener('click', function() {
+            function startMusic() {
                 if (!musicStarted) {
                     music.play().then(() => {
                         musicStarted = true;
                         console.log('Background music started');
+                        // Show audio indicator
+                        const indicator = document.getElementById('audioIndicator');
+                        if (indicator) {
+                            indicator.style.opacity = '1';
+                            setTimeout(() => {
+                                indicator.style.opacity = '0.3';
+                            }, 3000);
+                        }
                     }).catch(e => console.log('Background music failed:', e));
                 }
-            });
+            }
+            
+            // Try multiple interaction events
+            document.addEventListener('click', startMusic);
+            document.addEventListener('keydown', startMusic);
+            document.addEventListener('touchstart', startMusic);
             
             // Auto-play attempt
-            music.play().then(() => {
-                musicStarted = true;
-                console.log('Background music auto-started');
-            }).catch(e => {
-                console.log('Auto-play blocked, click anywhere to start music');
-            });
+            startMusic();
         });
     </script>
 </body>

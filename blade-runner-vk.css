@@ -395,7 +395,7 @@ body {
 
 .gauge-labels {
     position: absolute;
-    bottom: -35px;
+    bottom: -50px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -405,6 +405,7 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
+    z-index: 10;
 }
 
 .label-green { 
@@ -556,6 +557,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    padding-bottom: 60px;
 }
 
 .gauge-title {

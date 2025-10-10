@@ -461,6 +461,25 @@ document.addEventListener('DOMContentLoaded', function() {
         ambientAudio.addEventListener('canplaythrough', function() {
             ambientAudio.currentTime = 10; // Double-check start time
         });
+        
+        // Add click listener to start audio on user interaction
+        let audioStarted = false;
+        function startAudio() {
+            if (!audioStarted) {
+                ambientAudio.currentTime = 10;
+                ambientAudio.play().then(() => {
+                    audioStarted = true;
+                    updateTerminal("Leon's Interrogation theme playing. Audio system active.");
+                }).catch(e => console.log('Audio start failed:', e));
+            }
+        }
+        
+        // Try to start immediately
+        startAudio();
+        
+        // Start on any click if autoplay failed
+        document.addEventListener('click', startAudio);
+        
         updateTerminal("Leon's Interrogation theme loaded. Atmospheric audio initialized.");
     }
     
