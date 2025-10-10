@@ -89,8 +89,12 @@
         </footer>
     </div>
     
-    <audio autoplay loop id="backgroundMusic" preload="auto">
+    <audio autoplay loop id="backgroundMusic" preload="auto" controls style="position: fixed; bottom: 10px; left: 10px; opacity: 0.3; z-index: 1000;">
         <source src="https://dn720301.ca.archive.org/0/items/vangelis-07.-blade-runner-blues/1993%20-%20Vangelis%20-%20Blade%20Runner%20%282013%2C%20Audio%20Fidelity%2C%20LP%209624%2C%20US%2C%2024-96%29%2FA5%20-%20Love%20Theme.mp3" type="audio/mpeg">
+        <source src="https://ia801504.us.archive.org/7/items/vangelis-07.-blade-runner-blues/Vangelis%20-%20Blade%20Runner%20%2829th%20Anniversary%20Limited%20Edition%29%20%282011%29%20%5BStereo%2044.1%20kHz%2016%20bit%5D%20%5BFLAC%5D%2FDisc%20II%2F2-01%20-%20Love%20Theme.mp3" type="audio/mpeg">
+        <!-- Fallback audio -->
+        <source src="https://cdn.uppbeat.io/audio-files/4add0b70eee6e2a35e49b6e6e0e29b94/90e83ecc9fcf45f53cb6b29c33b60b33/b4e08bddacc040ac8df5ad4d9af7b7b8/STREAMING-rain-ambient-city-atmosphere.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
     
     <script>
@@ -99,9 +103,18 @@
             const music = document.getElementById('backgroundMusic');
             const iframe = document.querySelector('iframe');
             
-            // Set background music volume higher
+            console.log('Background music element:', music);
+            console.log('Music ready state:', music ? music.readyState : 'No music element');
+            
+            if (!music) {
+                console.error('Background music element not found!');
+                return;
+            }
+            
+            // Set background music properties
             music.volume = 0.8;
-            music.crossOrigin = "anonymous";
+            music.loop = true;
+            // Removed crossOrigin to avoid potential CORS issues
             
             // Create separate audio context for background music
             if (window.AudioContext || window.webkitAudioContext) {
@@ -130,38 +143,74 @@
                 };
             }
             
-            // Force play background music on any user interaction
+            // Enhanced music startup function
             let musicStarted = false;
             function startMusic() {
-                if (!musicStarted) {
+                if (!musicStarted && music) {
+                    // Reset audio properties
+                    music.volume = 0.8;
+                    music.loop = true;
+                    
+                    // Attempt to play
                     music.play().then(() => {
                         musicStarted = true;
-                        console.log('Background music started');
+                        console.log('Background music started successfully');
+                        
                         // Show audio indicator
                         const indicator = document.getElementById('audioIndicator');
                         if (indicator) {
                             indicator.style.opacity = '1';
+                            indicator.style.display = 'block';
                             setTimeout(() => {
-                                indicator.style.opacity = '0.3';
+                                indicator.style.opacity = '0.7';
                             }, 3000);
                         }
-                    }).catch(e => console.log('Background music failed:', e));
+                    }).catch(e => {
+                        console.log('Background music failed:', e);
+                        // Try again after a short delay
+                        setTimeout(() => {
+                            if (!musicStarted) {
+                                music.play().catch(e2 => console.log('Retry failed:', e2));
+                            }
+                        }, 1000);
+                    });
                 }
             }
             
-            // Try multiple interaction events
-            ['click', 'keydown', 'touchstart', 'mouseover', 'scroll'].forEach(eventType => {
+            // Multiple startup attempts
+            function initAudio() {
+                // Immediate attempt
+                startMusic();
+                
+                // Delayed attempts
+                setTimeout(startMusic, 500);
+                setTimeout(startMusic, 1500);
+                setTimeout(startMusic, 3000);
+            }
+            
+            // Try on page load
+            initAudio();
+            
+            // Try on user interaction
+            ['click', 'keydown', 'touchstart', 'mouseover', 'scroll', 'mousedown'].forEach(eventType => {
                 document.addEventListener(eventType, startMusic, { once: true });
             });
             
-            // Auto-play attempt - try immediately
-            setTimeout(startMusic, 100);
+            // Try when page is fully loaded
+            window.addEventListener('load', initAudio);
             
-            // Also try after page is fully loaded
-            window.addEventListener('load', startMusic);
+            // Add audio event listeners for debugging
+            music.addEventListener('loadstart', () => console.log('Audio: Load started'));
+            music.addEventListener('loadeddata', () => console.log('Audio: Data loaded'));
+            music.addEventListener('canplay', () => console.log('Audio: Can play'));
+            music.addEventListener('canplaythrough', () => console.log('Audio: Can play through'));
+            music.addEventListener('playing', () => console.log('Audio: Playing'));
+            music.addEventListener('pause', () => console.log('Audio: Paused'));
+            music.addEventListener('error', (e) => console.error('Audio error:', e));
             
-            // Force higher volume and ensure it's audible
+            // Force audio properties
             music.volume = 0.8;
+            music.preload = 'auto';
             
             // Show navigation button after 10 seconds
             setTimeout(() => {
