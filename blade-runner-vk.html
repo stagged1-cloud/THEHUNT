@@ -43,26 +43,36 @@
                 <div class="vk-test-interface" id="vkTestInterface" style="display: none;">
                     <!-- Eye Display -->
                     <div class="eye-monitor">
-                        <div class="video-displays">
-                            <div class="eye-display">
-                                <!-- Video Eye -->
-                                <video id="eyeVideo" autoplay loop muted playsinline>
-                                    <source src="assets/videos/eye-monitor.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+                        <div class="eye-display">
+                            <!-- Video Eye -->
+                            <video id="eyeVideo" autoplay loop muted playsinline>
+                                <source src="assets/videos/eye-monitor.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div class="biometric-readings">
+                            <div class="eye-readings">
+                                <div class="reading">DILATION: <span id="dilation">0.0</span>mm</div>
+                                <div class="reading">CONTRACTION: <span id="contraction">0.0</span>%</div>
+                                <div class="reading">RESPONSE: <span id="response">NOMINAL</span></div>
                             </div>
-                            <div class="heart-display">
-                                <!-- Video Heart -->
-                                <video id="heartVideo" autoplay loop muted playsinline>
-                                    <source src="assets/videos/video-heart.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+                            <div class="environmental-readings">
+                                <div class="reading">SKIN TEMP: <span id="skinTemp">36.5</span>°C</div>
+                                <div class="reading">MOISTURE: <span id="moisture">45</span>%</div>
+                                <div class="reading">HUMIDITY: <span id="humidity">38</span>%</div>
                             </div>
                         </div>
-                        <div class="eye-readings">
-                            <div class="reading">DILATION: <span id="dilation">0.0</span>mm</div>
-                            <div class="reading">CONTRACTION: <span id="contraction">0.0</span>%</div>
-                            <div class="reading">RESPONSE: <span id="response">NOMINAL</span></div>
+                        <div class="heart-display">
+                            <!-- Video Heart -->
+                            <video id="heartVideo" autoplay loop muted playsinline>
+                                <source src="assets/videos/video-heart.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div class="heart-readings">
+                            <div class="reading">HEART RATE: <span id="heartRate">72</span> BPM</div>
+                            <div class="reading">VARIABILITY: <span id="heartVariability">45</span>ms</div>
+                            <div class="reading">RHYTHM: <span id="heartRhythm">NORMAL</span></div>
                         </div>
                     </div>
 

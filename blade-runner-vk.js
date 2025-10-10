@@ -395,6 +395,68 @@ function submitIdentification() {
     runBackgroundCheck(name);
 }
 
+// Generate random profile for unknown subjects
+function generateRandomProfile(name) {
+    const locations = [
+        'LONDON, UK', 'MANCHESTER, UK', 'BIRMINGHAM, UK', 'LIVERPOOL, UK', 'BRISTOL, UK',
+        'LEEDS, UK', 'SHEFFIELD, UK', 'EDINBURGH, UK', 'GLASGOW, UK', 'CARDIFF, UK',
+        'BELFAST, UK', 'NOTTINGHAM, UK', 'SOUTHAMPTON, UK', 'NEWCASTLE, UK', 'BRIGHTON, UK'
+    ];
+    
+    const employments = [
+        'RETAIL WORKER', 'OFFICE ADMINISTRATOR', 'WAREHOUSE OPERATIVE', 'CALL CENTER AGENT',
+        'DELIVERY DRIVER', 'TEACHER', 'NURSE', 'SECURITY GUARD', 'CHEF', 'MECHANIC',
+        'ELECTRICIAN', 'PLUMBER', 'ACCOUNTANT', 'SOFTWARE DEVELOPER', 'SALES ASSOCIATE',
+        'CUSTOMER SERVICE REP', 'FACTORY WORKER', 'CLEANER', 'RECEPTIONIST', 'UNEMPLOYED'
+    ];
+    
+    const medicalConditions = [
+        'ASTHMA', 'TYPE 2 DIABETES', 'HYPERTENSION', 'ANXIETY DISORDER', 'DEPRESSION',
+        'BACK PAIN - CHRONIC', 'MIGRAINE SUFFERER', 'ALLERGIES - SEASONAL', 'NONE RECORDED',
+        'MINOR HEART CONDITION', 'ARTHRITIS', 'SLEEP APNEA', 'ECZEMA', 'LACTOSE INTOLERANT'
+    ];
+    
+    const maritalStatuses = [
+        'SINGLE', 'MARRIED', 'DIVORCED', 'SEPARATED', 'WIDOWED', 'IN RELATIONSHIP', 'UNKNOWN'
+    ];
+    
+    const criminalActivities = [
+        'TRAFFIC VIOLATION - SPEEDING', 'PARKING FINES UNPAID', 'SHOPLIFTING (MINOR)',
+        'DRUNK AND DISORDERLY', 'ASSAULT (DROPPED CHARGES)', 'FRAUD - BENEFITS',
+        'POSSESSION OF CONTROLLED SUBSTANCE', 'PUBLIC INTOXICATION', 'VANDALISM',
+        'CLEAN RECORD', 'CLEAN RECORD', 'CLEAN RECORD' // Higher chance of clean record
+    ];
+    
+    const riskLevels = ['LOW', 'LOW', 'LOW', 'MODERATE', 'MODERATE', 'HIGH'];
+    const alertLevels = ['GREEN', 'GREEN', 'GREEN', 'YELLOW', 'ORANGE'];
+    
+    const hasCriminalRecord = Math.random() < 0.3; // 30% chance
+    const criminalActivity = criminalActivities[Math.floor(Math.random() * criminalActivities.length)];
+    const isCriminal = hasCriminalRecord && criminalActivity !== 'CLEAN RECORD';
+    
+    return {
+        fullName: name.toUpperCase(),
+        location: locations[Math.floor(Math.random() * locations.length)],
+        replicantStatus: 'SUSPECTED REPLICANT',
+        criminalRecord: isCriminal,
+        criminalDetails: isCriminal ? criminalActivity : null,
+        alertLevel: isCriminal ? (Math.random() < 0.5 ? 'ORANGE' : 'RED') : alertLevels[Math.floor(Math.random() * alertLevels.length)],
+        employment: employments[Math.floor(Math.random() * employments.length)],
+        maritalStatus: maritalStatuses[Math.floor(Math.random() * maritalStatuses.length)],
+        medicalStatus: medicalConditions[Math.floor(Math.random() * medicalConditions.length)],
+        riskLevel: riskLevels[Math.floor(Math.random() * riskLevels.length)],
+        associates: Math.random() < 0.3 ? ['KNOWN ASSOCIATES: ' + (1 + Math.floor(Math.random() * 5))] : ['NO KNOWN ASSOCIATES'],
+        records: [
+            `BACKGROUND CHECK: ${isCriminal ? 'FLAGGED' : 'CLEAR'}`,
+            `EMPLOYMENT: ${employments[Math.floor(Math.random() * employments.length)]}`,
+            `MEDICAL: ${medicalConditions[Math.floor(Math.random() * medicalConditions.length)]}`,
+            `RISK ASSESSMENT: ${riskLevels[Math.floor(Math.random() * riskLevels.length)]}`,
+            `GENE POOL MARKER: ${Math.random() < 0.5 ? 'EUROPEAN' : 'MIXED'} - ${Math.random() < 0.3 ? 'FLAGGED' : 'NORMAL'}`,
+            isCriminal ? `CRIMINAL ACTIVITY: ${criminalActivity}` : 'CRIMINAL RECORD: CLEAN'
+        ]
+    };
+}
+
 // Run background check with realistic delays and information
 function runBackgroundCheck(name) {
     const progressFill = document.getElementById('progressFill');
@@ -606,17 +668,40 @@ function displayBackgroundResults(name) {
         resultsHTML += '</div>';
         
     } else {
-        resultsHTML += `<div class="subject-info-block">`;
-        resultsHTML += `<div class="info-line"><strong>SUBJECT:</strong> ${name}</div>`;
-        resultsHTML += `<div class="info-line"><strong>LOCATION:</strong> UNKNOWN</div>`;
-        resultsHTML += `<div class="info-line"><strong>CRIMINAL RECORD:</strong> NO MATCHES FOUND</div>`;
-        resultsHTML += `<div class="info-line"><strong>ASSOCIATES:</strong> NONE DETECTED</div>`;
-        resultsHTML += `<div class="info-line"><strong>ALERT LEVEL:</strong> UNKNOWN</div>`;
+        // Generate random profile for unknown subject
+        const randomProfile = generateRandomProfile(name);
+        const alertClass = randomProfile.alertLevel === 'RED' ? 'red-alert' : 
+                          randomProfile.alertLevel === 'ORANGE' ? 'orange-alert' : 
+                          randomProfile.alertLevel === 'YELLOW' ? 'yellow-alert' : '';
+        
+        resultsHTML += `<div class="subject-info-block ${alertClass}">`;
+        resultsHTML += `<div class="info-line"><strong>SUBJECT:</strong> <span class="${randomProfile.alertLevel === 'RED' ? 'alert-red' : randomProfile.alertLevel === 'ORANGE' ? 'alert-orange' : ''}">${randomProfile.fullName}</span></div>`;
+        resultsHTML += `<div class="info-line"><strong>LOCATION:</strong> ${randomProfile.location}</div>`;
+        resultsHTML += `<div class="info-line replicant-warning"><strong>STATUS:</strong> <span class="replicant-designation">${randomProfile.replicantStatus}</span></div>`;
+        
+        if (randomProfile.criminalRecord) {
+            resultsHTML += `<div class="info-line criminal-record"><strong>CRIMINAL RECORD:</strong> POSITIVE MATCH</div>`;
+            resultsHTML += `<div class="info-line criminal-record"><strong>OFFENSE:</strong> ${randomProfile.criminalDetails}</div>`;
+        } else {
+            resultsHTML += `<div class="info-line"><strong>CRIMINAL RECORD:</strong> CLEAN</div>`;
+        }
+        
+        resultsHTML += `<div class="info-line"><strong>EMPLOYMENT:</strong> ${randomProfile.employment}</div>`;
+        resultsHTML += `<div class="info-line"><strong>MARITAL STATUS:</strong> ${randomProfile.maritalStatus}</div>`;
+        resultsHTML += `<div class="info-line"><strong>MEDICAL STATUS:</strong> ${randomProfile.medicalStatus}</div>`;
+        resultsHTML += `<div class="info-line"><strong>RISK LEVEL:</strong> ${randomProfile.riskLevel}</div>`;
+        resultsHTML += `<div class="info-line"><strong>ASSOCIATES:</strong> ${randomProfile.associates.join(', ')}</div>`;
+        resultsHTML += `<div class="info-line"><strong>ALERT LEVEL:</strong> <span class="${randomProfile.alertLevel === 'RED' ? 'alert-red' : randomProfile.alertLevel === 'ORANGE' ? 'alert-orange' : ''}">${randomProfile.alertLevel}</span></div>`;
+        
         resultsHTML += '<br><strong>DETAILED RECORDS:</strong><br>';
-        resultsHTML += '<div class="info-line">• IDENTITY VERIFICATION: PENDING</div>';
-        resultsHTML += '<div class="info-line">• NO PRIOR RECORDS FOUND</div>';
-        resultsHTML += '<div class="info-line">• SUBJECT REQUIRES FURTHER SCREENING</div>';
+        randomProfile.records.forEach(record => {
+            const recordClass = record.includes('CRIMINAL ACTIVITY') || record.includes('FLAGGED') ? 'criminal-record' : '';
+            resultsHTML += `<div class="info-line ${recordClass}">• ${record}</div>`;
+        });
         resultsHTML += '</div>';
+        
+        // Store the generated profile as the subject
+        subject = randomProfile;
     }
     
     resultsContent.innerHTML = resultsHTML;
@@ -887,9 +972,43 @@ function updateReadings(correct) {
         ['NOMINAL', 'EMPATHETIC', 'HUMAN'][Math.floor(Math.random() * 3)] :
         ['ABNORMAL', 'CONCERNING', 'SUSPICIOUS'][Math.floor(Math.random() * 3)];
     
+    // Heart rate readings
+    const heartRate = correct ?
+        (65 + Math.random() * 15) :
+        (85 + Math.random() * 25);
+    
+    const heartVariability = correct ?
+        (40 + Math.random() * 20) :
+        (20 + Math.random() * 15);
+    
+    const heartRhythm = correct ?
+        ['NORMAL', 'STEADY', 'REGULAR'][Math.floor(Math.random() * 3)] :
+        ['ELEVATED', 'IRREGULAR', 'STRESSED'][Math.floor(Math.random() * 3)];
+    
+    // Environmental readings
+    const skinTemp = correct ?
+        (36.2 + Math.random() * 0.8) :
+        (36.8 + Math.random() * 1.2);
+    
+    const moisture = correct ?
+        (40 + Math.random() * 15) :
+        (55 + Math.random() * 25);
+    
+    const humidity = correct ?
+        (35 + Math.random() * 10) :
+        (30 + Math.random() * 15);
+    
     document.getElementById('dilation').textContent = dilation.toFixed(1);
     document.getElementById('contraction').textContent = contraction.toFixed(1);
     document.getElementById('response').textContent = response;
+    
+    document.getElementById('heartRate').textContent = Math.round(heartRate);
+    document.getElementById('heartVariability').textContent = Math.round(heartVariability);
+    document.getElementById('heartRhythm').textContent = heartRhythm;
+    
+    document.getElementById('skinTemp').textContent = skinTemp.toFixed(1);
+    document.getElementById('moisture').textContent = Math.round(moisture);
+    document.getElementById('humidity').textContent = Math.round(humidity);
 }
 
 // Control video eye display
