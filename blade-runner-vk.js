@@ -745,6 +745,12 @@ function displayBackgroundResults(name) {
         if (heartVideo) {
             heartVideo.play().catch(e => console.log('Heart video autoplay after reveal failed:', e));
         }
+        
+        // Start the scanning video
+        const scanningVideo = document.getElementById('scanningVideo');
+        if (scanningVideo) {
+            scanningVideo.play().catch(e => console.log('Scanning video autoplay after reveal failed:', e));
+        }
     }, 4000);
 }
 
@@ -1151,6 +1157,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const heartVideo = document.getElementById('heartVideo');
     if (heartVideo) {
         heartVideo.play().catch(e => console.log('Heart video autoplay prevented:', e));
+    }
+    
+    // Initialize scanning video system
+    const scanningVideo = document.getElementById('scanningVideo');
+    if (scanningVideo) {
+        scanningVideo.play().catch(e => console.log('Scanning video autoplay prevented:', e));
     }
     
     // Initialize ambient audio - DO NOT auto-play

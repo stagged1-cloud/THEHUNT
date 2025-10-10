@@ -471,36 +471,6 @@ body {
     text-align: center;
 }
 
-/* Add small indicator lights below labels */
-.label-green::after,
-.label-yellow::after,
-.label-red::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.label-green::after {
-    background: radial-gradient(circle, #00ff88 0%, #00aa44 100%);
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-}
-
-.label-yellow::after {
-    background: radial-gradient(circle, #ffff00 0%, #cccc00 100%);
-    box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-}
-
-.label-red::after {
-    background: radial-gradient(circle, #ff3030 0%, #cc0000 100%);
-    box-shadow: 0 0 10px rgba(255, 48, 48, 0.5);
-}
-
 .led-display {
     display: flex;
     flex-direction: column;
@@ -1188,6 +1158,35 @@ body {
 @keyframes replicantPulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
+}
+
+/* Scanning Display */
+.scanning-display {
+    background: #000;
+    border: 2px solid #ff0080;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.scanning-header {
+    background: #ff0080;
+    color: #000;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+#scanningVideo {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #000;
 }
 
 /* Terminal */
