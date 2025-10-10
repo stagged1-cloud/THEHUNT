@@ -1,0 +1,239 @@
+/* Christmas Theme Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Crimson Text', serif;
+    background: linear-gradient(135deg, #0f4c75 0%, #3282b8 50%, #bbe1fa 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Snow Animation */
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.snow {
+    position: absolute;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: snowfall linear infinite;
+}
+
+.snow:nth-child(1) { left: 10%; animation-duration: 3s; animation-delay: 0s; }
+.snow:nth-child(2) { left: 20%; animation-duration: 4s; animation-delay: 1s; }
+.snow:nth-child(3) { left: 30%; animation-duration: 3.5s; animation-delay: 0.5s; }
+.snow:nth-child(4) { left: 40%; animation-duration: 5s; animation-delay: 1.5s; }
+.snow:nth-child(5) { left: 50%; animation-duration: 4.5s; animation-delay: 0.2s; }
+.snow:nth-child(6) { left: 60%; animation-duration: 3.2s; animation-delay: 1.2s; }
+.snow:nth-child(7) { left: 70%; animation-duration: 4.8s; animation-delay: 0.8s; }
+.snow:nth-child(8) { left: 80%; animation-duration: 3.8s; animation-delay: 2s; }
+.snow:nth-child(9) { left: 90%; animation-duration: 4.2s; animation-delay: 0.3s; }
+.snow:nth-child(10) { left: 95%; animation-duration: 3.6s; animation-delay: 1.8s; }
+
+@keyframes snowfall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Main Container */
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Header Styles */
+.header {
+    margin-bottom: 40px;
+}
+
+.main-title {
+    font-family: 'Mountains of Christmas', serif;
+    font-size: 4.5rem;
+    color: #d4af37;
+    text-shadow: 
+        3px 3px 0px #8b0000,
+        6px 6px 10px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 3px 3px 0px #8b0000, 6px 6px 10px rgba(0,0,0,0.5), 0 0 20px #d4af37; }
+    to { text-shadow: 3px 3px 0px #8b0000, 6px 6px 10px rgba(0,0,0,0.5), 0 0 30px #d4af37, 0 0 40px #d4af37; }
+}
+
+.subtitle {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid #d4af37;
+    display: inline-block;
+}
+
+.christmas-greeting {
+    font-size: 1.8rem;
+    color: #8b0000;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.instructions {
+    font-size: 1.4rem;
+    color: #0f4c75;
+    font-weight: 400;
+}
+
+/* Main Content */
+.main-content {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.video-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    display: inline-block;
+    border: 3px solid #d4af37;
+    position: relative;
+}
+
+.video-container::before {
+    content: '🎄';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    font-size: 2rem;
+    z-index: 3;
+}
+
+.video-container::after {
+    content: '🎄';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 2rem;
+    z-index: 3;
+}
+
+iframe {
+    border-radius: 15px;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Decorative Ornaments */
+.decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.ornament {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.ornament-1 { top: 10%; left: 5%; animation-delay: 0s; }
+.ornament-2 { top: 20%; right: 5%; animation-delay: 0.5s; }
+.ornament-3 { top: 60%; left: 2%; animation-delay: 1s; }
+.ornament-4 { top: 70%; right: 8%; animation-delay: 1.5s; }
+.ornament-5 { bottom: 10%; left: 10%; animation-delay: 2s; }
+.ornament-6 { bottom: 15%; right: 3%; animation-delay: 2.5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Footer */
+.footer {
+    background: rgba(139, 0, 0, 0.9);
+    color: #d4af37;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 3rem;
+    }
+    
+    .christmas-greeting {
+        font-size: 1.4rem;
+    }
+    
+    .instructions {
+        font-size: 1.2rem;
+    }
+    
+    .video-container iframe {
+        width: 100%;
+        height: 250px;
+    }
+    
+    .ornament {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+    }
+    
+    .video-container iframe {
+        height: 200px;
+    }
+    
+    .ornament {
+        font-size: 1.5rem;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+}

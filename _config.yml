@@ -1,0 +1,22 @@
+# GitHub Pages Configuration
+title: "THE HUNT - Christmas Edition"
+description: "A Christmas-themed treasure hunt game"
+
+# GitHub Pages settings
+theme: null
+plugins:
+  - jekyll-relative-links
+
+# Relative links configuration
+relative_links:
+  enabled: true
+  collections: true
+
+# Include all HTML files
+include:
+  - "*.html"
+
+# Exclude unnecessary files
+exclude:
+  - README.md
+  - test.txt
