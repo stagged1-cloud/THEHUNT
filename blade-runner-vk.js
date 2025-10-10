@@ -937,7 +937,7 @@ function failTest() {
     // Show countdown timer
     const countdownElement = document.getElementById('countdownTimer');
     countdownElement.style.display = 'block';
-    let secondsLeft = 15;
+    let secondsLeft = 5;
     
     // Update countdown every second
     const countdownInterval = setInterval(() => {
@@ -951,10 +951,10 @@ function failTest() {
     
     countdownElement.textContent = `REDIRECTING TO SECURE FACILITY IN ${secondsLeft} SECONDS...`;
     
-    // Auto-redirect to start page after 15 seconds
+    // Auto-redirect to start page after 5 seconds
     setTimeout(() => {
         window.location.href = 'https://stagged1-cloud.github.io/THEHUNT/';
-    }, 15000);
+    }, 5000);
 }
 
 // Show result modal
