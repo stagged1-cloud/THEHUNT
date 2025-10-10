@@ -2184,7 +2184,7 @@ The "PROCEED TO NEXT PHASE" button is now perfectly centered in the modal! ✅�
 
 ---
 
-_**User (2025-10-10 20:18Z)**_
+_**User (2025-10-10 20:21Z)**_
 
 all good answers are on a and bad ones on d, you must scramble the good and bad responses so that pressing a all the time will not initate a pass etc
 
@@ -2196,7 +2196,49 @@ I'll scramble the answer positions so that correct answers are randomly distribu
 1. Randomize the correct answer position for each question
 2. Shuffle the answers when displaying them
 
-Let me find where questions are displayed: 
+Let me find where questions are displayed: Now I understand the structure. I need to shuffle the answers when the test starts. Let me create a function to randomize the answer positions: Perfect! I can see there's already a `shuffleArray` function being used. Now I need to add a function to shuffle the answers within each question. Let me add this functionality: 
+```
+
+```
+Now let me commit and push this important change: Perfect! ✅ **Answer Positions Successfully Randomized**
+
+## **Fix Applied:**
+
+Created `shuffleQuestionAnswers()` function that:
+1. **Maps each answer** with its correctness status
+2. **Randomly shuffles** all answer positions using Fisher-Yates algorithm
+3. **Updates the correct index** to match the new shuffled position
+4. **Runs on initialization** before the test starts
+
+**Results:**
+- ✅ Correct answers are now **randomly distributed** across positions A, B, C, and D
+- ✅ **Prevents pattern gaming** - users can't just press "A" repeatedly to pass
+- ✅ Each test session has **different answer layouts**
+- ✅ Makes the psychological evaluation more realistic and harder to cheat
+
+**Commit**: `c2bc570` - Successfully pushed to GitHub! 🚀
+
+Now subjects must actually read and think about each question instead of exploiting a pattern! 🧠🎯
+
+---
+
+_**User (2025-10-10 20:33Z)**_
+
+i added video-heart.mp4 to assets, place a heart in the same frame to the right of the eye video
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll add the heart video to the right of the eye video in the same frame. Now let me check if the video file is in the correct location: Perfect! The heart video is there. Now I'll modify the HTML to add the heart video next to the eye video: 
+```
+
+```
+Now I need to add CSS styling for the heart video and the container. Let me check the current eye-display CSS: Now I'll add CSS for the video-displays container and heart-display: 
+```
+
+```
+Now let me also update the JavaScript to initialize the heart video playback: 
 
 ---
 
