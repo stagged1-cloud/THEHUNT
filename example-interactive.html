@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hunt - Interactive Example</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎄 The Hunt 🎄</h1>
+            <p class="subtitle">Example: Interactive Puzzle Page</p>
+        </header>
+        
+        <main>
+            <div class="clue-box">
+                <h2>Example Interactive Page</h2>
+                <p>This is a template showing how to add interactive puzzles to your hunt pages.</p>
+                
+                <div class="game-area">
+                    <h3>🎮 Solve This Riddle:</h3>
+                    <p>I'm tall when I'm young, and I'm short when I'm old. What am I?</p>
+                    <input type="text" id="riddleAnswer" placeholder="Enter your answer">
+                    <button onclick="checkRiddle()">Submit Answer</button>
+                    <div id="riddleResult"></div>
+                </div>
+                
+                <div class="game-area">
+                    <h3>🔢 Math Challenge:</h3>
+                    <p>What is the next number in this sequence: 2, 4, 6, 8, ?</p>
+                    <input type="number" id="mathAnswer" placeholder="Enter the number">
+                    <button onclick="checkMath()">Check Answer</button>
+                    <div id="mathResult"></div>
+                </div>
+                
+                <div class="navigation">
+                    <a href="index.html" class="next-button">Back to Start</a>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>🎅 Christmas 2024 Family Hunt 🎁</p>
+        </footer>
+    </div>
+    
+    <script>
+        function checkRiddle() {
+            const answer = document.getElementById('riddleAnswer').value.toLowerCase().trim();
+            const result = document.getElementById('riddleResult');
+            
+            if (answer === 'candle' || answer === 'a candle') {
+                result.innerHTML = '<div class="success-message">🎉 Correct! A candle! <a href="page2.html">Go to the next page →</a></div>';
+            } else {
+                result.innerHTML = '<div class="error-message">❌ Not quite! Think about something that melts...</div>';
+            }
+        }
+        
+        function checkMath() {
+            const answer = parseInt(document.getElementById('mathAnswer').value);
+            const result = document.getElementById('mathResult');
+            
+            if (answer === 10) {
+                result.innerHTML = '<div class="success-message">🎉 Correct! The answer is 10! <a href="page3.html">Continue to page 3 →</a></div>';
+            } else {
+                result.innerHTML = '<div class="error-message">❌ Try again! Look at the pattern...</div>';
+            }
+        }
+    </script>
+</body>
+</html>
