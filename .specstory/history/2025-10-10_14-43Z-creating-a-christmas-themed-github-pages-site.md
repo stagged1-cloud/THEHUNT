@@ -2544,3 +2544,36 @@ I'll push your changes to git: Done! Your changes have been committed and pushed
 
 ---
 
+_**User (2025-10-10 21:43Z)**_
+
+css file has left over old code, please fix it such as .eye-white {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #ffffff 0%, #f0f0f0 40%, #e0e0e0 70%, #d0d0d0 100%);
+    border-radius: 50%;
+}
+
+.iris-outer {
+
+    and more
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll search for and remove the old eye-related CSS code that's no longer needed since you're using video for the eye display: Now I'll remove all the old eye-related CSS code that's no longer needed: 
+```
+
+```
+Now let me commit and push the cleaned-up CSS: Perfect! I've removed all the old unused eye-related CSS code including:
+- `.eye-white`
+- `.iris-outer` and `.iris-inner`
+- `.iris` 
+- `.pupil-realistic` and `.pupil`
+- `.eye-reflection`
+- `.upper-eyelid` and `.lower-eyelid`
+- All related animations: `pupilDilation`, 
+
+---
+
