@@ -21,6 +21,25 @@
                     </div>
                 </div>
 
+                <!-- Subject Identification Panel -->
+                <div class="identification-panel" id="identificationPanel">
+                    <div class="id-header">SUBJECT IDENTIFICATION REQUIRED</div>
+                    <div class="id-form">
+                        <label for="subjectName">ENTER FULL NAME:</label>
+                        <input type="text" id="subjectName" class="name-input" placeholder="FIRST LAST" maxlength="50">
+                        <button class="id-submit-btn" onclick="submitIdentification()">SUBMIT FOR BACKGROUND CHECK</button>
+                    </div>
+                    <div class="background-check" id="backgroundCheck" style="display: none;">
+                        <div class="check-header">RUNNING BACKGROUND VERIFICATION...</div>
+                        <div class="check-progress">
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                        <div class="check-results" id="checkResults"></div>
+                    </div>
+                </div>
+
                 <!-- Eye Display -->
                 <div class="eye-monitor">
                     <div class="eye-display">

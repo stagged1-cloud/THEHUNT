@@ -113,7 +113,192 @@ const psychopathQuestions = [
 function initializeTest() {
     questions = [...psychopathQuestions];
     shuffleArray(questions);
-    updateTerminal("System initialized. Awaiting test start command.");
+    updateTerminal("System initialized. Awaiting subject identification...");
+}
+
+// Subject database with background information
+const subjectDatabase = {
+    'SABRINA': {
+        location: 'HASTINGS, UK',
+        criminalRecord: true,
+        criminalDetails: 'FIREARMS WEAPONS - CROWN COURT - SUSPENDED PRISON SENTENCE',
+        associates: ['DON', 'ASHA', 'JAMES'],
+        records: ['CRIMINAL RECORD: FIREARMS OFFENSES', 'COURT RECORD: CROWN COURT SENTENCING', 'PROBATION: ACTIVE SUPERVISION']
+    },
+    'DON': {
+        location: 'HASTINGS, UK',
+        criminalRecord: false,
+        associates: ['SABRINA', 'ASHA', 'JAMES'],
+        records: ['CLEAN CRIMINAL RECORD', 'EMPLOYMENT HISTORY: VERIFIED', 'MEDICAL RECORDS: ACCESSED']
+    },
+    'ASHA': {
+        location: 'HASTINGS, UK',
+        criminalRecord: false,
+        associates: ['SABRINA', 'DON', 'JAMES'],
+        records: ['CLEAN CRIMINAL RECORD', 'EDUCATIONAL BACKGROUND: VERIFIED', 'MEDICAL RECORDS: ACCESSED']
+    },
+    'JAMES': {
+        location: 'HASTINGS, UK',
+        criminalRecord: false,
+        associates: ['SABRINA', 'DON', 'ASHA'],
+        records: ['CLEAN CRIMINAL RECORD', 'EMPLOYMENT HISTORY: VERIFIED', 'MEDICAL RECORDS: ACCESSED']
+    },
+    'CHRIS': {
+        location: 'COVENTRY, NOD LANE, UK',
+        criminalRecord: false,
+        associates: ['DEESHA'],
+        records: ['CLEAN CRIMINAL RECORD', 'PARENTS RECORD: ACCESSED', 'HEALTH RECORDS: COMPREHENSIVE SCAN', 'ADDRESS VERIFICATION: CONFIRMED']
+    },
+    'DEESHA': {
+        location: 'COVENTRY, NOD LANE, UK',
+        criminalRecord: false,
+        associates: ['CHRIS'],
+        records: ['CLEAN CRIMINAL RECORD', 'PARENTS RECORD: ACCESSED', 'HEALTH RECORDS: COMPREHENSIVE SCAN', 'ADDRESS VERIFICATION: CONFIRMED']
+    }
+};
+
+// Submit identification for background check
+function submitIdentification() {
+    const nameInput = document.getElementById('subjectName');
+    const name = nameInput.value.trim().toUpperCase();
+    
+    if (!name) {
+        updateTerminal("ERROR: Subject name required for identification.");
+        return;
+    }
+    
+    // Hide form and show background check
+    document.querySelector('.id-form').style.display = 'none';
+    document.getElementById('backgroundCheck').style.display = 'block';
+    
+    updateTerminal(`Subject identification submitted: ${name}`);
+    updateTerminal("Initiating comprehensive background verification...");
+    
+    // Start background check animation
+    runBackgroundCheck(name);
+}
+
+// Run background check with realistic delays and information
+function runBackgroundCheck(name) {
+    const progressFill = document.getElementById('progressFill');
+    const checkResults = document.getElementById('checkResults');
+    let progress = 0;
+    
+    const checkSteps = [
+        "ACCESSING GOVERNMENT DATABASES...",
+        "CHECKING CRIMINAL RECORDS...",
+        "VERIFYING IDENTITY DOCUMENTS...",
+        "SCANNING POLICE DATABASES...",
+        "CHECKING ASSOCIATES AND CONNECTIONS...",
+        "ANALYZING BEHAVIORAL PATTERNS...",
+        "CROSS-REFERENCING KNOWN SUBJECTS...",
+        "GENERATING SECURITY PROFILE...",
+        "FINALIZING BACKGROUND VERIFICATION..."
+    ];
+    
+    let stepIndex = 0;
+    
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 15 + 5;
+        if (progress > 100) progress = 100;
+        
+        progressFill.style.width = progress + '%';
+        
+        if (stepIndex < checkSteps.length) {
+            updateTerminal(checkSteps[stepIndex]);
+            stepIndex++;
+        }
+        
+        if (progress >= 100) {
+            clearInterval(progressInterval);
+            setTimeout(() => {
+                displayBackgroundResults(name);
+            }, 1000);
+        }
+    }, 800);
+}
+
+// Display background check results
+function displayBackgroundResults(name) {
+    const checkResults = document.getElementById('checkResults');
+    const identificationPanel = document.getElementById('identificationPanel');
+    
+    // Check if name exists in database or find partial matches
+    let subject = subjectDatabase[name];
+    let isAssociate = false;
+    
+    // If not found directly, check if they're an associate
+    if (!subject) {
+        for (const [key, data] of Object.entries(subjectDatabase)) {
+            if (data.associates && data.associates.some(assoc => name.includes(assoc) || assoc.includes(name))) {
+                subject = {
+                    location: data.location,
+                    criminalRecord: false,
+                    associates: [key],
+                    records: [`ASSOCIATION DETECTED WITH: ${key}`, 'SECONDARY SUBJECT PROFILE', 'LIMITED BACKGROUND DATA']
+                };
+                isAssociate = true;
+                break;
+            }
+        }
+    }
+    
+    // Generate results
+    let results = `BACKGROUND VERIFICATION COMPLETE\n`;
+    results += `=====================================\n`;
+    results += `SUBJECT: ${name}\n`;
+    
+    if (subject) {
+        results += `LOCATION: ${subject.location}\n`;
+        results += `CRIMINAL RECORD: ${subject.criminalRecord ? 'POSITIVE MATCH' : 'CLEAN'}\n`;
+        results += `ASSOCIATES: ${subject.associates.join(', ')}\n\n`;
+        
+        results += `DETAILED RECORDS:\n`;
+        results += `-----------------\n`;
+        subject.records.forEach(record => {
+            results += `• ${record}\n`;
+        });
+        
+        // Special handling for Sabrina's criminal record
+        if (name === 'SABRINA' && subject.criminalRecord) {
+            setTimeout(() => {
+                const criminalWarning = document.createElement('div');
+                criminalWarning.className = 'criminal-warning';
+                criminalWarning.innerHTML = `
+                    ⚠️ CRIMINAL RECORD ALERT ⚠️<br>
+                    FIREARMS WEAPONS OFFENSE<br>
+                    CROWN COURT CONVICTION<br>
+                    SUSPENDED PRISON SENTENCE<br>
+                    HIGH RISK SUBJECT
+                `;
+                identificationPanel.appendChild(criminalWarning);
+                
+                updateTerminal("ALERT: HIGH RISK SUBJECT DETECTED - CRIMINAL RECORD CONFIRMED");
+                updateTerminal("FIREARMS OFFENSE - CROWN COURT - SUSPENDED SENTENCE");
+            }, 2000);
+        }
+    } else {
+        results += `LOCATION: UNKNOWN\n`;
+        results += `CRIMINAL RECORD: NO MATCHES FOUND\n`;
+        results += `ASSOCIATES: NONE DETECTED\n\n`;
+        results += `DETAILED RECORDS:\n`;
+        results += `-----------------\n`;
+        results += `• IDENTITY VERIFICATION: PENDING\n`;
+        results += `• NO PRIOR RECORDS FOUND\n`;
+        results += `• SUBJECT REQUIRES FURTHER SCREENING\n`;
+    }
+    
+    checkResults.textContent = results;
+    document.getElementById('subjectId').textContent = name;
+    
+    updateTerminal(`Background verification complete for: ${name}`);
+    updateTerminal("Subject cleared for psychological evaluation.");
+    
+    // Enable test start after background check
+    setTimeout(() => {
+        identificationPanel.style.display = 'none';
+        updateTerminal("VOIGHT-KAMPFF TEST READY - CLICK INITIALIZE TEST TO BEGIN");
+    }, 5000);
 }
 
 // Shuffle array function
@@ -128,13 +313,19 @@ function shuffleArray(array) {
 function startTest() {
     if (testStarted) return;
     
+    // Check if subject identification is complete
+    const subjectId = document.getElementById('subjectId').textContent;
+    if (subjectId === 'UNKNOWN') {
+        updateTerminal("ERROR: Subject identification required before test initialization.");
+        return;
+    }
+    
     testStarted = true;
     currentQuestion = 0;
     stressLevel = 0;
     wrongAnswers = 0;
     
     document.getElementById('startBtn').style.display = 'none';
-    document.getElementById('subjectId').textContent = 'CLASSIFIED';
     
     updateTerminal("Test initiated. Subject preparation complete.");
     updateTerminal("Beginning psychological evaluation sequence...");
