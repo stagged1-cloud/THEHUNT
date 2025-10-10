@@ -36,7 +36,6 @@
                                 <div class="progress-bar-fill" id="progressFill"></div>
                             </div>
                         </div>
-                        <div class="check-results" id="checkResults"></div>
                     </div>
                 </div>
 
@@ -128,13 +127,17 @@
                 </div>
             </div>
 
-            <!-- Terminal Output -->
+            <!-- Combined Terminal and Background Results -->
             <div class="terminal">
-                <div class="terminal-header">SYSTEM LOG</div>
+                <div class="terminal-header">SYSTEM LOG & BACKGROUND VERIFICATION</div>
                 <div class="terminal-content" id="terminalContent">
                     > Voight-Kampff Test System v2.1 Online<br>
                     > Waiting for subject identification...<br>
                     > All systems nominal<br>
+                </div>
+                <div class="background-results" id="backgroundResults" style="display: none;">
+                    <div class="results-divider">═══ BACKGROUND VERIFICATION RESULTS ═══</div>
+                    <div class="results-content" id="resultsContent"></div>
                 </div>
             </div>
         </div>

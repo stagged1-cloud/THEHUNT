@@ -119,41 +119,222 @@ function initializeTest() {
 // Subject database with background information
 const subjectDatabase = {
     'SABRINA': {
+        fullName: 'SABRINA MARTIN',
         location: 'HASTINGS, UK',
         criminalRecord: true,
-        criminalDetails: 'FIREARMS WEAPONS - CROWN COURT - SUSPENDED PRISON SENTENCE',
-        associates: ['DON', 'ASHA', 'JAMES'],
-        records: ['CRIMINAL RECORD: FIREARMS OFFENSES', 'COURT RECORD: CROWN COURT SENTENCING', 'PROBATION: ACTIVE SUPERVISION']
+        alertLevel: 'RED',
+        criminalDetails: 'CARRYING CONCEALED WEAPON INTO CROWN COURT - SUSPENDED PRISON SENTENCE',
+        employment: 'GOLDEN HANDS TATTOO STUDIO, HASTINGS UK',
+        maritalStatus: 'MARRIED TO JAMES MARTIN',
+        associates: ['JAMES MARTIN', 'ASHA THOMPSON', 'DON'],
+        records: [
+            'CRIMINAL RECORD: WEAPONS OFFENSE',
+            'COURT: CROWN COURT CONVICTION', 
+            'SENTENCE: SUSPENDED PRISON',
+            'EMPLOYMENT: GOLDEN HANDS TATTOO STUDIO',
+            'SPOUSE: JAMES MARTIN (BIOTRONICS 3D)'
+        ]
     },
-    'DON': {
+    'SABRINA MARTIN': {
+        fullName: 'SABRINA MARTIN',
         location: 'HASTINGS, UK',
-        criminalRecord: false,
-        associates: ['SABRINA', 'ASHA', 'JAMES'],
-        records: ['CLEAN CRIMINAL RECORD', 'EMPLOYMENT HISTORY: VERIFIED', 'MEDICAL RECORDS: ACCESSED']
+        criminalRecord: true,
+        alertLevel: 'RED',
+        criminalDetails: 'CARRYING CONCEALED WEAPON INTO CROWN COURT - SUSPENDED PRISON SENTENCE',
+        employment: 'GOLDEN HANDS TATTOO STUDIO, HASTINGS UK',
+        maritalStatus: 'MARRIED TO JAMES MARTIN',
+        associates: ['JAMES MARTIN', 'ASHA THOMPSON', 'DON'],
+        records: [
+            'CRIMINAL RECORD: WEAPONS OFFENSE',
+            'COURT: CROWN COURT CONVICTION', 
+            'SENTENCE: SUSPENDED PRISON',
+            'EMPLOYMENT: GOLDEN HANDS TATTOO STUDIO',
+            'SPOUSE: JAMES MARTIN (BIOTRONICS 3D)'
+        ]
     },
     'ASHA': {
+        fullName: 'ASHA THOMPSON',
         location: 'HASTINGS, UK',
-        criminalRecord: false,
-        associates: ['SABRINA', 'DON', 'JAMES'],
-        records: ['CLEAN CRIMINAL RECORD', 'EDUCATIONAL BACKGROUND: VERIFIED', 'MEDICAL RECORDS: ACCESSED']
+        criminalRecord: true,
+        alertLevel: 'RED',
+        criminalDetails: 'THEFT, SHOPLIFTING',
+        employment: 'LOCAL GARDEN CENTER, HASTINGS UK',
+        medicalStatus: 'CKD STAGE 5 - UNDER INVESTIGATION',
+        associates: ['SABRINA MARTIN', 'JAMES MARTIN', 'DON'],
+        sabinaAssociate: true,
+        records: [
+            'CRIMINAL RECORD: THEFT, SHOPLIFTING',
+            'EMPLOYMENT: LOCAL GARDEN CENTER',
+            'MEDICAL: CKD STAGE 5 - UNDER INVESTIGATION',
+            'ASSOCIATION: SABRINA MARTIN (HIGH RISK)'
+        ]
+    },
+    'ASHA THOMPSON': {
+        fullName: 'ASHA THOMPSON',
+        location: 'HASTINGS, UK',
+        criminalRecord: true,
+        alertLevel: 'RED',
+        criminalDetails: 'THEFT, SHOPLIFTING',
+        employment: 'LOCAL GARDEN CENTER, HASTINGS UK',
+        medicalStatus: 'CKD STAGE 5 - UNDER INVESTIGATION',
+        associates: ['SABRINA MARTIN', 'JAMES MARTIN', 'DON'],
+        sabinaAssociate: true,
+        records: [
+            'CRIMINAL RECORD: THEFT, SHOPLIFTING',
+            'EMPLOYMENT: LOCAL GARDEN CENTER',
+            'MEDICAL: CKD STAGE 5 - UNDER INVESTIGATION',
+            'ASSOCIATION: SABRINA MARTIN (HIGH RISK)'
+        ]
     },
     'JAMES': {
+        fullName: 'JAMES MARTIN',
         location: 'HASTINGS, UK',
         criminalRecord: false,
-        associates: ['SABRINA', 'DON', 'ASHA'],
-        records: ['CLEAN CRIMINAL RECORD', 'EMPLOYMENT HISTORY: VERIFIED', 'MEDICAL RECORDS: ACCESSED']
+        alertLevel: 'ORANGE',
+        employment: 'BIOTRONICS 3D',
+        maritalStatus: 'MARRIED TO SABRINA MARTIN',
+        associates: ['SABRINA MARTIN', 'ASHA THOMPSON', 'DON'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'EMPLOYMENT: BIOTRONICS 3D',
+            'SPOUSE: SABRINA MARTIN (CRIMINAL RECORD)',
+            'WARNING: MARRIED TO HIGH RISK SUBJECT',
+            'ASSOCIATION: SABRINA MARTIN (WEAPONS OFFENSE)'
+        ]
+    },
+    'JAMES MARTIN': {
+        fullName: 'JAMES MARTIN',
+        location: 'HASTINGS, UK',
+        criminalRecord: false,
+        alertLevel: 'ORANGE',
+        employment: 'BIOTRONICS 3D',
+        maritalStatus: 'MARRIED TO SABRINA MARTIN',
+        associates: ['SABRINA MARTIN', 'ASHA THOMPSON', 'DON'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'EMPLOYMENT: BIOTRONICS 3D',
+            'SPOUSE: SABRINA MARTIN (CRIMINAL RECORD)',
+            'WARNING: MARRIED TO HIGH RISK SUBJECT',
+            'ASSOCIATION: SABRINA MARTIN (WEAPONS OFFENSE)'
+        ]
     },
     'CHRIS': {
+        fullName: 'CHRISTOPHER WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
         criminalRecord: false,
-        associates: ['DEESHA'],
-        records: ['CLEAN CRIMINAL RECORD', 'PARENTS RECORD: ACCESSED', 'HEALTH RECORDS: COMPREHENSIVE SCAN', 'ADDRESS VERIFICATION: CONFIRMED']
+        alertLevel: 'ORANGE',
+        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
+        employment: 'EX-ARMY SOLDIER (DISABLED)',
+        maritalStatus: 'MARRIED TO DEESHA WATKINS',
+        interests: 'PS5 ELDEN RING GAMING',
+        associates: ['DEESHA WATKINS'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'MEDICAL: SPINE DAMAGE - ACCIDENT',
+            'STATUS: WHEELCHAIR BOUND',
+            'MILITARY: EX-ARMY SOLDIER',
+            'SPOUSE: DEESHA WATKINS',
+            'INTERESTS: PS5 ELDEN RING',
+            'ASSOCIATION: SABRINA MARTIN NETWORK'
+        ]
+    },
+    'CHRISTOPHER': {
+        fullName: 'CHRISTOPHER WATKINS',
+        location: 'COVENTRY, NOD LANE, UK',
+        criminalRecord: false,
+        alertLevel: 'ORANGE',
+        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
+        employment: 'EX-ARMY SOLDIER (DISABLED)',
+        maritalStatus: 'MARRIED TO DEESHA WATKINS',
+        interests: 'PS5 ELDEN RING GAMING',
+        associates: ['DEESHA WATKINS'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'MEDICAL: SPINE DAMAGE - ACCIDENT',
+            'STATUS: WHEELCHAIR BOUND',
+            'MILITARY: EX-ARMY SOLDIER',
+            'SPOUSE: DEESHA WATKINS',
+            'INTERESTS: PS5 ELDEN RING',
+            'ASSOCIATION: SABRINA MARTIN NETWORK'
+        ]
+    },
+    'CHRISTOPHER WATKINS': {
+        fullName: 'CHRISTOPHER WATKINS',
+        location: 'COVENTRY, NOD LANE, UK',
+        criminalRecord: false,
+        alertLevel: 'ORANGE',
+        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
+        employment: 'EX-ARMY SOLDIER (DISABLED)',
+        maritalStatus: 'MARRIED TO DEESHA WATKINS',
+        interests: 'PS5 ELDEN RING GAMING',
+        associates: ['DEESHA WATKINS'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'MEDICAL: SPINE DAMAGE - ACCIDENT',
+            'STATUS: WHEELCHAIR BOUND',
+            'MILITARY: EX-ARMY SOLDIER',
+            'SPOUSE: DEESHA WATKINS',
+            'INTERESTS: PS5 ELDEN RING',
+            'ASSOCIATION: SABRINA MARTIN NETWORK'
+        ]
     },
     'DEESHA': {
+        fullName: 'DEESHA WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
         criminalRecord: false,
-        associates: ['CHRIS'],
-        records: ['CLEAN CRIMINAL RECORD', 'PARENTS RECORD: ACCESSED', 'HEALTH RECORDS: COMPREHENSIVE SCAN', 'ADDRESS VERIFICATION: CONFIRMED']
+        alertLevel: 'ORANGE',
+        employment: 'COVENTRY UNIVERSITY - PROJECT MANAGEMENT',
+        maritalStatus: 'MARRIED TO CHRISTOPHER WATKINS',
+        interests: 'CHOCOLATE, PS5 ELDEN RING GAMING',
+        associates: ['CHRISTOPHER WATKINS'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'EMPLOYMENT: COVENTRY UNIVERSITY',
+            'POSITION: PROJECT MANAGEMENT',
+            'SPOUSE: CHRISTOPHER WATKINS (EX-ARMY)',
+            'INTERESTS: CHOCOLATE, ELDEN RING',
+            'ASSOCIATION: SABRINA MARTIN NETWORK'
+        ]
+    },
+    'DEESHA WATKINS': {
+        fullName: 'DEESHA WATKINS',
+        location: 'COVENTRY, NOD LANE, UK',
+        criminalRecord: false,
+        alertLevel: 'ORANGE',
+        employment: 'COVENTRY UNIVERSITY - PROJECT MANAGEMENT',
+        maritalStatus: 'MARRIED TO CHRISTOPHER WATKINS',
+        interests: 'CHOCOLATE, PS5 ELDEN RING GAMING',
+        associates: ['CHRISTOPHER WATKINS'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'EMPLOYMENT: COVENTRY UNIVERSITY',
+            'POSITION: PROJECT MANAGEMENT',
+            'SPOUSE: CHRISTOPHER WATKINS (EX-ARMY)',
+            'INTERESTS: CHOCOLATE, ELDEN RING',
+            'ASSOCIATION: SABRINA MARTIN NETWORK'
+        ]
+    },
+    'DON': {
+        fullName: 'DON',
+        location: 'HASTINGS, UK',
+        criminalRecord: false,
+        alertLevel: 'ORANGE',
+        associates: ['SABRINA MARTIN', 'ASHA THOMPSON', 'JAMES MARTIN'],
+        sabinaAssociate: true,
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            'EMPLOYMENT HISTORY: VERIFIED',
+            'MEDICAL RECORDS: ACCESSED',
+            'ASSOCIATION: SABRINA MARTIN (HIGH RISK)',
+            'WARNING: CONNECTED TO CRIMINAL NETWORK'
+        ]
     }
 };
 
@@ -218,9 +399,13 @@ function runBackgroundCheck(name) {
         if (stepIndex < checkSteps.length) {
             const currentStep = checkSteps[stepIndex];
             
-            // Special handling for Sabrina when scanning police databases
-            if (name === 'SABRINA' && currentStep === "SCANNING POLICE DATABASES...") {
-                showSabrinaPoliceAlert(currentStep);
+            // Check if subject exists in database for special handling
+            const upperName = name.toUpperCase();
+            const subject = subjectDatabase[upperName];
+            
+            // Special handling when scanning police databases
+            if (currentStep === "SCANNING POLICE DATABASES..." && subject && (subject.alertLevel === 'RED' || subject.alertLevel === 'ORANGE')) {
+                showPoliceAlert(currentStep, subject);
             } else {
                 updateTerminal(currentStep);
             }
@@ -236,126 +421,177 @@ function runBackgroundCheck(name) {
     }, 800);
 }
 
-// Special alert for Sabrina during police scan
-function showSabrinaPoliceAlert(step) {
+// Special alert for subjects during police scan
+function showPoliceAlert(step, subject) {
     const terminal = document.getElementById('terminalContent');
     const timestamp = new Date().toLocaleTimeString();
     
-    // Add the step with red flashing effect
+    let alertClass = 'sabrina-alert';
+    if (subject && subject.alertLevel === 'ORANGE') {
+        alertClass = 'orange-alert';
+    }
+    
+    // Add the step with flashing effect
     const alertLine = document.createElement('div');
-    alertLine.innerHTML = `<br>[${timestamp}] > <span class="sabrina-alert">${step}</span>`;
+    alertLine.innerHTML = `<br>[${timestamp}] > <span class="${alertClass}">${step}</span>`;
     terminal.appendChild(alertLine);
     terminal.scrollTop = terminal.scrollHeight;
     
-    // Show immediate warning popup
-    setTimeout(() => {
-        showSabrinaWarningPopup();
-    }, 1500);
+    // Show warning popup for high-risk subjects
+    if (subject && (subject.alertLevel === 'RED' || subject.criminalRecord)) {
+        setTimeout(() => {
+            showCriminalWarningPopup(subject);
+        }, 1500);
+    }
 }
 
-// Show Sabrina criminal warning popup
-function showSabrinaWarningPopup() {
+// Show criminal warning popup
+function showCriminalWarningPopup(subject) {
     const warningPopup = document.createElement('div');
     warningPopup.className = 'sabrina-warning-popup';
-    warningPopup.innerHTML = `
-        <div class="warning-header">⚠️ CRIMINAL RECORD ALERT ⚠️</div>
+    
+    let warningContent = `
+        <div class="warning-header">⚠️ ${subject.alertLevel === 'RED' ? 'CRIMINAL RECORD' : 'SECURITY'} ALERT ⚠️</div>
         <div class="warning-content">
-            <div class="warning-line">SUBJECT: SABRINA</div>
-            <div class="warning-line">OFFENSE: FIREARMS WEAPONS</div>
-            <div class="warning-line">COURT: CROWN COURT</div>
-            <div class="warning-line">SENTENCE: SUSPENDED PRISON</div>
-            <div class="warning-line">STATUS: HIGH RISK</div>
+            <div class="warning-line">SUBJECT: ${subject.fullName}</div>
+    `;
+    
+    if (subject.criminalDetails) {
+        warningContent += `<div class="warning-line">OFFENSE: ${subject.criminalDetails}</div>`;
+    }
+    
+    if (subject.employment) {
+        warningContent += `<div class="warning-line">EMPLOYMENT: ${subject.employment}</div>`;
+    }
+    
+    if (subject.maritalStatus) {
+        warningContent += `<div class="warning-line">RELATION: ${subject.maritalStatus}</div>`;
+    }
+    
+    warningContent += `
+            <div class="warning-line">ALERT LEVEL: ${subject.alertLevel}</div>
         </div>
         <div class="warning-footer">SECURITY PROTOCOLS ACTIVATED</div>
     `;
     
+    warningPopup.innerHTML = warningContent;
     document.body.appendChild(warningPopup);
     
-    // Remove popup after 5 seconds
+    // Remove popup after 6 seconds
     setTimeout(() => {
         if (warningPopup.parentNode) {
             warningPopup.parentNode.removeChild(warningPopup);
         }
-    }, 5000);
+    }, 6000);
     
-    updateTerminal("ALERT: HIGH-RISK CRIMINAL RECORD DETECTED");
-    updateTerminal("FIREARMS OFFENSE CONFIRMED - CROWN COURT RECORD");
+    // Add terminal alerts
+    if (subject.alertLevel === 'RED') {
+        updateTerminal(`ALERT: HIGH-RISK CRIMINAL RECORD DETECTED - ${subject.fullName}`);
+        if (subject.criminalDetails) {
+            updateTerminal(`CRIMINAL OFFENSE: ${subject.criminalDetails}`);
+        }
+    } else if (subject.alertLevel === 'ORANGE') {
+        updateTerminal(`WARNING: SUBJECT ASSOCIATED WITH HIGH-RISK INDIVIDUALS - ${subject.fullName}`);
+        updateTerminal("SABRINA MARTIN NETWORK CONNECTION DETECTED");
+    }
 }
 
 // Display background check results
 function displayBackgroundResults(name) {
-    const checkResults = document.getElementById('checkResults');
+    const backgroundResults = document.getElementById('backgroundResults');
+    const resultsContent = document.getElementById('resultsContent');
     const identificationPanel = document.getElementById('identificationPanel');
     
-    // Check if name exists in database or find partial matches
-    let subject = subjectDatabase[name];
-    let isAssociate = false;
+    // Check if name exists in database
+    const upperName = name.toUpperCase();
+    let subject = subjectDatabase[upperName];
     
-    // If not found directly, check if they're an associate
+    // If not found directly, try variations
     if (!subject) {
+        // Try partial matches
         for (const [key, data] of Object.entries(subjectDatabase)) {
-            if (data.associates && data.associates.some(assoc => name.includes(assoc) || assoc.includes(name))) {
-                subject = {
-                    location: data.location,
-                    criminalRecord: false,
-                    associates: [key],
-                    records: [`ASSOCIATION DETECTED WITH: ${key}`, 'SECONDARY SUBJECT PROFILE', 'LIMITED BACKGROUND DATA']
-                };
-                isAssociate = true;
+            if (key.includes(upperName) || upperName.includes(key.split(' ')[0])) {
+                subject = data;
                 break;
             }
         }
     }
     
-    // Generate results
-    let results = `BACKGROUND VERIFICATION COMPLETE\n`;
-    results += `=====================================\n`;
-    results += `SUBJECT: ${name}\n`;
+    // Show background results section
+    backgroundResults.style.display = 'block';
+    
+    let resultsHTML = '';
     
     if (subject) {
-        results += `LOCATION: ${subject.location}\n`;
-        results += `CRIMINAL RECORD: ${subject.criminalRecord ? 'POSITIVE MATCH' : 'CLEAN'}\n`;
-        results += `ASSOCIATES: ${subject.associates.join(', ')}\n\n`;
+        const alertClass = subject.alertLevel === 'RED' ? 'red-alert' : 
+                          subject.alertLevel === 'ORANGE' ? 'orange-alert' : '';
         
-        results += `DETAILED RECORDS:\n`;
-        results += `-----------------\n`;
+        resultsHTML += `<div class="subject-info-block ${alertClass}">`;
+        resultsHTML += `<div class="info-line"><strong>SUBJECT:</strong> <span class="${subject.alertLevel === 'RED' ? 'alert-red' : subject.alertLevel === 'ORANGE' ? 'alert-orange' : ''}">${subject.fullName}</span></div>`;
+        resultsHTML += `<div class="info-line"><strong>LOCATION:</strong> ${subject.location}</div>`;
+        
+        if (subject.criminalRecord) {
+            resultsHTML += `<div class="info-line criminal-record"><strong>CRIMINAL RECORD:</strong> POSITIVE MATCH</div>`;
+            if (subject.criminalDetails) {
+                resultsHTML += `<div class="info-line criminal-record"><strong>OFFENSE:</strong> ${subject.criminalDetails}</div>`;
+            }
+        } else {
+            resultsHTML += `<div class="info-line"><strong>CRIMINAL RECORD:</strong> CLEAN</div>`;
+        }
+        
+        if (subject.employment) {
+            resultsHTML += `<div class="info-line"><strong>EMPLOYMENT:</strong> ${subject.employment}</div>`;
+        }
+        
+        if (subject.maritalStatus) {
+            resultsHTML += `<div class="info-line"><strong>MARITAL STATUS:</strong> ${subject.maritalStatus}</div>`;
+        }
+        
+        if (subject.medicalStatus) {
+            resultsHTML += `<div class="info-line"><strong>MEDICAL STATUS:</strong> ${subject.medicalStatus}</div>`;
+        }
+        
+        if (subject.interests) {
+            resultsHTML += `<div class="info-line"><strong>INTERESTS:</strong> ${subject.interests}</div>`;
+        }
+        
+        if (subject.sabinaAssociate) {
+            resultsHTML += `<div class="info-line association-warning"><strong>⚠️ SABRINA MARTIN NETWORK CONNECTION</strong></div>`;
+        }
+        
+        resultsHTML += `<div class="info-line"><strong>ASSOCIATES:</strong> ${subject.associates.join(', ')}</div>`;
+        resultsHTML += `<div class="info-line"><strong>ALERT LEVEL:</strong> <span class="${subject.alertLevel === 'RED' ? 'alert-red' : subject.alertLevel === 'ORANGE' ? 'alert-orange' : ''}">${subject.alertLevel || 'GREEN'}</span></div>`;
+        
+        resultsHTML += '<br><strong>DETAILED RECORDS:</strong><br>';
         subject.records.forEach(record => {
-            results += `• ${record}\n`;
+            const recordClass = record.includes('CRIMINAL') ? 'criminal-record' : 
+                               record.includes('ASSOCIATION') || record.includes('SABRINA') ? 'association-warning' : '';
+            resultsHTML += `<div class="info-line ${recordClass}">• ${record}</div>`;
         });
         
-        // Special handling for Sabrina's criminal record
-        if (name === 'SABRINA' && subject.criminalRecord) {
-            setTimeout(() => {
-                const criminalWarning = document.createElement('div');
-                criminalWarning.className = 'criminal-warning';
-                criminalWarning.innerHTML = `
-                    ⚠️ CRIMINAL RECORD ALERT ⚠️<br>
-                    FIREARMS WEAPONS OFFENSE<br>
-                    CROWN COURT CONVICTION<br>
-                    SUSPENDED PRISON SENTENCE<br>
-                    HIGH RISK SUBJECT
-                `;
-                identificationPanel.appendChild(criminalWarning);
-                
-                updateTerminal("ALERT: HIGH RISK SUBJECT DETECTED - CRIMINAL RECORD CONFIRMED");
-                updateTerminal("FIREARMS OFFENSE - CROWN COURT - SUSPENDED SENTENCE");
-            }, 2000);
-        }
+        resultsHTML += '</div>';
+        
     } else {
-        results += `LOCATION: UNKNOWN\n`;
-        results += `CRIMINAL RECORD: NO MATCHES FOUND\n`;
-        results += `ASSOCIATES: NONE DETECTED\n\n`;
-        results += `DETAILED RECORDS:\n`;
-        results += `-----------------\n`;
-        results += `• IDENTITY VERIFICATION: PENDING\n`;
-        results += `• NO PRIOR RECORDS FOUND\n`;
-        results += `• SUBJECT REQUIRES FURTHER SCREENING\n`;
+        resultsHTML += `<div class="subject-info-block">`;
+        resultsHTML += `<div class="info-line"><strong>SUBJECT:</strong> ${name}</div>`;
+        resultsHTML += `<div class="info-line"><strong>LOCATION:</strong> UNKNOWN</div>`;
+        resultsHTML += `<div class="info-line"><strong>CRIMINAL RECORD:</strong> NO MATCHES FOUND</div>`;
+        resultsHTML += `<div class="info-line"><strong>ASSOCIATES:</strong> NONE DETECTED</div>`;
+        resultsHTML += `<div class="info-line"><strong>ALERT LEVEL:</strong> UNKNOWN</div>`;
+        resultsHTML += '<br><strong>DETAILED RECORDS:</strong><br>';
+        resultsHTML += '<div class="info-line">• IDENTITY VERIFICATION: PENDING</div>';
+        resultsHTML += '<div class="info-line">• NO PRIOR RECORDS FOUND</div>';
+        resultsHTML += '<div class="info-line">• SUBJECT REQUIRES FURTHER SCREENING</div>';
+        resultsHTML += '</div>';
     }
     
-    checkResults.textContent = results;
-    document.getElementById('subjectId').textContent = name;
+    resultsContent.innerHTML = resultsHTML;
+    document.getElementById('subjectId').textContent = subject ? subject.fullName : name;
     
-    updateTerminal(`Background verification complete for: ${name}`);
+    updateTerminal(`Background verification complete for: ${subject ? subject.fullName : name}`);
+    if (subject && subject.sabinaAssociate) {
+        updateTerminal("WARNING: SUBJECT CONNECTED TO SABRINA MARTIN CRIMINAL NETWORK");
+    }
     updateTerminal("Subject cleared for psychological evaluation.");
     
     // Enable test start after background check
@@ -379,7 +615,7 @@ function displayBackgroundResults(name) {
         if (video) {
             video.play().catch(e => console.log('Video autoplay after reveal failed:', e));
         }
-    }, 5000);
+    }, 4000);
 }
 
 // Shuffle array function

@@ -1041,6 +1041,103 @@ body {
     letter-spacing: 1px;
 }
 
+/* Background Results in Terminal */
+.background-results {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 2px solid #0ff;
+    background: rgba(0, 20, 40, 0.8);
+}
+
+.results-divider {
+    color: #0ff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.results-content {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #ffffff;
+}
+
+.alert-red {
+    color: #ff0000 !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8) !important;
+    animation: flashRedAlert 0.8s infinite !important;
+}
+
+.alert-orange {
+    color: #ff8800 !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 10px rgba(255, 136, 0, 0.8) !important;
+    animation: flashOrangeAlert 1s infinite !important;
+}
+
+@keyframes flashRedAlert {
+    0%, 100% { 
+        color: #ff0000; 
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+        background: rgba(255, 0, 0, 0.1);
+    }
+    50% { 
+        color: #ffffff; 
+        text-shadow: 0 0 15px rgba(255, 0, 0, 1);
+        background: rgba(255, 0, 0, 0.3);
+    }
+}
+
+@keyframes flashOrangeAlert {
+    0%, 100% { 
+        color: #ff8800; 
+        text-shadow: 0 0 10px rgba(255, 136, 0, 0.8);
+        background: rgba(255, 136, 0, 0.1);
+    }
+    50% { 
+        color: #ffffff; 
+        text-shadow: 0 0 15px rgba(255, 136, 0, 1);
+        background: rgba(255, 136, 0, 0.3);
+    }
+}
+
+.subject-info-block {
+    margin: 10px 0;
+    padding: 10px;
+    border-left: 4px solid #0ff;
+    background: rgba(0, 50, 100, 0.3);
+}
+
+.subject-info-block.red-alert {
+    border-left-color: #ff0000;
+    background: rgba(100, 0, 0, 0.3);
+}
+
+.subject-info-block.orange-alert {
+    border-left-color: #ff8800;
+    background: rgba(100, 50, 0, 0.3);
+}
+
+.info-line {
+    margin: 3px 0;
+    font-size: 11px;
+}
+
+.criminal-record {
+    color: #ff4444;
+    font-weight: bold;
+}
+
+.association-warning {
+    color: #ffaa00;
+    font-weight: bold;
+}
+
 /* Terminal */
 .terminal {
     background: #000;
