@@ -1162,17 +1162,17 @@ body {
 
 /* Scanning Display */
 .scanning-display {
-    background: #000;
-    border: 2px solid #0f0;
-    border-radius: 5px;
+    background: transparent;
+    border: none;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+    align-items: center;
 }
 
 .scanning-header {
-    background: rgba(0, 255, 0, 0.2);
+    background: transparent;
     color: #0f0;
     padding: 8px;
     font-weight: bold;
@@ -1180,14 +1180,14 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 11px;
     letter-spacing: 1px;
-    border-bottom: 1px solid #0f0;
+    border: none;
 }
 
 #scanningVideo {
-    width: 100%;
+    width: 50%;
     height: auto;
     display: block;
-    background: #000;
+    background: transparent;
 }
 
 /* Terminal */

@@ -2484,3 +2484,24 @@ The Voight-Kampff test interface should now have cleaner, more readable gauge la
 
 ---
 
+_**User (2025-10-10 21:20Z)**_
+
+i wanted the scanning for replicant.mp4 in this frame not outside?
+put everything back and put this video next to the status indicators
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll move the scanning video to be inside the status indicators frame on the left side. Let me first check the current structure and then relocate it: Now I'll remove the scanning-display from the right panel and add it next to the status indicators on the left: 
+```
+
+```
+
+```
+
+```
+Now let me update the CSS to style the scanning display to fit nicely next to the status indicators: 
+
+---
+
