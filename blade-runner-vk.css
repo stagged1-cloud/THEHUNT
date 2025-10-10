@@ -1163,23 +1163,24 @@ body {
 /* Scanning Display */
 .scanning-display {
     background: #000;
-    border: 2px solid #ff0080;
+    border: 2px solid #0f0;
     border-radius: 5px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .scanning-header {
-    background: #ff0080;
-    color: #000;
-    padding: 10px;
+    background: rgba(0, 255, 0, 0.2);
+    color: #0f0;
+    padding: 8px;
     font-weight: bold;
     text-align: center;
     font-family: 'Courier New', monospace;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 1px;
+    border-bottom: 1px solid #0f0;
 }
 
 #scanningVideo {

@@ -2424,7 +2424,7 @@ First, let me check the gauge labels: Now let me check the CSS to see if there a
 
 ---
 
-_**User (2025-10-10 21:10Z)**_
+_**User (2025-10-10 21:13Z)**_
 
 continue
 
@@ -2436,7 +2436,51 @@ Let me continue by finding the right panel and adding the scanning video. First,
 ```
 
 ```
+Now let me add the scanning video to the right panel. I'll add it above the terminal: 
+```
 
+```
+Now let me add CSS styling for the scanning display: 
+```
+
+```
+Now let me update the JavaScript to initialize the scanning video: 
+```
+
+```
+
+```
+
+```
+Perfect! I've fixed both issues:
+
+1. **Fixed doubled gauge labels** - Removed the `::after` pseudo-elements that were creating duplicate indicator lights below the gauge label text
+2. **Added scanning video to right panel** - Integrated the "scanning for replicant.mp4" video above the terminal with:
+   - Pink-bordered display matching the heart video theme
+   - "REPLICANT DETECTION SYSTEM" header
+   - JavaScript initialization for autoplay on page load and after VK interface reveal
+
+The scanning video now fills the unused space in the right panel and adds to the immersive Blade Runner atmosphere. The gauge labels should now display cleanly without the doubling issue.
+
+---
+
+_**User (2025-10-10 21:14Z)**_
+
+continue and update git
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll commit and push the changes to fix the gauge labels and add the scanning video: Perfect! All changes have been committed and pushed to GitHub. The updates include:
+
+✅ **Fixed doubled gauge labels** - Removed the problematic `::after` pseudo-elements that were creating duplicate visual indicators
+✅ **Added scanning video** - Integrated "scanning for replicant.mp4" to the right panel with:
+  - "REPLICANT DETECTION SYSTEM" header
+  - Pink border (#ff0080) matching the heart video theme
+  - Auto-play initialization on page load and after VK interface reveal
+
+The Voight-Kampff test interface should now have cleaner, more readable gauge labels and better visual balance with the scanning video filling the previously unused right panel space.
 
 ---
 
