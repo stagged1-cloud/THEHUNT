@@ -40,12 +40,36 @@
             </div>
             
             <div class="decorations">
-                <div class="ornament ornament-1">🎄</div>
-                <div class="ornament ornament-2">⭐</div>
-                <div class="ornament ornament-3">🎁</div>
-                <div class="ornament ornament-4">❄️</div>
-                <div class="ornament ornament-5">🔔</div>
-                <div class="ornament ornament-6">🎄</div>
+                <!-- Target elements - correct order: blade then runner -->
+                <div class="clickable-icon blade-icon" data-type="blade">⛸️</div>
+                <div class="clickable-icon runner-icon" data-type="runner">🏃</div>
+                
+                <!-- Christmas decorations -->
+                <div class="clickable-icon christmas-icon">🎄</div>
+                <div class="clickable-icon christmas-icon">⭐</div>
+                <div class="clickable-icon christmas-icon">🎁</div>
+                <div class="clickable-icon christmas-icon">❄️</div>
+                <div class="clickable-icon christmas-icon">🔔</div>
+                <div class="clickable-icon christmas-icon">🎅</div>
+                <div class="clickable-icon christmas-icon">🤶</div>
+                <div class="clickable-icon christmas-icon">🦌</div>
+                <div class="clickable-icon christmas-icon">🛷</div>
+                <div class="clickable-icon christmas-icon">🕯️</div>
+                <div class="clickable-icon christmas-icon">🧸</div>
+                <div class="clickable-icon christmas-icon">🎂</div>
+                <div class="clickable-icon christmas-icon">🍪</div>
+                <div class="clickable-icon christmas-icon">🥛</div>
+                <div class="clickable-icon christmas-icon">🎪</div>
+                <div class="clickable-icon christmas-icon">🎭</div>
+            </div>
+            
+            <!-- Success modal -->
+            <div id="successModal" class="modal">
+                <div class="modal-content">
+                    <h2>🎉 Well Done! 🎉</h2>
+                    <p>You found the correct sequence!</p>
+                    <p>Redirecting to next page in: <span id="countdown">5</span> seconds</p>
+                </div>
             </div>
         </main>
         
@@ -53,5 +77,69 @@
             <p>🎅 Happy Hunting! 🎅</p>
         </footer>
     </div>
+    
+    <script>
+        let clickSequence = [];
+        let bellSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmkaAG2CFQR6BnQJhQqPBYEKkQhNDXkRRwyFGVkUIw3lGVUXUAd9HTMZFQHdF5kSBRAAGMcXFRZzHiAcVR0yIvYZRyG7HfIdBCKTJJYeMRsyICgfEjFKO0Q5gzrXOdkwVS49LnArsS11ODcq6ipGLVkzOUg3Mkg7RUU5OzlZPh8zJjRpRBU7azdJO9szejFFO+U3fzpcP3Y3fUKNPGI5qUQ+PTxBp0z3QH9AjEnpQGVBl1B4SLJFkUxbTYxLV0zhTvVPx0pRSTJP+1JiTb5NulKHVD5S51TYUp9ZVlyZWRJZjV1CZYxfvV0SZd5kvmdRZhNkqmhbai1nzGnPaSBsZnDMbqJxWWq6b9ptaHF2eM5tgG+gd5R3TXZjeXN/am8odb2Abn6OfVeF7oQGhj6FSosNh0qL1YunipGJGo73iPGKkY9EjbyRtJL5lZSYl5hWlsyXIpkZmsOb7px4neWfF56En8KeOqIApFOoRaMbqPOr36s7rTqsla0ZtCq3Ma4Jr2CwVL4xxn2/ssBqwRjFvML6xsLEOMaVwwjJWsVZyDTHgc5pzJzMs8g/0D7N8tJL0xPSvdQE2LLYBNhV2MnZaNkf3vLbZOC52mbjnOKp5VTmu+fC6YfrWe6X7W3z+O/C9Vzxz/4Q/oj+AAAAAQAAAAEAAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEBAAEB');
+        let buzzerSound = new Audio('data:audio/wav;base64,UklGRmQEAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAEAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAACAAAAA=');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const clickableIcons = document.querySelectorAll('.clickable-icon');
+            const modal = document.getElementById('successModal');
+            const countdownElement = document.getElementById('countdown');
+            
+            // Position icons randomly
+            clickableIcons.forEach(icon => {
+                icon.style.position = 'absolute';
+                icon.style.left = Math.random() * 85 + '%';
+                icon.style.top = Math.random() * 80 + '%';
+                icon.style.cursor = 'pointer';
+                icon.style.fontSize = '2.5rem';
+                icon.style.zIndex = '10';
+                icon.style.animation = 'float 3s ease-in-out infinite';
+                icon.style.animationDelay = Math.random() * 2 + 's';
+                
+                icon.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    
+                    if (type === 'blade' || type === 'runner') {
+                        bellSound.currentTime = 0;
+                        bellSound.play();
+                        clickSequence.push(type);
+                        
+                        // Check if correct sequence
+                        if (clickSequence.length === 2) {
+                            if (clickSequence[0] === 'blade' && clickSequence[1] === 'runner') {
+                                showSuccessModal();
+                            } else {
+                                // Reset if wrong sequence
+                                clickSequence = [];
+                            }
+                        }
+                    } else {
+                        buzzerSound.currentTime = 0;
+                        buzzerSound.play();
+                        // Reset sequence on wrong click
+                        clickSequence = [];
+                    }
+                });
+            });
+            
+            function showSuccessModal() {
+                modal.style.display = 'flex';
+                let countdown = 5;
+                
+                const timer = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                        window.location.href = 'blade-runner.html';
+                    }
+                }, 1000);
+            }
+        });
+    </script>
 </body>
 </html>
