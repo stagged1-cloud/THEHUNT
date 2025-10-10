@@ -216,7 +216,14 @@ function runBackgroundCheck(name) {
         progressFill.style.width = progress + '%';
         
         if (stepIndex < checkSteps.length) {
-            updateTerminal(checkSteps[stepIndex]);
+            const currentStep = checkSteps[stepIndex];
+            
+            // Special handling for Sabrina when scanning police databases
+            if (name === 'SABRINA' && currentStep === "SCANNING POLICE DATABASES...") {
+                showSabrinaPoliceAlert(currentStep);
+            } else {
+                updateTerminal(currentStep);
+            }
             stepIndex++;
         }
         
@@ -227,6 +234,52 @@ function runBackgroundCheck(name) {
             }, 1000);
         }
     }, 800);
+}
+
+// Special alert for Sabrina during police scan
+function showSabrinaPoliceAlert(step) {
+    const terminal = document.getElementById('terminalContent');
+    const timestamp = new Date().toLocaleTimeString();
+    
+    // Add the step with red flashing effect
+    const alertLine = document.createElement('div');
+    alertLine.innerHTML = `<br>[${timestamp}] > <span class="sabrina-alert">${step}</span>`;
+    terminal.appendChild(alertLine);
+    terminal.scrollTop = terminal.scrollHeight;
+    
+    // Show immediate warning popup
+    setTimeout(() => {
+        showSabrinaWarningPopup();
+    }, 1500);
+}
+
+// Show Sabrina criminal warning popup
+function showSabrinaWarningPopup() {
+    const warningPopup = document.createElement('div');
+    warningPopup.className = 'sabrina-warning-popup';
+    warningPopup.innerHTML = `
+        <div class="warning-header">⚠️ CRIMINAL RECORD ALERT ⚠️</div>
+        <div class="warning-content">
+            <div class="warning-line">SUBJECT: SABRINA</div>
+            <div class="warning-line">OFFENSE: FIREARMS WEAPONS</div>
+            <div class="warning-line">COURT: CROWN COURT</div>
+            <div class="warning-line">SENTENCE: SUSPENDED PRISON</div>
+            <div class="warning-line">STATUS: HIGH RISK</div>
+        </div>
+        <div class="warning-footer">SECURITY PROTOCOLS ACTIVATED</div>
+    `;
+    
+    document.body.appendChild(warningPopup);
+    
+    // Remove popup after 5 seconds
+    setTimeout(() => {
+        if (warningPopup.parentNode) {
+            warningPopup.parentNode.removeChild(warningPopup);
+        }
+    }, 5000);
+    
+    updateTerminal("ALERT: HIGH-RISK CRIMINAL RECORD DETECTED");
+    updateTerminal("FIREARMS OFFENSE CONFIRMED - CROWN COURT RECORD");
 }
 
 // Display background check results
@@ -689,11 +742,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 ambientAudio.currentTime = 10;
                 ambientAudio.play().then(() => {
                     audioStarted = true;
-                    updateTerminal("Leon's Interrogation theme playing. Audio system active.");
                     console.log('Background audio started successfully');
                 }).catch(e => {
                     console.log('Audio start failed:', e);
-                    updateTerminal("Audio autoplay blocked - click anywhere to enable sound");
                 });
             }
         }
@@ -709,7 +760,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Also try when background check starts
         document.addEventListener('backgroundCheckStarted', startAudio);
         
-        updateTerminal("Leon's Interrogation theme loaded. Atmospheric audio initialized.");
+        // Removed audio initialization message
     }
     
     // Start ambient eye animations

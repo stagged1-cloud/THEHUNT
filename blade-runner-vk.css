@@ -395,35 +395,45 @@ body {
 
 .gauge-labels {
     position: absolute;
-    bottom: -50px;
+    bottom: -45px;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
-    padding: 0 15px;
+    font-size: 9px;
+    padding: 0 20px;
     font-family: 'Courier New', monospace;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     z-index: 10;
+    white-space: nowrap;
 }
 
 .label-green { 
     color: #00ff88; 
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+    text-shadow: 0 0 6px rgba(0, 255, 136, 0.8);
     position: relative;
+    flex-shrink: 0;
+    max-width: 60px;
+    text-align: center;
 }
 
 .label-yellow { 
     color: #ffff00; 
-    text-shadow: 0 0 8px rgba(255, 255, 0, 0.8);
+    text-shadow: 0 0 6px rgba(255, 255, 0, 0.8);
     position: relative;
+    flex-shrink: 0;
+    max-width: 80px;
+    text-align: center;
 }
 
 .label-red { 
     color: #ff3030; 
-    text-shadow: 0 0 8px rgba(255, 48, 48, 0.8);
+    text-shadow: 0 0 6px rgba(255, 48, 48, 0.8);
     position: relative;
+    flex-shrink: 0;
+    max-width: 70px;
+    text-align: center;
 }
 
 /* Add small indicator lights below labels */
@@ -557,7 +567,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding-bottom: 60px;
+    padding-bottom: 50px;
 }
 
 .gauge-title {
@@ -946,6 +956,89 @@ body {
     font-size: 10px;
     max-height: 100px;
     overflow-y: auto;
+}
+
+/* Sabrina Special Alert Effects */
+.sabrina-alert {
+    color: #ff0000 !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8) !important;
+    animation: flashRedText 0.5s infinite !important;
+}
+
+@keyframes flashRedText {
+    0%, 100% { 
+        color: #ff0000; 
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    }
+    50% { 
+        color: #ffffff; 
+        text-shadow: 0 0 15px rgba(255, 0, 0, 1);
+    }
+}
+
+.sabrina-warning-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, #660000, #330000);
+    border: 3px solid #ff0000;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 9999;
+    font-family: 'Courier New', monospace;
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 
+        0 0 30px rgba(255, 0, 0, 0.8),
+        inset 0 0 20px rgba(255, 0, 0, 0.2);
+    animation: warningPulse 0.8s infinite;
+    min-width: 350px;
+}
+
+@keyframes warningPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 30px rgba(255, 0, 0, 0.8),
+            inset 0 0 20px rgba(255, 0, 0, 0.2);
+    }
+    50% { 
+        box-shadow: 
+            0 0 50px rgba(255, 0, 0, 1),
+            inset 0 0 30px rgba(255, 0, 0, 0.4);
+    }
+}
+
+.warning-header {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: flashRedText 0.6s infinite;
+}
+
+.warning-content {
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.warning-line {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #ffcccc;
+}
+
+.warning-footer {
+    font-size: 12px;
+    color: #ff6666;
+    margin-top: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* Terminal */
