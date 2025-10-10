@@ -74,7 +74,7 @@
                 <span class="glitch-text">THE HUNT CONTINUES...</span>
             </div>
             
-            <div class="navigation-panel">
+            <div class="navigation-panel" id="navigationPanel" style="opacity: 0; pointer-events: none; transition: opacity 1s ease-in-out;">
                 <button class="nav-button" onclick="window.location.href='blade-runner-vk.html'">
                     <span class="button-text">PROCEED TO VOIGHT-KAMPFF TEST</span>
                     <span class="button-subtext">PSYCHOLOGICAL EVALUATION REQUIRED</span>
@@ -162,6 +162,15 @@
             
             // Force higher volume and ensure it's audible
             music.volume = 0.8;
+            
+            // Show navigation button after 10 seconds
+            setTimeout(() => {
+                const navPanel = document.getElementById('navigationPanel');
+                if (navPanel) {
+                    navPanel.style.opacity = '1';
+                    navPanel.style.pointerEvents = 'auto';
+                }
+            }, 10000); // 10 seconds delay
         });
     </script>
 </body>
