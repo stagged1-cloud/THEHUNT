@@ -111,13 +111,12 @@ body {
     border: 2px solid #0ff;
 }
 
-/* Realistic Eye Animation */
-.realistic-eye {
-    position: relative;
+/* Video Eye Display */
+#eyeVideo {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-radius: 50%;
-    overflow: hidden;
 }
 
 .eye-white {
@@ -267,86 +266,380 @@ body {
 /* Stress Indicator */
 .stress-indicator {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     align-items: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid #0ff;
-    border-radius: 5px;
+    padding: 25px;
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+    border: 3px solid #333;
+    border-radius: 15px;
+    box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(0, 255, 255, 0.2);
 }
 
 .needle-container {
     position: relative;
-    width: 200px;
-    height: 100px;
+    width: 250px;
+    height: 125px;
     background: 
-        linear-gradient(90deg, 
-            #00ff00 0%, 
-            #00ff00 30%, 
-            #ffff00 30%, 
-            #ffff00 70%, 
-            #ff0000 70%, 
-            #ff0000 100%
+        /* Main gauge face */
+        radial-gradient(ellipse at 50% 100%, 
+            #2a2a2a 0%, 
+            #1a1a1a 40%, 
+            #0a0a0a 70%, 
+            #000 100%
+        );
+    border-radius: 125px 125px 0 0;
+    border: 4px solid #444;
+    border-bottom: none;
+    box-shadow: 
+        inset 0 0 30px rgba(0, 0, 0, 0.9),
+        inset 0 -10px 20px rgba(255, 255, 255, 0.05),
+        0 0 20px rgba(0, 0, 0, 0.8);
+    overflow: visible;
+}
+
+/* Gauge markings and scale */
+.needle-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        /* Major tick marks */
+        repeating-conic-gradient(
+            from -90deg at 50% 100%,
+            transparent 0deg,
+            transparent 9deg,
+            rgba(255, 255, 255, 0.3) 9deg,
+            rgba(255, 255, 255, 0.3) 11deg,
+            transparent 11deg,
+            transparent 20deg
         ),
-        radial-gradient(circle at 50% 100%, rgba(51, 51, 51, 0.8) 0%, rgba(17, 17, 17, 0.9) 70%);
-    background-blend-mode: overlay;
-    border-radius: 100px 100px 0 0;
-    overflow: hidden;
-    border: 2px solid #0ff;
+        /* Minor tick marks */
+        repeating-conic-gradient(
+            from -90deg at 50% 100%,
+            transparent 0deg,
+            transparent 4deg,
+            rgba(255, 255, 255, 0.1) 4deg,
+            rgba(255, 255, 255, 0.1) 5deg,
+            transparent 5deg,
+            transparent 10deg
+        );
+    border-radius: 125px 125px 0 0;
+    pointer-events: none;
+}
+
+/* Colored zones */
+.needle-container::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 10px);
+    background: 
+        conic-gradient(
+            from -90deg at 50% 100%,
+            rgba(0, 255, 0, 0.3) 0deg,
+            rgba(0, 255, 0, 0.3) 60deg,
+            rgba(255, 255, 0, 0.3) 60deg,
+            rgba(255, 255, 0, 0.3) 120deg,
+            rgba(255, 0, 0, 0.3) 120deg,
+            rgba(255, 0, 0, 0.3) 180deg
+        );
+    border-radius: 115px 115px 0 0;
+    pointer-events: none;
 }
 
 .needle {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     left: 50%;
-    width: 2px;
-    height: 80px;
-    background: #ff0000;
+    width: 3px;
+    height: 85px;
+    background: linear-gradient(to top, 
+        #8B0000 0%, 
+        #FF4500 20%, 
+        #FF6347 50%, 
+        #FF4500 80%, 
+        #8B0000 100%
+    );
     transform-origin: bottom center;
     transform: translateX(-50%) rotate(0deg);
-    transition: transform 1s ease;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 
+        0 0 10px rgba(255, 69, 0, 0.8),
+        inset 0 0 3px rgba(255, 255, 255, 0.3);
+    border-radius: 2px 2px 0 0;
+}
+
+/* Needle pivot point */
+.needle::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #666 0%, #333 50%, #111 100%);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    border: 2px solid #888;
+    box-shadow: 
+        0 0 5px rgba(0, 0, 0, 0.8),
+        inset 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
 .gauge-labels {
     position: absolute;
-    bottom: -25px;
+    bottom: -35px;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    font-size: 10px;
-    padding: 0 10px;
+    font-size: 11px;
+    padding: 0 15px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.label-green { color: #00ff00; }
-.label-yellow { color: #ffff00; }
-.label-red { color: #ff0000; }
+.label-green { 
+    color: #00ff88; 
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+    position: relative;
+}
+
+.label-yellow { 
+    color: #ffff00; 
+    text-shadow: 0 0 8px rgba(255, 255, 0, 0.8);
+    position: relative;
+}
+
+.label-red { 
+    color: #ff3030; 
+    text-shadow: 0 0 8px rgba(255, 48, 48, 0.8);
+    position: relative;
+}
+
+/* Add small indicator lights below labels */
+.label-green::after,
+.label-yellow::after,
+.label-red::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.label-green::after {
+    background: radial-gradient(circle, #00ff88 0%, #00aa44 100%);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.label-yellow::after {
+    background: radial-gradient(circle, #ffff00 0%, #cccc00 100%);
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+}
+
+.label-red::after {
+    background: radial-gradient(circle, #ff3030 0%, #cc0000 100%);
+    box-shadow: 0 0 10px rgba(255, 48, 48, 0.5);
+}
 
 .led-display {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #444;
+    box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .led {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: #333;
-    border: 2px solid #666;
-    transition: all 0.3s ease;
+    background: 
+        radial-gradient(circle at 30% 30%, 
+            rgba(255, 255, 255, 0.1) 0%, 
+            rgba(0, 0, 0, 0.3) 50%, 
+            #1a1a1a 100%
+        );
+    border: 3px solid #333;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    box-shadow: 
+        inset 0 0 5px rgba(0, 0, 0, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* LED bezel effect */
+.led::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #666 0%, #333 50%, #111 100%);
+    z-index: -1;
+}
+
+/* LED inner glow when active */
+.led::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.4s ease;
 }
 
 .led.active-green {
-    background: #00ff00;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    background: 
+        radial-gradient(circle at 30% 30%, 
+            #ffffff 0%, 
+            #88ff88 20%, 
+            #00ff00 60%, 
+            #00cc00 100%
+        );
     border-color: #00ff00;
+    box-shadow: 
+        inset 0 0 5px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(0, 255, 0, 0.8),
+        0 0 40px rgba(0, 255, 0, 0.4);
+}
+
+.led.active-green::after {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
 }
 
 .led.active-red {
-    background: #ff0000;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    background: 
+        radial-gradient(circle at 30% 30%, 
+            #ffffff 0%, 
+            #ff8888 20%, 
+            #ff0000 60%, 
+            #cc0000 100%
+        );
     border-color: #ff0000;
+    box-shadow: 
+        inset 0 0 5px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 0, 0, 0.8),
+        0 0 40px rgba(255, 0, 0, 0.4);
+}
+
+.led.active-red::after {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+}
+
+/* Gauge section styling */
+.gauge-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.gauge-title {
+    font-size: 12px;
+    color: #0ff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    margin-bottom: 5px;
+}
+
+.gauge-readout {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+.readout-label {
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.readout-value {
+    font-size: 12px;
+    color: #0ff;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    min-width: 80px;
+    text-align: center;
+}
+
+/* LED Panel styling */
+.led-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.panel-title {
+    font-size: 11px;
+    color: #0ff;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.led-display {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #444;
+    box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(0, 0, 0, 0.5);
+    min-width: 120px;
+}
+
+.led-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.led-label {
+    font-size: 9px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    min-width: 60px;
 }
 
 /* Question Panel */

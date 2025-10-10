@@ -24,18 +24,11 @@
                 <!-- Eye Display -->
                 <div class="eye-monitor">
                     <div class="eye-display">
-                        <!-- Realistic Animated Eye -->
-                        <div class="realistic-eye" id="realisticEye">
-                            <div class="eye-white"></div>
-                            <div class="iris-outer" id="irisOuter">
-                                <div class="iris-inner" id="irisInner">
-                                    <div class="pupil-realistic" id="pupilRealistic"></div>
-                                    <div class="eye-reflection"></div>
-                                </div>
-                            </div>
-                            <div class="upper-eyelid" id="upperEyelid"></div>
-                            <div class="lower-eyelid" id="lowerEyelid"></div>
-                        </div>
+                        <!-- Video Eye -->
+                        <video id="eyeVideo" autoplay loop muted playsinline>
+                            <source src="grok-video-0aa91cd9-141b-4210-9af7-fd040b15841d-4.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                     <div class="eye-readings">
                         <div class="reading">DILATION: <span id="dilation">0.0</span>mm</div>
@@ -46,20 +39,45 @@
 
                 <!-- Stress Indicator -->
                 <div class="stress-indicator">
-                    <div class="needle-container">
-                        <div class="needle" id="stressNeedle"></div>
-                        <div class="gauge-labels">
-                            <span class="label-green">HUMAN</span>
-                            <span class="label-yellow">UNCERTAIN</span>
-                            <span class="label-red">REPLICANT</span>
+                    <div class="gauge-section">
+                        <div class="gauge-title">EMPATHY RESPONSE METER</div>
+                        <div class="needle-container">
+                            <div class="needle" id="stressNeedle"></div>
+                            <div class="gauge-labels">
+                                <span class="label-green">HUMAN</span>
+                                <span class="label-yellow">UNCERTAIN</span>
+                                <span class="label-red">REPLICANT</span>
+                            </div>
+                        </div>
+                        <div class="gauge-readout">
+                            <span class="readout-label">RESPONSE LEVEL:</span>
+                            <span class="readout-value" id="responseLevel">NOMINAL</span>
                         </div>
                     </div>
-                    <div class="led-display">
-                        <div class="led" id="led1"></div>
-                        <div class="led" id="led2"></div>
-                        <div class="led" id="led3"></div>
-                        <div class="led" id="led4"></div>
-                        <div class="led" id="led5"></div>
+                    <div class="led-panel">
+                        <div class="panel-title">STATUS INDICATORS</div>
+                        <div class="led-display">
+                            <div class="led-row">
+                                <div class="led" id="led1"></div>
+                                <span class="led-label">BASELINE</span>
+                            </div>
+                            <div class="led-row">
+                                <div class="led" id="led2"></div>
+                                <span class="led-label">EMPATHY</span>
+                            </div>
+                            <div class="led-row">
+                                <div class="led" id="led3"></div>
+                                <span class="led-label">STRESS</span>
+                            </div>
+                            <div class="led-row">
+                                <div class="led" id="led4"></div>
+                                <span class="led-label">ANOMALY</span>
+                            </div>
+                            <div class="led-row">
+                                <div class="led" id="led5"></div>
+                                <span class="led-label">ALERT</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -241,10 +241,29 @@ function updateStressLevel(change) {
     document.getElementById('stressNeedle').style.transform = 
         `translateX(-50%) rotate(${needleRotation}deg)`;
     
+    // Update readout display
+    const responseLevel = document.getElementById('responseLevel');
+    if (stressLevel < 20) {
+        responseLevel.textContent = 'HUMAN';
+        responseLevel.style.color = '#00ff88';
+    } else if (stressLevel < 40) {
+        responseLevel.textContent = 'STABLE';
+        responseLevel.style.color = '#00ff88';
+    } else if (stressLevel < 60) {
+        responseLevel.textContent = 'ELEVATED';
+        responseLevel.style.color = '#ffff00';
+    } else if (stressLevel < 80) {
+        responseLevel.textContent = 'CRITICAL';
+        responseLevel.style.color = '#ff6600';
+    } else {
+        responseLevel.textContent = 'REPLICANT';
+        responseLevel.style.color = '#ff3030';
+    }
+    
     // Update LEDs
     updateLEDs();
     
-    updateTerminal(`Stress level: ${stressLevel.toFixed(1)}%`);
+    updateTerminal(`Empathy response level: ${stressLevel.toFixed(1)}% - ${responseLevel.textContent}`);
 }
 
 // Update LED indicators
@@ -254,17 +273,28 @@ function updateLEDs() {
         led.className = 'led';
     });
     
-    if (stressLevel < 20) {
-        // Green LEDs for human
+    // BASELINE (led1) - Always on during test
+    if (testStarted) {
         leds[0].classList.add('active-green');
+    }
+    
+    // EMPATHY (led2) - Green when low stress (human responses)
+    if (stressLevel < 30) {
         leds[1].classList.add('active-green');
-    } else if (stressLevel < 40) {
-        leds[0].classList.add('active-green');
-    } else if (stressLevel > 80) {
-        // Red LEDs for replicant
+    }
+    
+    // STRESS (led3) - Red when moderate to high stress
+    if (stressLevel > 40) {
+        leds[2].classList.add('active-red');
+    }
+    
+    // ANOMALY (led4) - Red when high stress
+    if (stressLevel > 65) {
         leds[3].classList.add('active-red');
-        leds[4].classList.add('active-red');
-    } else if (stressLevel > 60) {
+    }
+    
+    // ALERT (led5) - Red when critical/replicant level
+    if (stressLevel > 80) {
         leds[4].classList.add('active-red');
     }
 }
@@ -288,21 +318,25 @@ function updateReadings(correct) {
     document.getElementById('response').textContent = response;
 }
 
-// Animate realistic eye pupil dilation/contraction
+// Control video eye display
 function animateEye() {
-    const pupil = document.getElementById('pupilRealistic');
-    const iris = document.getElementById('irisOuter');
+    const video = document.getElementById('eyeVideo');
     
-    if (!pupil || !iris) return;
+    if (!video) return;
     
-    // Random pupil size change for stress response
-    const pupilSize = 15 + Math.random() * 15;
-    const irisSize = 55 + Math.random() * 10;
+    // Ensure video is playing
+    if (video.paused) {
+        video.play().catch(e => console.log('Video autoplay prevented:', e));
+    }
     
-    pupil.style.width = pupilSize + 'px';
-    pupil.style.height = pupilSize + 'px';
-    iris.style.width = irisSize + 'px';
-    iris.style.height = irisSize + 'px';
+    // Add visual effects based on stress level
+    if (stressLevel > 60) {
+        video.style.filter = 'hue-rotate(30deg) saturate(1.5)';
+    } else if (stressLevel > 30) {
+        video.style.filter = 'saturate(1.2)';
+    } else {
+        video.style.filter = 'none';
+    }
 }
 
 // Update terminal output
@@ -390,8 +424,12 @@ function proceedToNext() {
 document.addEventListener('DOMContentLoaded', function() {
     initializeTest();
     
-    // Initialize realistic eye monitoring
-    updateTerminal("Eye monitoring system online. Biometric sensors active.");
+    // Initialize video eye monitoring system
+    const video = document.getElementById('eyeVideo');
+    if (video) {
+        video.play().catch(e => console.log('Video autoplay prevented:', e));
+        updateTerminal("Video eye monitoring system online. Biometric sensors active.");
+    }
     
     // Start ambient eye animations
     setInterval(animateEye, 3000);
