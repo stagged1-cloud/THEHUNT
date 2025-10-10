@@ -109,8 +109,31 @@ const psychopathQuestions = [
     }
 ];
 
+// Shuffle answers for each question to randomize correct answer position
+function shuffleQuestionAnswers() {
+    psychopathQuestions.forEach(question => {
+        // Create array of answer objects with original index
+        const answerObjects = question.answers.map((answer, index) => ({
+            text: answer,
+            wasCorrect: index === question.correct - 1
+        }));
+        
+        // Shuffle the answers
+        for (let i = answerObjects.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [answerObjects[i], answerObjects[j]] = [answerObjects[j], answerObjects[i]];
+        }
+        
+        // Update the question with shuffled answers and new correct index
+        question.answers = answerObjects.map(obj => obj.text);
+        question.correct = answerObjects.findIndex(obj => obj.wasCorrect) + 1;
+    });
+}
+
 // Initialize the test
 function initializeTest() {
+    // Shuffle answer positions before copying questions
+    shuffleQuestionAnswers();
     questions = [...psychopathQuestions];
     shuffleArray(questions);
     updateTerminal("System initialized. Awaiting subject identification...");

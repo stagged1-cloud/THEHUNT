@@ -2154,7 +2154,7 @@ Your project now has a clean, professional folder structure with all assets prop
 
 ---
 
-_**User (2025-10-10 20:13Z)**_
+_**User (2025-10-10 20:14Z)**_
 
 HUMAN CONFIRMED
 Psychological evaluation complete. Subject demonstrates normal empathetic responses consistent with human behavior patterns. Cleared for next phase.
@@ -2166,7 +2166,37 @@ button is not central
 
 _**Assistant (copilot/claude-sonnet-4.5)**_
 
+I'll check the CSS for the "PROCEED TO NEXT PHASE" button and center it properly. Now let me check the result-display container to see its alignment: Let me check the broader context around the result display: The result-display has `text-align: center` which should center the button. Let me check the HTML structure to see if the button needs additional styling: The button should be centered since it's in a `text-align: center` container. Let me add explicit centering with margin auto and display block to ensure it centers properly: 
+```
 
+```
+Now let me commit and push this change: Perfect! ✅ **Button Centered Successfully**
+
+## **Fix Applied:**
+
+Added to `.proceed-btn` CSS:
+- `display: block` - Makes the button a block-level element
+- `margin: 20px auto 0 auto` - Centers the button horizontally with auto left/right margins and adds 20px top spacing
+
+**Commit**: `8f773d2` - "Center PROCEED TO NEXT PHASE button with display block and margin auto"
+
+The "PROCEED TO NEXT PHASE" button is now perfectly centered in the modal! ✅🎯
+
+---
+
+_**User (2025-10-10 20:18Z)**_
+
+all good answers are on a and bad ones on d, you must scramble the good and bad responses so that pressing a all the time will not initate a pass etc
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll scramble the answer positions so that correct answers are randomly distributed across all answer buttons (A, B, C, D) instead of always being in position A. I can see all questions have `correct: 1` which means the correct answer is always at index 1 (position B). I need to:
+1. Randomize the correct answer position for each question
+2. Shuffle the answers when displaying them
+
+Let me find where questions are displayed: 
 
 ---
 
