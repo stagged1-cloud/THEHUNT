@@ -654,6 +654,12 @@ function displayBackgroundResults(name) {
         if (video) {
             video.play().catch(e => console.log('Video autoplay after reveal failed:', e));
         }
+        
+        // Start the heart video monitoring
+        const heartVideo = document.getElementById('heartVideo');
+        if (heartVideo) {
+            heartVideo.play().catch(e => console.log('Heart video autoplay after reveal failed:', e));
+        }
     }, 4000);
 }
 
@@ -1020,6 +1026,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (video) {
         video.play().catch(e => console.log('Video autoplay prevented:', e));
         updateTerminal("Video eye monitoring system online. Biometric sensors active.");
+    }
+    
+    // Initialize heart video monitoring system
+    const heartVideo = document.getElementById('heartVideo');
+    if (heartVideo) {
+        heartVideo.play().catch(e => console.log('Heart video autoplay prevented:', e));
     }
     
     // Initialize ambient audio - DO NOT auto-play

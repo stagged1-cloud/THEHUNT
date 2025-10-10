@@ -103,6 +103,12 @@ body {
     border-radius: 5px;
 }
 
+.video-displays {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
 .eye-display {
     width: 180px;
     height: 180px;
@@ -114,12 +120,31 @@ body {
     border: 3px solid #0ff;
 }
 
+.heart-display {
+    width: 180px;
+    height: 180px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    border: 3px solid #ff0080;
+}
+
 /* Video Eye Display */
 #eyeVideo {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+}
+
+/* Video Heart Display */
+#heartVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .eye-white {
