@@ -101,14 +101,14 @@ body {
 }
 
 .eye-display {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     background: radial-gradient(circle, #fff 0%, #ddd 30%, #333 60%, #000 100%);
     position: relative;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    border: 2px solid #0ff;
+    border: 3px solid #0ff;
 }
 
 /* Video Eye Display */
@@ -948,14 +948,14 @@ body {
     padding: 10px;
     margin: 10px 0;
     max-height: 150px;
-    overflow-y: auto;
+    overflow: hidden;
     transition: all 0.5s ease;
 }
 
 .identification-panel.compact .check-results {
     font-size: 10px;
     max-height: 100px;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 /* Sabrina Special Alert Effects */
@@ -1138,6 +1138,23 @@ body {
     font-weight: bold;
 }
 
+.replicant-warning {
+    color: #ff0080;
+    font-weight: bold;
+}
+
+.replicant-designation {
+    color: #ff0080;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 0, 128, 0.6);
+    animation: replicantPulse 2s infinite;
+}
+
+@keyframes replicantPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
 /* Terminal */
 .terminal {
     background: #000;
@@ -1162,7 +1179,7 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 12px;
     color: #00ff00;
-    overflow-y: auto;
+    overflow: hidden;
     line-height: 1.4;
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
 }

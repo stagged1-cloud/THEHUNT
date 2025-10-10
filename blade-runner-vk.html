@@ -116,7 +116,7 @@
 
                     <!-- Controls -->
                     <div class="controls">
-                        <button class="control-btn" id="startBtn" onclick="startTest()">INITIALIZE TEST</button>
+                        <button class="control-btn" id="startBtn" onclick="startTest()" style="display: none;">INITIALIZE TEST</button>
                         <div class="progress-indicator" id="progressIndicator" style="display: none;">
                             <span>Processing response...</span>
                             <div class="progress-bar">
@@ -145,14 +145,14 @@
 
     <!-- Audio -->
     <audio id="ambientAudio" loop preload="auto">
-        <source src="https://dn720301.ca.archive.org/0/items/vangelis-07.-blade-runner-blues/Vangelis%20-%20Blade%20Runner%20%2829th%20Anniversary%20Limited%20Edition%29%20%282011%29%20%5BStereo%2044.1%20kHz%2016%20bit%5D%20%5BFLAC%5D%2FDisc%20IV%2F4-16%20-%20Leon%27s%20Interrogation.mp3" type="audio/mpeg">
+        <source src="assets/audio/leons-interrogation.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <audio id="alarmAudio">
-        <source src="https://cdn.uppbeat.io/audio-files/c8b1a4f5da0e7b2a3f6d8e9c0b5a4e7f/alarm-system-warning.mp3" type="audio/mpeg">
+        <source src="assets/audio/alarm_clock.ogg" type="audio/ogg">
     </audio>
     <audio id="successAudio">
-        <source src="https://cdn.uppbeat.io/audio-files/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/success-chime.mp3" type="audio/mpeg">
+        <source src="assets/audio/beep_short.ogg" type="audio/ogg">
     </audio>
 
     <!-- Results Modal -->

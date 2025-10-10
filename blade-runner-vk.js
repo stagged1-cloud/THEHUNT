@@ -121,6 +121,7 @@ const subjectDatabase = {
     'SABRINA': {
         fullName: 'SABRINA MARTIN',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: true,
         alertLevel: 'RED',
         criminalDetails: 'CARRYING CONCEALED WEAPON INTO CROWN COURT - SUSPENDED PRISON SENTENCE',
@@ -138,6 +139,7 @@ const subjectDatabase = {
     'SABRINA MARTIN': {
         fullName: 'SABRINA MARTIN',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: true,
         alertLevel: 'RED',
         criminalDetails: 'CARRYING CONCEALED WEAPON INTO CROWN COURT - SUSPENDED PRISON SENTENCE',
@@ -155,6 +157,7 @@ const subjectDatabase = {
     'ASHA': {
         fullName: 'ASHA THOMPSON',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: true,
         alertLevel: 'RED',
         criminalDetails: 'THEFT, SHOPLIFTING',
@@ -172,6 +175,7 @@ const subjectDatabase = {
     'ASHA THOMPSON': {
         fullName: 'ASHA THOMPSON',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: true,
         alertLevel: 'RED',
         criminalDetails: 'THEFT, SHOPLIFTING',
@@ -189,6 +193,7 @@ const subjectDatabase = {
     'JAMES': {
         fullName: 'JAMES MARTIN',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         employment: 'BIOTRONICS 3D',
@@ -206,6 +211,7 @@ const subjectDatabase = {
     'JAMES MARTIN': {
         fullName: 'JAMES MARTIN',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         employment: 'BIOTRONICS 3D',
@@ -217,12 +223,14 @@ const subjectDatabase = {
             'EMPLOYMENT: BIOTRONICS 3D',
             'SPOUSE: SABRINA MARTIN (CRIMINAL RECORD)',
             'WARNING: MARRIED TO HIGH RISK SUBJECT',
-            'ASSOCIATION: SABRINA MARTIN (WEAPONS OFFENSE)'
+            'ASSOCIATION: SABRINA MARTIN (WEAPONS OFFENSE)',
+            'KIDNEY DONOR: ON REGISTER FOR ASHA'
         ]
     },
     'CHRIS': {
         fullName: 'CHRISTOPHER WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
@@ -244,6 +252,7 @@ const subjectDatabase = {
     'CHRISTOPHER': {
         fullName: 'CHRISTOPHER WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
@@ -265,6 +274,7 @@ const subjectDatabase = {
     'CHRISTOPHER WATKINS': {
         fullName: 'CHRISTOPHER WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
@@ -286,6 +296,7 @@ const subjectDatabase = {
     'DEESHA': {
         fullName: 'DEESHA WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         employment: 'COVENTRY UNIVERSITY - PROJECT MANAGEMENT',
@@ -305,6 +316,7 @@ const subjectDatabase = {
     'DEESHA WATKINS': {
         fullName: 'DEESHA WATKINS',
         location: 'COVENTRY, NOD LANE, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         employment: 'COVENTRY UNIVERSITY - PROJECT MANAGEMENT',
@@ -324,6 +336,7 @@ const subjectDatabase = {
     'DON': {
         fullName: 'DON',
         location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
         associates: ['SABRINA MARTIN', 'ASHA THOMPSON', 'JAMES MARTIN'],
@@ -530,6 +543,10 @@ function displayBackgroundResults(name) {
         resultsHTML += `<div class="info-line"><strong>SUBJECT:</strong> <span class="${subject.alertLevel === 'RED' ? 'alert-red' : subject.alertLevel === 'ORANGE' ? 'alert-orange' : ''}">${subject.fullName}</span></div>`;
         resultsHTML += `<div class="info-line"><strong>LOCATION:</strong> ${subject.location}</div>`;
         
+        if (subject.replicantStatus) {
+            resultsHTML += `<div class="info-line replicant-warning"><strong>STATUS:</strong> <span class="replicant-designation">${subject.replicantStatus}</span></div>`;
+        }
+        
         if (subject.criminalRecord) {
             resultsHTML += `<div class="info-line criminal-record"><strong>CRIMINAL RECORD:</strong> POSITIVE MATCH</div>`;
             if (subject.criminalDetails) {
@@ -545,6 +562,11 @@ function displayBackgroundResults(name) {
         
         if (subject.maritalStatus) {
             resultsHTML += `<div class="info-line"><strong>MARITAL STATUS:</strong> ${subject.maritalStatus}</div>`;
+        }
+        
+        // Special note for James Martin
+        if (upperName === 'JAMES MARTIN') {
+            resultsHTML += `<div class="info-line"><strong>KIDNEY DONOR:</strong> ON REGISTER FOR ASHA</div>`;
         }
         
         if (subject.medicalStatus) {
@@ -608,7 +630,12 @@ function displayBackgroundResults(name) {
         
         updateTerminal("VOIGHT-KAMPFF TEST INTERFACE ACTIVATED");
         updateTerminal("BIOMETRIC SYSTEMS ONLINE - READY FOR TESTING");
-        updateTerminal("CLICK INITIALIZE TEST TO BEGIN PSYCHOLOGICAL EVALUATION");
+        updateTerminal("INITIATING PSYCHOLOGICAL EVALUATION SEQUENCE...");
+        
+        // Auto-start the test after a brief delay
+        setTimeout(() => {
+            startTest();
+        }, 2000);
         
         // Start the video eye monitoring
         const video = document.getElementById('eyeVideo');
@@ -899,6 +926,7 @@ function failTest() {
     // Play alarm sound
     const alarmAudio = document.getElementById('alarmAudio');
     alarmAudio.volume = 0.5;
+    try { alarmAudio.currentTime = 0; } catch(e) {}
     alarmAudio.play().catch(e => console.log('Audio play failed'));
     
     // Flash red LEDs
@@ -1009,6 +1037,10 @@ document.addEventListener('DOMContentLoaded', function() {
     backButton.style.position = 'absolute';
     backButton.style.top = '20px';
     backButton.style.left = '20px';
+    backButton.style.zIndex = '9999';
+    backButton.style.opacity = '1';
+    backButton.style.pointerEvents = 'auto';
+    backButton.style.cursor = 'pointer';
     backButton.onclick = () => window.location.href = 'blade-runner.html';
     document.body.appendChild(backButton);
 });
