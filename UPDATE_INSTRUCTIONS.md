@@ -50,19 +50,23 @@ Modify the info cards in `index.html`:
 
 ### Changing the Start Button
 
-Update the button text and action in `index.html`:
+Update the button action by modifying the script at the bottom of `index.html`:
 
 ```html
-<button class="start-button" onclick="alert('Your message')">
-    START THE HUNT
-</button>
+<script>
+    document.getElementById('startButton').addEventListener('click', function() {
+        alert('Your message here');
+    });
+</script>
 ```
 
 To link to an actual game page instead of showing an alert:
 ```html
-<button class="start-button" onclick="window.location.href='game.html'">
-    START THE HUNT
-</button>
+<script>
+    document.getElementById('startButton').addEventListener('click', function() {
+        window.location.href = 'game.html';
+    });
+</script>
 ```
 
 ### Updating Status Messages
