@@ -80,8 +80,26 @@
         </footer>
     </div>
     
-    <audio autoplay loop>
-        <source src="https://www.soundjay.com/misc/beep-07a.wav" type="audio/wav">
+    <audio autoplay loop id="backgroundMusic" volume="0.3">
+        <source src="https://dn720301.ca.archive.org/0/items/vangelis-07.-blade-runner-blues/1993%20-%20Vangelis%20-%20Blade%20Runner%20%282013%2C%20Audio%20Fidelity%2C%20LP%209624%2C%20US%2C%2024-96%29%2FA5%20-%20Love%20Theme.mp3" type="audio/mpeg">
     </audio>
+    
+    <script>
+        // Ensure background music plays
+        document.addEventListener('DOMContentLoaded', function() {
+            const music = document.getElementById('backgroundMusic');
+            music.volume = 0.3;
+            
+            // Try to play music when user interacts with page
+            document.addEventListener('click', function() {
+                music.play().catch(e => console.log('Background music failed:', e));
+            }, { once: true });
+            
+            // Auto-play attempt
+            music.play().catch(e => {
+                console.log('Auto-play blocked, waiting for user interaction');
+            });
+        });
+    </script>
 </body>
 </html>
