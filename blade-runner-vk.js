@@ -933,6 +933,28 @@ function failTest() {
         "SECURITY ALERT: Subject has failed the Voight-Kampff test. Psychological profile indicates replicant behavioral patterns. Security forces have been notified. DO NOT MOVE. Compliance is mandatory.",
         false
     );
+    
+    // Show countdown timer
+    const countdownElement = document.getElementById('countdownTimer');
+    countdownElement.style.display = 'block';
+    let secondsLeft = 15;
+    
+    // Update countdown every second
+    const countdownInterval = setInterval(() => {
+        secondsLeft--;
+        countdownElement.textContent = `REDIRECTING TO SECURE FACILITY IN ${secondsLeft} SECONDS...`;
+        
+        if (secondsLeft <= 0) {
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+    
+    countdownElement.textContent = `REDIRECTING TO SECURE FACILITY IN ${secondsLeft} SECONDS...`;
+    
+    // Auto-redirect to start page after 15 seconds
+    setTimeout(() => {
+        window.location.href = 'https://stagged1-cloud.github.io/THEHUNT/';
+    }, 15000);
 }
 
 // Show result modal
