@@ -134,7 +134,6 @@ function startTest() {
     wrongAnswers = 0;
     
     document.getElementById('startBtn').style.display = 'none';
-    document.getElementById('nextBtn').style.display = 'block';
     document.getElementById('subjectId').textContent = 'CLASSIFIED';
     
     updateTerminal("Test initiated. Subject preparation complete.");
@@ -216,9 +215,16 @@ function selectAnswer(answerIndex) {
     // Update readings
     updateReadings(answerIndex === question.correct);
     
+    // Show progress indicator
+    const progressIndicator = document.getElementById('progressIndicator');
+    if (progressIndicator) {
+        progressIndicator.style.display = 'flex';
+    }
+    
     // Check if test should end early (too many wrong answers)
     if (wrongAnswers >= 8 || stressLevel >= 100) {
         setTimeout(() => {
+            if (progressIndicator) progressIndicator.style.display = 'none';
             failTest();
         }, 2000);
         return;
@@ -226,18 +232,18 @@ function selectAnswer(answerIndex) {
     
     // Automatically advance to next question after showing results
     setTimeout(() => {
+        if (progressIndicator) progressIndicator.style.display = 'none';
         nextQuestion();
-    }, 3000);
+    }, 1500);
 }
 
 // Move to next question
 function nextQuestion() {
-    const nextBtn = document.getElementById('nextBtn');
-    if (nextBtn) nextBtn.disabled = true;
-    
     currentQuestion++;
     
-    updateTerminal(`Advancing to question ${currentQuestion + 1}...`);
+    if (currentQuestion < questions.length) {
+        updateTerminal(`Advancing to question ${currentQuestion + 1}...`);
+    }
     
     if (currentQuestion >= questions.length) {
         endTest();

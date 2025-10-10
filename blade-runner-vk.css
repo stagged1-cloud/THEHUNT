@@ -740,7 +740,40 @@ body {
 .control-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
+}
+
+.progress-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid #0ff;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    color: #0ff;
+    font-size: 14px;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(0, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0ff, #ff6b35);
+    width: 0%;
+    animation: progressFill 1.5s ease-in-out forwards;
+}
+
+@keyframes progressFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
 }
 
 /* Terminal */
