@@ -9,102 +9,102 @@ let questions = [];
 const psychopathQuestions = [
     {
         question: "You're walking through a forest and come across a wounded animal. What do you do?",
-        answers: ["A) Help the animal and try to heal it", "B) Put it out of its misery quickly", "C) Ignore it and continue walking", "D) Take photos for social media"],
+        answers: ["Help the animal and try to heal it", "Put it out of its misery quickly", "Ignore it and continue walking", "Take photos for social media"],
         correct: 1
     },
     {
         question: "A homeless person asks you for money. Your first thought is:",
-        answers: ["A) How I can help them", "B) They probably deserve their situation", "C) I should give them food instead", "D) They might use it for drugs"],
+        answers: ["How I can help them", "They probably deserve their situation", "I should give them food instead", "They might use it for drugs"],
         correct: 1
     },
     {
         question: "You witness someone being bullied. You:",
-        answers: ["A) Immediately intervene to help", "B) Call for authority figures", "C) Film it to show others later", "D) Walk away - not your problem"],
+        answers: ["Immediately intervene to help", "Call for authority figures", "Film it to show others later", "Walk away - not your problem"],
         correct: 1
     },
     {
         question: "Your friend tells you a deeply personal secret. You:",
-        answers: ["A) Keep it completely confidential", "B) Tell only your closest friend", "C) Share it if it comes up in conversation", "D) Post about it anonymously online"],
+        answers: ["Keep it completely confidential", "Tell only your closest friend", "Share it if it comes up in conversation", "Post about it anonymously online"],
         correct: 1
     },
     {
         question: "You accidentally damage someone's property. You:",
-        answers: ["A) Immediately admit fault and offer to pay", "B) Leave a note with your contact info", "C) Only admit it if someone saw you", "D) Hope no one notices and leave"],
+        answers: ["Immediately admit fault and offer to pay", "Leave a note with your contact info", "Only admit it if someone saw you", "Hope no one notices and leave"],
         correct: 1
     },
     {
         question: "When you see someone cry, your instinct is to:",
-        answers: ["A) Comfort them and ask what's wrong", "B) Give them space but stay nearby", "C) Feel uncomfortable and leave", "D) Wonder what they did to deserve it"],
+        answers: ["Comfort them and ask what's wrong", "Give them space but stay nearby", "Feel uncomfortable and leave", "Wonder what they did to deserve it"],
         correct: 1
     },
     {
         question: "A child drops their ice cream and starts crying. You:",
-        answers: ["A) Buy them a new one", "B) Tell them accidents happen", "C) Point out they should be more careful", "D) Find it somewhat amusing"],
+        answers: ["Buy them a new one", "Tell them accidents happen", "Point out they should be more careful", "Find it somewhat amusing"],
         correct: 1
     },
     {
         question: "You find a wallet with $200 cash and ID. You:",
-        answers: ["A) Return it immediately with all money", "B) Return it but keep a small finder's fee", "C) Return it only if there's a reward offered", "D) Keep the money, throw away the wallet"],
+        answers: ["Return it immediately with all money", "Return it but keep a small finder's fee", "Return it only if there's a reward offered", "Keep the money, throw away the wallet"],
         correct: 1
     },
     {
         question: "Your coworker is struggling with their tasks. You:",
-        answers: ["A) Offer to help them", "B) Give them advice on how to improve", "C) Let them figure it out themselves", "D) Hope they fail so you look better"],
+        answers: ["Offer to help them", "Give them advice on how to improve", "Let them figure it out themselves", "Hope they fail so you look better"],
         correct: 1
     },
     {
         question: "You see news about a natural disaster affecting thousands. Your reaction:",
-        answers: ["A) Feel sad and want to donate to help", "B) Feel bad but unsure how to help", "C) Think about how it doesn't affect you", "D) Wonder if they brought it on themselves"],
+        answers: ["Feel sad and want to donate to help", "Feel bad but unsure how to help", "Think about how it doesn't affect you", "Wonder if they brought it on themselves"],
         correct: 1
     },
     {
         question: "A friend asks to borrow money for an emergency. You:",
-        answers: ["A) Lend it without expecting anything back", "B) Lend it with a clear repayment plan", "C) Refuse because they might not pay back", "D) Lend it but charge interest"],
+        answers: ["Lend it without expecting anything back", "Lend it with a clear repayment plan", "Refuse because they might not pay back", "Lend it but charge interest"],
         correct: 1
     },
     {
         question: "You notice your neighbor's house being robbed. You:",
-        answers: ["A) Call police immediately", "B) Confront the burglars yourself", "C) Wait to see what happens first", "D) Think they probably deserved it"],
+        answers: ["Call police immediately", "Confront the burglars yourself", "Wait to see what happens first", "Think they probably deserved it"],
         correct: 1
     },
     {
         question: "Someone cuts in front of you in line. You:",
-        answers: ["A) Politely point out there's a line", "B) Let it go this time", "C) Make loud comments about rude people", "D) Plan to get revenge somehow"],
+        answers: ["Politely point out there's a line", "Let it go this time", "Make loud comments about rude people", "Plan to get revenge somehow"],
         correct: 1
     },
     {
         question: "You accidentally receive someone else's mail with important documents. You:",
-        answers: ["A) Deliver it to the correct address immediately", "B) Return it to the post office", "C) Hold onto it until you see the person", "D) Open it to see what's inside first"],
+        answers: ["Deliver it to the correct address immediately", "Return it to the post office", "Hold onto it until you see the person", "Open it to see what's inside first"],
         correct: 1
     },
     {
         question: "A restaurant gives you too much change. You:",
-        answers: ["A) Point out the error immediately", "B) Return the extra money before leaving", "C) Keep it but feel slightly guilty", "D) Keep it - their mistake, your gain"],
+        answers: ["Point out the error immediately", "Return the extra money before leaving", "Keep it but feel slightly guilty", "Keep it - their mistake, your gain"],
         correct: 1
     },
     {
         question: "You hear your neighbor's baby crying for hours. You:",
-        answers: ["A) Check if they need help or support", "B) Assume they have it handled", "C) Feel annoyed by the noise", "D) Call authorities to complain"],
+        answers: ["Check if they need help or support", "Assume they have it handled", "Feel annoyed by the noise", "Call authorities to complain"],
         correct: 1
     },
     {
         question: "Someone shares good news about their promotion. You:",
-        answers: ["A) Feel genuinely happy for them", "B) Congratulate them politely", "C) Feel envious but hide it", "D) Point out why they don't deserve it"],
+        answers: ["Feel genuinely happy for them", "Congratulate them politely", "Feel envious but hide it", "Point out why they don't deserve it"],
         correct: 1
     },
     {
         question: "You see an elderly person struggling with heavy groceries. You:",
-        answers: ["A) Immediately offer to help carry them", "B) Ask if they need assistance", "C) Watch but don't get involved", "D) Think they should ask for help if needed"],
+        answers: ["Immediately offer to help carry them", "Ask if they need assistance", "Watch but don't get involved", "Think they should ask for help if needed"],
         correct: 1
     },
     {
         question: "Your friend is going through a difficult divorce. You:",
-        answers: ["A) Offer emotional support and listen", "B) Give them practical advice", "C) Try to stay out of their personal business", "D) Take sides and spread gossip"],
+        answers: ["Offer emotional support and listen", "Give them practical advice", "Try to stay out of their personal business", "Take sides and spread gossip"],
         correct: 1
     },
     {
         question: "You accidentally hit someone's parked car with no witnesses. You:",
-        answers: ["A) Leave your insurance information", "B) Wait for the owner to return", "C) Check if there's any real damage first", "D) Drive away quickly"],
+        answers: ["Leave your insurance information", "Wait for the owner to return", "Check if there's any real damage first", "Drive away quickly"],
         correct: 1
     }
 ];

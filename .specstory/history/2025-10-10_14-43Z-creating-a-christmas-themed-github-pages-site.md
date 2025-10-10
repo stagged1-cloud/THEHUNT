@@ -2283,7 +2283,7 @@ The Voight-Kampff test now monitors both eye dilation AND heart rate for complet
 
 ---
 
-_**User (2025-10-10 20:44Z)**_
+_**User (2025-10-10 20:47Z)**_
 
 the eye text is to the right of the heart video? 
 put the heart after the text then add heart random values
@@ -2296,6 +2296,83 @@ Also, any other person named apart from the ones already named, will have random
 _**Assistant (copilot/claude-sonnet-4.5)**_
 
 I'll reorganize the layout to put the heart video after the text readings, add heart rate values, add environmental stats, and create random profile generation for unknown subjects. 
+```
+
+```
+Now let me update the CSS to properly layout the new structure: 
+```
+
+```
+I need to check what happened with the CSS. Let me read the area around line 156: I see the issue - there's duplicate code. Let me fix it: 
+```
+
+```
+Now let me update the JavaScript to add heart rate and environmental readings, plus random profile generation: 
+```
+
+```
+Now I need to add random profile generation for unknown subjects. Let me find where subjects are looked up: Now let me create a random profile generator function and update the else block: Now I'll add a random profile generator function before the performBackgroundCheck function: Now I'll add the random profile generator before the runBackgroundCheck function: 
+```
+
+```
+Now I need to update the else block to use the random profile generator: 
+```
+
+```
+Perfect! Now let me commit and push all these changes: Perfect! ✅ **All Changes Successfully Implemented**
+
+## **Summary of Updates:**
+
+### **1. Reorganized Layout** 
+New grid layout: `Eye Video → Eye/Environmental Stats → Heart Video → Heart Stats`
+```
+┌──────────┬─────────────────────┬──────────┬─────────────────────┐
+│   EYE    │  DILATION: 0.0mm   │  HEART   │ HEART RATE: 72 BPM  │
+│  VIDEO   │  CONTRACTION: 0.0% │  VIDEO   │ VARIABILITY: 45ms   │
+│          │  RESPONSE: NOMINAL  │          │ RHYTHM: NORMAL      │
+│          │                     │          │                     │
+│          │  SKIN TEMP: 36.5°C  │          │                     │
+│          │  MOISTURE: 45%      │          │                     │
+│          │  HUMIDITY: 38%      │          │                     │
+└──────────┴─────────────────────┴──────────┴─────────────────────┘
+```
+
+### **2. New Biometric Readings**
+- **Heart Rate**: 65-80 BPM (normal) / 85-110 BPM (stressed)
+- **Heart Variability**: 40-60ms (normal) / 20-35ms (stressed)
+- **Heart Rhythm**: NORMAL/STEADY/REGULAR or ELEVATED/IRREGULAR/STRESSED
+- **Skin Temperature**: 36.2-37.0°C (normal) / 36.8-38.0°C (stressed)
+- **Moisture**: 40-55% (normal) / 55-80% (stressed)
+- **Humidity**: 35-45% (normal) / 30-45% (stressed)
+
+### **3. Random Profile Generator**
+For any name not in the database, generates:
+- **Location**: Random UK city
+- **Employment**: Random occupation (20 options)
+- **Criminal Record**: 30% chance with various offenses
+- **Medical Status**: Random conditions (asthma, diabetes, etc.)
+- **Marital Status**: Single, married, divorced, etc.
+- **Risk Level**: LOW/MODERATE/HIGH
+- **Alert Level**: GREEN/YELLOW/ORANGE/RED (based on criminal status)
+- **Gene Pool Markers**: Random genetic flags
+- **Associates**: Random number or none
+- **All subjects marked**: "SUSPECTED REPLICANT"
+
+**Commit**: `f093d66` - Successfully pushed to GitHub! 🚀
+
+The Voight-Kampff test now has complete biometric monitoring and generates realistic profiles for any subject! 👁️❤️🌡️
+
+---
+
+_**User (2025-10-10 20:53Z)**_
+
+questions should not display the letters a,b,c,d only the answers
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll remove the letter prefixes (A), B), C), D) from the answer display. I need to remove the letter prefixes from all the questions. Let me read the questions section to do this systematically: Now I'll replace all the answers to remove the letter prefixes. I'll do this in batches: 
 
 ---
 
