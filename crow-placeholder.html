@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HUNT - Phase 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #000 0%, #1a0a0a 50%, #000 100%);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+        
+        .container {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px;
+            border: 3px solid #8B0000;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(139, 0, 0, 0.5);
+            max-width: 800px;
+        }
+        
+        .title {
+            font-size: 3rem;
+            color: #8B0000;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.8);
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 40px;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .countdown {
+            font-size: 1.8rem;
+            color: #8B0000;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
+            margin-bottom: 30px;
+        }
+        
+        .back-button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #8B0000, #A0522D);
+            border: 2px solid #8B0000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.5);
+            background: linear-gradient(135deg, #A0522D, #8B0000);
+        }
+        
+        .crow-symbol {
+            font-size: 4rem;
+            color: #8B0000;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        .coming-soon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(139, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 2px solid #8B0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    <div class="coming-soon">COMING SOON</div>
+    
+    <div class="container">
+        <div class="crow-symbol">🐦‍⬛</div>
+        <h1 class="title">THE CROW</h1>
+        <h2 class="subtitle">Phase 3: Vengeance Protocol</h2>
+        
+        <div class="message">
+            <p><strong>Congratulations, you have successfully passed the Voight-Kampff test.</strong></p>
+            <br>
+            <p>Your psychological profile confirms human empathetic responses. You are cleared to proceed to the next phase of THE HUNT.</p>
+            <br>
+            <p>The next challenge will be based on THE CROW movie theme, featuring dark gothic elements, supernatural resurrection, and a quest for justice.</p>
+            <br>
+            <p>This page is currently under construction. Please check back soon for the next phase of your journey.</p>
+        </div>
+        
+        <div class="countdown">
+            <p>Phase 3 Status: IN DEVELOPMENT</p>
+        </div>
+        
+        <a href="blade-runner-vk.html" class="back-button">Return to Test</a>
+    </div>
+    
+    <audio autoplay loop>
+        <source src="https://cdn.uppbeat.io/audio-files/dark-ambient-atmospheric-background.mp3" type="audio/mpeg">
+    </audio>
+</body>
+</html>

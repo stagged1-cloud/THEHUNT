@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voight-Kampff Test - The Hunt</title>
+    <link rel="stylesheet" href="blade-runner-vk.css">
+</head>
+<body>
+    <div class="rain"></div>
+    <div class="container">
+        <div class="test-interface">
+            <!-- Main Control Panel -->
+            <div class="vk-machine">
+                <div class="machine-header">
+                    <h1>VOIGHT-KAMPFF TEST PROTOCOL</h1>
+                    <div class="status-bar">
+                        <div class="status-item">STATUS: <span class="status-active">ACTIVE</span></div>
+                        <div class="status-item">SUBJECT: <span id="subjectId">UNKNOWN</span></div>
+                        <div class="status-item">RESPONSES: <span id="responseCount">0/20</span></div>
+                    </div>
+                </div>
+
+                <!-- Eye Display -->
+                <div class="eye-monitor">
+                    <div class="eye-display">
+                        <div class="iris" id="iris"></div>
+                        <div class="pupil" id="pupil"></div>
+                    </div>
+                    <div class="eye-readings">
+                        <div class="reading">DILATION: <span id="dilation">0.0</span>mm</div>
+                        <div class="reading">CONTRACTION: <span id="contraction">0.0</span>%</div>
+                        <div class="reading">RESPONSE: <span id="response">NOMINAL</span></div>
+                    </div>
+                </div>
+
+                <!-- Stress Indicator -->
+                <div class="stress-indicator">
+                    <div class="needle-container">
+                        <div class="needle" id="stressNeedle"></div>
+                        <div class="gauge-labels">
+                            <span class="label-green">HUMAN</span>
+                            <span class="label-yellow">UNCERTAIN</span>
+                            <span class="label-red">REPLICANT</span>
+                        </div>
+                    </div>
+                    <div class="led-display">
+                        <div class="led" id="led1"></div>
+                        <div class="led" id="led2"></div>
+                        <div class="led" id="led3"></div>
+                        <div class="led" id="led4"></div>
+                        <div class="led" id="led5"></div>
+                    </div>
+                </div>
+
+                <!-- Question Display -->
+                <div class="question-panel">
+                    <div class="question-text" id="questionText">
+                        Initializing Voight-Kampff Test Protocol...
+                    </div>
+                    <div class="answer-options" id="answerOptions" style="display: none;">
+                        <button class="answer-btn" onclick="selectAnswer(1)">A</button>
+                        <button class="answer-btn" onclick="selectAnswer(2)">B</button>
+                        <button class="answer-btn" onclick="selectAnswer(3)">C</button>
+                        <button class="answer-btn" onclick="selectAnswer(4)">D</button>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <button class="control-btn" id="startBtn" onclick="startTest()">INITIALIZE TEST</button>
+                    <button class="control-btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">NEXT QUESTION</button>
+                </div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="terminal">
+                <div class="terminal-header">SYSTEM LOG</div>
+                <div class="terminal-content" id="terminalContent">
+                    > Voight-Kampff Test System v2.1 Online<br>
+                    > Waiting for subject identification...<br>
+                    > All systems nominal<br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="ambientAudio" loop>
+        <source src="https://cdn.uppbeat.io/audio-files/4add0b70eee6e2a35e49b6e6e0e29b94/90e83ecc9fcf45f53cb6b29c33b60b33/b4e08bddacc040ac8df5ad4d9af7b7b8/STREAMING-rain-ambient-city-atmosphere.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="alarmAudio">
+        <source src="https://cdn.uppbeat.io/audio-files/c8b1a4f5da0e7b2a3f6d8e9c0b5a4e7f/alarm-system-warning.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="successAudio">
+        <source src="https://cdn.uppbeat.io/audio-files/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/success-chime.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Results Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <div class="result-display">
+                <h2 id="resultTitle">TEST COMPLETE</h2>
+                <div id="resultMessage"></div>
+                <button id="proceedBtn" class="proceed-btn" style="display: none;" onclick="proceedToNext()">PROCEED TO NEXT PHASE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="blade-runner-vk.js"></script>
+</body>
+</html>
