@@ -130,10 +130,12 @@ body {
 
 /* Removed decorative elements to allow full video size */
 
-iframe {
+.video-container iframe {
     border-radius: 15px;
     max-width: 100%;
+    width: 100%;
     height: auto;
+    display: block;
 }
 
 /* Decorative Ornaments */
