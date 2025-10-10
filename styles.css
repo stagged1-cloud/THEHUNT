@@ -119,38 +119,25 @@ body {
 }
 
 .video-container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
+    background: transparent;
+    padding: 0;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     display: inline-block;
-    border: 3px solid #d4af37;
+    border: none;
     position: relative;
+    width: 100%;
+    max-width: 1520px;
 }
 
-.video-container::before {
-    content: '🎄';
-    position: absolute;
-    top: -15px;
-    left: -15px;
-    font-size: 2rem;
-    z-index: 3;
-}
-
-.video-container::after {
-    content: '🎄';
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    font-size: 2rem;
-    z-index: 3;
-}
+/* Removed decorative elements to allow full video size */
 
 iframe {
     border-radius: 15px;
+    width: 1520px;
+    height: 4120px;
     max-width: 100%;
-    width: 100%;
-    height: auto;
+    display: block;
 }
 
 /* Decorative Ornaments */
