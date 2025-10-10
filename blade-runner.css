@@ -333,6 +333,29 @@ body {
     }
 }
 
+/* Audio Indicator */
+.audio-indicator {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(0, 255, 255, 0.2);
+    border: 1px solid #00ffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    color: #00ffff;
+    z-index: 1000;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: audioGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes audioGlow {
+    from { box-shadow: 0 0 5px rgba(0, 255, 255, 0.3); }
+    to { box-shadow: 0 0 15px rgba(0, 255, 255, 0.6); }
+}
+
 /* Footer */
 .footer {
     background: rgba(0, 0, 0, 0.8);

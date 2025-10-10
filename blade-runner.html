@@ -28,6 +28,8 @@
     
     <div class="neon-grid"></div>
     
+    <div class="audio-indicator" id="audioIndicator">♪ VANGELIS SOUNDTRACK ♪</div>
+    
     <div class="container">
         <header class="header">
             <h1 class="main-title">SECTOR 7-G</h1>
@@ -80,24 +82,64 @@
         </footer>
     </div>
     
-    <audio autoplay loop id="backgroundMusic" volume="0.3">
+    <audio autoplay loop id="backgroundMusic" preload="auto">
         <source src="https://dn720301.ca.archive.org/0/items/vangelis-07.-blade-runner-blues/1993%20-%20Vangelis%20-%20Blade%20Runner%20%282013%2C%20Audio%20Fidelity%2C%20LP%209624%2C%20US%2C%2024-96%29%2FA5%20-%20Love%20Theme.mp3" type="audio/mpeg">
     </audio>
     
     <script>
-        // Ensure background music plays
+        // Ensure background music plays in separate channel
         document.addEventListener('DOMContentLoaded', function() {
             const music = document.getElementById('backgroundMusic');
-            music.volume = 0.3;
+            const iframe = document.querySelector('iframe');
             
-            // Try to play music when user interacts with page
+            // Set background music volume higher
+            music.volume = 0.8;
+            music.crossOrigin = "anonymous";
+            
+            // Create separate audio context for background music
+            if (window.AudioContext || window.webkitAudioContext) {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const source = audioContext.createMediaElementSource(music);
+                    const gainNode = audioContext.createGain();
+                    
+                    gainNode.gain.value = 0.8;
+                    source.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                } catch(e) {
+                    console.log('AudioContext not available, using standard audio');
+                }
+            }
+            
+            // Lower iframe video volume to prevent conflict
+            if (iframe) {
+                iframe.onload = function() {
+                    try {
+                        // Try to communicate with iframe (may be blocked by CORS)
+                        iframe.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[0.3]}', '*');
+                    } catch(e) {
+                        console.log('Cannot control iframe volume due to CORS');
+                    }
+                };
+            }
+            
+            // Force play background music on any user interaction
+            let musicStarted = false;
             document.addEventListener('click', function() {
-                music.play().catch(e => console.log('Background music failed:', e));
-            }, { once: true });
+                if (!musicStarted) {
+                    music.play().then(() => {
+                        musicStarted = true;
+                        console.log('Background music started');
+                    }).catch(e => console.log('Background music failed:', e));
+                }
+            });
             
             // Auto-play attempt
-            music.play().catch(e => {
-                console.log('Auto-play blocked, waiting for user interaction');
+            music.play().then(() => {
+                musicStarted = true;
+                console.log('Background music auto-started');
+            }).catch(e => {
+                console.log('Auto-play blocked, click anywhere to start music');
             });
         });
     </script>
