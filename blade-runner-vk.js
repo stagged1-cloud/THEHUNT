@@ -288,14 +288,16 @@ function updateReadings(correct) {
     document.getElementById('response').textContent = response;
 }
 
-// Animate eye pupil dilation/contraction
+// Animate realistic eye pupil dilation/contraction
 function animateEye() {
-    const pupil = document.getElementById('pupil');
-    const iris = document.getElementById('iris');
+    const pupil = document.getElementById('pupilRealistic');
+    const iris = document.getElementById('irisOuter');
     
-    // Random pupil size change
+    if (!pupil || !iris) return;
+    
+    // Random pupil size change for stress response
     const pupilSize = 15 + Math.random() * 15;
-    const irisSize = 50 + Math.random() * 20;
+    const irisSize = 55 + Math.random() * 10;
     
     pupil.style.width = pupilSize + 'px';
     pupil.style.height = pupilSize + 'px';
@@ -342,7 +344,7 @@ function failTest() {
         led.classList.add('active-red');
     });
     
-    // Max stress needle
+    // Max stress needle (full right = replicant)
     document.getElementById('stressNeedle').style.transform = 
         'translateX(-50%) rotate(90deg)';
     
@@ -388,7 +390,10 @@ function proceedToNext() {
 document.addEventListener('DOMContentLoaded', function() {
     initializeTest();
     
-    // Start ambient effects
+    // Initialize realistic eye monitoring
+    updateTerminal("Eye monitoring system online. Biometric sensors active.");
+    
+    // Start ambient eye animations
     setInterval(animateEye, 3000);
     
     // Add button to return to previous Blade Runner page
