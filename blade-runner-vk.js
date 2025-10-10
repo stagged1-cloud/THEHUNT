@@ -151,7 +151,10 @@ function startTest() {
 
 // Show current question
 function showQuestion() {
+    console.log(`Showing question ${currentQuestion + 1} of ${questions.length}`);
+    
     if (currentQuestion >= questions.length) {
+        console.log('No more questions, ending test');
         endTest();
         return;
     }
@@ -160,15 +163,22 @@ function showQuestion() {
     const questionText = document.getElementById('questionText');
     const answerOptions = document.getElementById('answerOptions');
     
+    if (!question) {
+        console.error('Question is undefined at index', currentQuestion);
+        return;
+    }
+    
     questionText.textContent = `Question ${currentQuestion + 1}: ${question.question}`;
     answerOptions.style.display = 'grid';
     
     // Clear previous answers and set new ones
     const buttons = answerOptions.querySelectorAll('.answer-btn');
     buttons.forEach((btn, index) => {
-        btn.textContent = question.answers[index];
-        btn.className = 'answer-btn';
-        btn.disabled = false;
+        if (question.answers[index]) {
+            btn.textContent = question.answers[index];
+            btn.className = 'answer-btn';
+            btn.disabled = false;
+        }
     });
     
     document.getElementById('responseCount').textContent = `${currentQuestion}/20`;
@@ -214,16 +224,20 @@ function selectAnswer(answerIndex) {
         return;
     }
     
-    // Enable next button after short delay
+    // Automatically advance to next question after showing results
     setTimeout(() => {
-        document.getElementById('nextBtn').disabled = false;
-    }, 2000);
+        nextQuestion();
+    }, 3000);
 }
 
 // Move to next question
 function nextQuestion() {
-    document.getElementById('nextBtn').disabled = true;
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) nextBtn.disabled = true;
+    
     currentQuestion++;
+    
+    updateTerminal(`Advancing to question ${currentQuestion + 1}...`);
     
     if (currentQuestion >= questions.length) {
         endTest();
