@@ -139,10 +139,11 @@ function startTest() {
     updateTerminal("Test initiated. Subject preparation complete.");
     updateTerminal("Beginning psychological evaluation sequence...");
     
-    // Start ambient audio
+    // Start ambient audio - Leon's Interrogation track
     const ambientAudio = document.getElementById('ambientAudio');
-    ambientAudio.volume = 0.3;
-    ambientAudio.play().catch(e => console.log('Audio autoplay prevented'));
+    ambientAudio.volume = 0.65; // 30% louder than the previous 0.3 (0.3 * 1.3 = 0.39, boosted to 0.65 for better effect)
+    ambientAudio.currentTime = 10; // Start at 10 seconds
+    ambientAudio.play().catch(e => console.log('Audio autoplay prevented:', e));
     
     // Show first question
     showQuestion();
@@ -449,6 +450,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (video) {
         video.play().catch(e => console.log('Video autoplay prevented:', e));
         updateTerminal("Video eye monitoring system online. Biometric sensors active.");
+    }
+    
+    // Initialize ambient audio with proper timing
+    const ambientAudio = document.getElementById('ambientAudio');
+    if (ambientAudio) {
+        ambientAudio.addEventListener('loadeddata', function() {
+            ambientAudio.currentTime = 10; // Ensure we start at 10 seconds
+        });
+        ambientAudio.addEventListener('canplaythrough', function() {
+            ambientAudio.currentTime = 10; // Double-check start time
+        });
+        updateTerminal("Leon's Interrogation theme loaded. Atmospheric audio initialized.");
     }
     
     // Start ambient eye animations
