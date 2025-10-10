@@ -1240,6 +1240,8 @@ body {
     letter-spacing: 1px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+    display: block;
+    margin: 20px auto 0 auto;
 }
 
 .proceed-btn:hover {
