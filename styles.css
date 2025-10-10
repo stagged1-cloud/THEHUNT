@@ -151,7 +151,6 @@ iframe {
     max-width: 100%;
     width: 100%;
     height: auto;
-    aspect-ratio: 16/9;
 }
 
 /* Decorative Ornaments */
@@ -209,7 +208,7 @@ iframe {
     
     .video-container iframe {
         width: 100%;
-        height: 300px;
+        height: 800px;
     }
     
     .ornament {
@@ -228,7 +227,7 @@ iframe {
     }
     
     .video-container iframe {
-        height: 250px;
+        height: 600px;
     }
     
     .ornament {
