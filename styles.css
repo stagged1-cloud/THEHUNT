@@ -133,8 +133,8 @@ body {
 .video-container iframe {
     border-radius: 15px !important;
     max-width: 100% !important;
-    width: 760px !important;
-    height: 515px !important;
+    width: 1200px !important;
+    height: 675px !important;
     display: block !important;
 }
 
