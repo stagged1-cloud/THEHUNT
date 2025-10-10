@@ -2544,7 +2544,7 @@ I'll push your changes to git: Done! Your changes have been committed and pushed
 
 ---
 
-_**User (2025-10-10 21:43Z)**_
+_**User (2025-10-10 21:44Z)**_
 
 css file has left over old code, please fix it such as .eye-white {
     position: absolute;
@@ -2573,7 +2573,56 @@ Now let me commit and push the cleaned-up CSS: Perfect! I've removed all the old
 - `.pupil-realistic` and `.pupil`
 - `.eye-reflection`
 - `.upper-eyelid` and `.lower-eyelid`
-- All related animations: `pupilDilation`, 
+- All related animations: `pupilDilation`, `irisMovement`, `reflectionTwinkle`, `blinkUpper`, `blinkLower`
+
+The CSS file is now cleaner with 137 lines of unused code removed. Since you're using video for the eye display (`#eyeVideo`), all those old CSS-based eye graphics were no longer needed.
+
+---
+
+_**User (2025-10-10 21:55Z)**_
+
+the small panel behind the 
+HUMAN
+UNCERTAIN
+REPLICANT
+
+text is too small needs to fit behind the text
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll increase the size of the gauge labels container to properly fit behind the text. Let me check the current CSS: I need to add background panels behind each label. Let me update the CSS to add visible backgrounds: 
+```
+
+```
+Perfect! I've added proper background panels to the gauge labels. Each label now has:
+- **Padding** (8px vertical, 12px horizontal) to fit the text properly
+- **Dark gradient background** for visibility
+- **Colored borders** matching each zone (green for HUMAN, yellow for UNCERTAIN, red for REPLICANT)
+- **Subtle inner glow** effect matching the text color
+- **Rounded corners** for a polished look
+
+The text should now be properly contained within visible panels instead of being too small.
+
+---
+
+_**User (2025-10-10 22:04Z)**_
+
+instead of expanding the window to the right with the text such as 
+[23:02:34] > Question 12 displayed. Monitoring subject response...
+[23:02:45] > Response recorded: CONCERNING. Lack of empathy detected.
+[23:02:45] > Empathy response level: 45.0% - ELEVATED
+[23:02:46] > Advancing to question 13...
+[23:02:46] > Question 13 displayed. Monitoring subject response...
+
+keep the original window the same size and then make that scrollable woith a nice green scrollbar controller.
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll add a scrollbar to the terminal content and style it with a green theme. Let me update the 
 
 ---
 
