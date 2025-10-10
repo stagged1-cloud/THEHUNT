@@ -131,11 +131,11 @@ body {
 /* Removed decorative elements to allow full video size */
 
 .video-container iframe {
-    border-radius: 15px;
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-    display: block;
+    border-radius: 15px !important;
+    max-width: 100% !important;
+    width: 760px !important;
+    height: 515px !important;
+    display: block !important;
 }
 
 /* Decorative Ornaments */
