@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="styles.css?v=20241010-5">
+    <link rel="stylesheet" href="styles.css?v=20241010-6">
     <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -80,6 +80,7 @@
     
     <script>
         let clickSequence = [];
+        let sequenceTimer = null;
         let christmasSound = new Audio('https://cdn.uppbeat.io/audio-files/55d19f5556f7b9b464f7db2307b60edb/019ab3e35656db3930cde809d1d44ff2/7b827010c64f74718a261c1273fdbc1d/STREAMING-ho-ho-ho-santa-chuckle-david-h-m-lambert-2-2-00-02.mp3');
         let bellSound = new Audio('https://cdn.uppbeat.io/audio-files/550fafd5d5403a2f6e11b6feefd0899e/d45093cdcae74eb6d489bb61fcd54c55/9750ea2f8e377962181d8aab82cba169/STREAMING-christmas-bells-shaken-gfx-sounds-3-3-00-01.mp3');
         
@@ -88,6 +89,15 @@
         bellSound.preload = 'auto';
         christmasSound.volume = 0.7;
         bellSound.volume = 0.7;
+        
+        function resetSequence() {
+            clickSequence = [];
+            if (sequenceTimer) {
+                clearTimeout(sequenceTimer);
+                sequenceTimer = null;
+            }
+            console.log('Sequence reset');
+        }
         
         document.addEventListener('DOMContentLoaded', function() {
             const clickableIcons = document.querySelectorAll('.clickable-icon');
@@ -151,6 +161,7 @@
                 
                 icon.addEventListener('click', function() {
                     const type = this.getAttribute('data-type');
+                    console.log('Clicked:', type, 'Current sequence:', clickSequence);
                     
                     if (type === 'blade' || type === 'runner') {
                         try {
@@ -159,18 +170,39 @@
                         } catch(e) {
                             console.log('Bell sound error:', e);
                         }
-                        clickSequence.push(type);
                         
-                        // Check if correct sequence
-                        if (clickSequence.length === 2) {
-                            if (clickSequence[0] === 'blade' && clickSequence[1] === 'runner') {
+                        // Handle blade click
+                        if (type === 'blade') {
+                            if (clickSequence.length === 0) {
+                                clickSequence.push(type);
+                                console.log('Blade clicked first - starting timer');
+                                
+                                // Start 10-second timer
+                                sequenceTimer = setTimeout(() => {
+                                    console.log('10 seconds expired - resetting sequence');
+                                    resetSequence();
+                                }, 10000);
+                            } else {
+                                // Wrong sequence or blade clicked again
+                                console.log('Wrong sequence - blade clicked at wrong time');
+                                resetSequence();
+                            }
+                        }
+                        // Handle runner click
+                        else if (type === 'runner') {
+                            if (clickSequence.length === 1 && clickSequence[0] === 'blade') {
+                                clickSequence.push(type);
+                                console.log('Correct sequence completed!');
+                                clearTimeout(sequenceTimer);
                                 showSuccessModal();
                             } else {
-                                // Reset if wrong sequence
-                                clickSequence = [];
+                                // Wrong sequence - runner clicked without blade first
+                                console.log('Wrong sequence - runner clicked without blade first');
+                                resetSequence();
                             }
                         }
                     } else {
+                        // Christmas decoration clicked
                         try {
                             christmasSound.currentTime = 0;
                             christmasSound.play().catch(e => console.log('Christmas sound failed:', e));
@@ -178,12 +210,14 @@
                             console.log('Christmas sound error:', e);
                         }
                         // Reset sequence on wrong click
-                        clickSequence = [];
+                        console.log('Christmas decoration clicked - resetting sequence');
+                        resetSequence();
                     }
                 });
             });
             
             function showSuccessModal() {
+                resetSequence(); // Clear any timers and reset sequence
                 modal.style.display = 'flex';
                 let countdown = 5;
                 
