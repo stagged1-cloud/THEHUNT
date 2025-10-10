@@ -921,6 +921,33 @@ body {
     50% { background: rgba(255, 0, 0, 0.5); }
 }
 
+/* VK Test Interface Animation */
+.vk-test-interface {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease-in-out;
+}
+
+.vk-test-interface.slide-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Compact identification panel after completion */
+.identification-panel.compact {
+    padding: 10px;
+    margin: 10px 0;
+    max-height: 150px;
+    overflow-y: auto;
+    transition: all 0.5s ease;
+}
+
+.identification-panel.compact .check-results {
+    font-size: 10px;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
 /* Terminal */
 .terminal {
     background: #000;

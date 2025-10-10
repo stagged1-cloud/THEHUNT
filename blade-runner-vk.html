@@ -40,86 +40,89 @@
                     </div>
                 </div>
 
-                <!-- Eye Display -->
-                <div class="eye-monitor">
-                    <div class="eye-display">
-                        <!-- Video Eye -->
-                        <video id="eyeVideo" autoplay loop muted playsinline>
-                            <source src="grok-video-0aa91cd9-141b-4210-9af7-fd040b15841d-4.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    <div class="eye-readings">
-                        <div class="reading">DILATION: <span id="dilation">0.0</span>mm</div>
-                        <div class="reading">CONTRACTION: <span id="contraction">0.0</span>%</div>
-                        <div class="reading">RESPONSE: <span id="response">NOMINAL</span></div>
-                    </div>
-                </div>
-
-                <!-- Stress Indicator -->
-                <div class="stress-indicator">
-                    <div class="gauge-section">
-                        <div class="gauge-title">EMPATHY RESPONSE METER</div>
-                        <div class="needle-container">
-                            <div class="needle" id="stressNeedle"></div>
-                            <div class="gauge-labels">
-                                <span class="label-green">HUMAN</span>
-                                <span class="label-yellow">UNCERTAIN</span>
-                                <span class="label-red">REPLICANT</span>
-                            </div>
+                <!-- VK Test Interface - Hidden until background check complete -->
+                <div class="vk-test-interface" id="vkTestInterface" style="display: none;">
+                    <!-- Eye Display -->
+                    <div class="eye-monitor">
+                        <div class="eye-display">
+                            <!-- Video Eye -->
+                            <video id="eyeVideo" autoplay loop muted playsinline>
+                                <source src="grok-video-0aa91cd9-141b-4210-9af7-fd040b15841d-4.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
-                        <div class="gauge-readout">
-                            <span class="readout-label">RESPONSE LEVEL:</span>
-                            <span class="readout-value" id="responseLevel">NOMINAL</span>
+                        <div class="eye-readings">
+                            <div class="reading">DILATION: <span id="dilation">0.0</span>mm</div>
+                            <div class="reading">CONTRACTION: <span id="contraction">0.0</span>%</div>
+                            <div class="reading">RESPONSE: <span id="response">NOMINAL</span></div>
                         </div>
                     </div>
-                    <div class="led-panel">
-                        <div class="panel-title">STATUS INDICATORS</div>
-                        <div class="led-display">
-                            <div class="led-row">
-                                <div class="led" id="led1"></div>
-                                <span class="led-label">BASELINE</span>
+
+                    <!-- Stress Indicator -->
+                    <div class="stress-indicator">
+                        <div class="gauge-section">
+                            <div class="gauge-title">EMPATHY RESPONSE METER</div>
+                            <div class="needle-container">
+                                <div class="needle" id="stressNeedle"></div>
+                                <div class="gauge-labels">
+                                    <span class="label-green">HUMAN</span>
+                                    <span class="label-yellow">UNCERTAIN</span>
+                                    <span class="label-red">REPLICANT</span>
+                                </div>
                             </div>
-                            <div class="led-row">
-                                <div class="led" id="led2"></div>
-                                <span class="led-label">EMPATHY</span>
+                            <div class="gauge-readout">
+                                <span class="readout-label">RESPONSE LEVEL:</span>
+                                <span class="readout-value" id="responseLevel">NOMINAL</span>
                             </div>
-                            <div class="led-row">
-                                <div class="led" id="led3"></div>
-                                <span class="led-label">STRESS</span>
-                            </div>
-                            <div class="led-row">
-                                <div class="led" id="led4"></div>
-                                <span class="led-label">ANOMALY</span>
-                            </div>
-                            <div class="led-row">
-                                <div class="led" id="led5"></div>
-                                <span class="led-label">ALERT</span>
+                        </div>
+                        <div class="led-panel">
+                            <div class="panel-title">STATUS INDICATORS</div>
+                            <div class="led-display">
+                                <div class="led-row">
+                                    <div class="led" id="led1"></div>
+                                    <span class="led-label">BASELINE</span>
+                                </div>
+                                <div class="led-row">
+                                    <div class="led" id="led2"></div>
+                                    <span class="led-label">EMPATHY</span>
+                                </div>
+                                <div class="led-row">
+                                    <div class="led" id="led3"></div>
+                                    <span class="led-label">STRESS</span>
+                                </div>
+                                <div class="led-row">
+                                    <div class="led" id="led4"></div>
+                                    <span class="led-label">ANOMALY</span>
+                                </div>
+                                <div class="led-row">
+                                    <div class="led" id="led5"></div>
+                                    <span class="led-label">ALERT</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Question Display -->
-                <div class="question-panel">
-                    <div class="question-text" id="questionText">
-                        Initializing Voight-Kampff Test Protocol...
+                    <!-- Question Display -->
+                    <div class="question-panel">
+                        <div class="question-text" id="questionText">
+                            Initializing Voight-Kampff Test Protocol...
+                        </div>
+                        <div class="answer-options" id="answerOptions" style="display: none;">
+                            <button class="answer-btn" onclick="selectAnswer(1)">A</button>
+                            <button class="answer-btn" onclick="selectAnswer(2)">B</button>
+                            <button class="answer-btn" onclick="selectAnswer(3)">C</button>
+                            <button class="answer-btn" onclick="selectAnswer(4)">D</button>
+                        </div>
                     </div>
-                    <div class="answer-options" id="answerOptions" style="display: none;">
-                        <button class="answer-btn" onclick="selectAnswer(1)">A</button>
-                        <button class="answer-btn" onclick="selectAnswer(2)">B</button>
-                        <button class="answer-btn" onclick="selectAnswer(3)">C</button>
-                        <button class="answer-btn" onclick="selectAnswer(4)">D</button>
-                    </div>
-                </div>
 
-                <!-- Controls -->
-                <div class="controls">
-                    <button class="control-btn" id="startBtn" onclick="startTest()">INITIALIZE TEST</button>
-                    <div class="progress-indicator" id="progressIndicator" style="display: none;">
-                        <span>Processing response...</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
+                    <!-- Controls -->
+                    <div class="controls">
+                        <button class="control-btn" id="startBtn" onclick="startTest()">INITIALIZE TEST</button>
+                        <div class="progress-indicator" id="progressIndicator" style="display: none;">
+                            <span>Processing response...</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

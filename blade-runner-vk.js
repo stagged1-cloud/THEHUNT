@@ -174,6 +174,17 @@ function submitIdentification() {
     updateTerminal(`Subject identification submitted: ${name}`);
     updateTerminal("Initiating comprehensive background verification...");
     
+    // Trigger audio start on user interaction
+    document.dispatchEvent(new Event('backgroundCheckStarted'));
+    
+    // Try to start audio again on this user interaction
+    const ambientAudio = document.getElementById('ambientAudio');
+    if (ambientAudio && ambientAudio.paused) {
+        ambientAudio.volume = 0.65;
+        ambientAudio.currentTime = 10;
+        ambientAudio.play().catch(e => console.log('Audio start on interaction failed:', e));
+    }
+    
     // Start background check animation
     runBackgroundCheck(name);
 }
@@ -296,8 +307,25 @@ function displayBackgroundResults(name) {
     
     // Enable test start after background check
     setTimeout(() => {
-        identificationPanel.style.display = 'none';
-        updateTerminal("VOIGHT-KAMPFF TEST READY - CLICK INITIALIZE TEST TO BEGIN");
+        // Compact the identification panel
+        identificationPanel.classList.add('compact');
+        
+        // Reveal the VK test interface with slide-in animation
+        const vkInterface = document.getElementById('vkTestInterface');
+        vkInterface.style.display = 'block';
+        setTimeout(() => {
+            vkInterface.classList.add('slide-in');
+        }, 100);
+        
+        updateTerminal("VOIGHT-KAMPFF TEST INTERFACE ACTIVATED");
+        updateTerminal("BIOMETRIC SYSTEMS ONLINE - READY FOR TESTING");
+        updateTerminal("CLICK INITIALIZE TEST TO BEGIN PSYCHOLOGICAL EVALUATION");
+        
+        // Start the video eye monitoring
+        const video = document.getElementById('eyeVideo');
+        if (video) {
+            video.play().catch(e => console.log('Video autoplay after reveal failed:', e));
+        }
     }, 5000);
 }
 
@@ -653,23 +681,33 @@ document.addEventListener('DOMContentLoaded', function() {
             ambientAudio.currentTime = 10; // Double-check start time
         });
         
-        // Add click listener to start audio on user interaction
+        // Enhanced audio startup with multiple triggers
         let audioStarted = false;
         function startAudio() {
-            if (!audioStarted) {
+            if (!audioStarted && ambientAudio) {
+                ambientAudio.volume = 0.65;
                 ambientAudio.currentTime = 10;
                 ambientAudio.play().then(() => {
                     audioStarted = true;
                     updateTerminal("Leon's Interrogation theme playing. Audio system active.");
-                }).catch(e => console.log('Audio start failed:', e));
+                    console.log('Background audio started successfully');
+                }).catch(e => {
+                    console.log('Audio start failed:', e);
+                    updateTerminal("Audio autoplay blocked - click anywhere to enable sound");
+                });
             }
         }
         
-        // Try to start immediately
+        // Try to start immediately when page loads
         startAudio();
         
-        // Start on any click if autoplay failed
-        document.addEventListener('click', startAudio);
+        // Start on various user interactions
+        ['click', 'keydown', 'touchstart', 'mouseover'].forEach(eventType => {
+            document.addEventListener(eventType, startAudio, { once: true });
+        });
+        
+        // Also try when background check starts
+        document.addEventListener('backgroundCheckStarted', startAudio);
         
         updateTerminal("Leon's Interrogation theme loaded. Atmospheric audio initialized.");
     }

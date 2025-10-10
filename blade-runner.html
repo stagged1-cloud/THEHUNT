@@ -150,12 +150,18 @@
             }
             
             // Try multiple interaction events
-            document.addEventListener('click', startMusic);
-            document.addEventListener('keydown', startMusic);
-            document.addEventListener('touchstart', startMusic);
+            ['click', 'keydown', 'touchstart', 'mouseover', 'scroll'].forEach(eventType => {
+                document.addEventListener(eventType, startMusic, { once: true });
+            });
             
-            // Auto-play attempt
-            startMusic();
+            // Auto-play attempt - try immediately
+            setTimeout(startMusic, 100);
+            
+            // Also try after page is fully loaded
+            window.addEventListener('load', startMusic);
+            
+            // Force higher volume and ensure it's audible
+            music.volume = 0.8;
         });
     </script>
 </body>
