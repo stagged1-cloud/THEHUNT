@@ -144,7 +144,7 @@
     </div>
 
     <!-- Audio -->
-    <audio id="ambientAudio" loop preload="auto">
+    <audio id="ambientAudio" loop preload="auto" style="display: none;">
         <source src="assets/audio/leons-interrogation.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -167,5 +167,21 @@
     </div>
 
     <script src="blade-runner-vk.js"></script>
+    <script>
+        // Simple parallax scrolling effect
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rain = document.querySelector('.rain');
+            const container = document.querySelector('.container');
+
+            if (rain) {
+                rain.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+
+            if (container) {
+                container.style.backgroundPosition = `center ${scrolled * 0.3}px`;
+            }
+        });
+    </script>
 </body>
 </html>

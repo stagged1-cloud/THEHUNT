@@ -367,18 +367,7 @@ function submitIdentification() {
     
     updateTerminal(`Subject identification submitted: ${name}`);
     updateTerminal("Initiating comprehensive background verification...");
-    
-    // Trigger audio start on user interaction
-    document.dispatchEvent(new Event('backgroundCheckStarted'));
-    
-    // Try to start audio again on this user interaction
-    const ambientAudio = document.getElementById('ambientAudio');
-    if (ambientAudio && ambientAudio.paused) {
-        ambientAudio.volume = 0.65;
-        ambientAudio.currentTime = 10;
-        ambientAudio.play().catch(e => console.log('Audio start on interaction failed:', e));
-    }
-    
+
     // Start background check animation
     runBackgroundCheck(name);
 }
@@ -988,43 +977,15 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTerminal("Video eye monitoring system online. Biometric sensors active.");
     }
     
-    // Initialize ambient audio with proper timing
+    // Initialize ambient audio - DO NOT auto-play
     const ambientAudio = document.getElementById('ambientAudio');
     if (ambientAudio) {
         ambientAudio.addEventListener('loadeddata', function() {
-            ambientAudio.currentTime = 10; // Ensure we start at 10 seconds
+            ambientAudio.currentTime = 10; // Ensure we start at 10 seconds when played
         });
-        ambientAudio.addEventListener('canplaythrough', function() {
-            ambientAudio.currentTime = 10; // Double-check start time
-        });
-        
-        // Enhanced audio startup with multiple triggers
-        let audioStarted = false;
-        function startAudio() {
-            if (!audioStarted && ambientAudio) {
-                ambientAudio.volume = 0.65;
-                ambientAudio.currentTime = 10;
-                ambientAudio.play().then(() => {
-                    audioStarted = true;
-                    console.log('Background audio started successfully');
-                }).catch(e => {
-                    console.log('Audio start failed:', e);
-                });
-            }
-        }
-        
-        // Try to start immediately when page loads
-        startAudio();
-        
-        // Start on various user interactions
-        ['click', 'keydown', 'touchstart', 'mouseover'].forEach(eventType => {
-            document.addEventListener(eventType, startAudio, { once: true });
-        });
-        
-        // Also try when background check starts
-        document.addEventListener('backgroundCheckStarted', startAudio);
-        
-        // Removed audio initialization message
+
+        // Audio will only play when test actually starts - no auto-play on page load
+        console.log('Audio initialized but not auto-playing');
     }
     
     // Start ambient eye animations
