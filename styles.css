@@ -123,21 +123,24 @@ body {
     padding: 0;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    display: inline-block;
+    display: block;
     border: none;
     position: relative;
-    width: 100%;
-    max-width: 1520px;
+    width: 1520px;
+    height: 4120px;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* Removed decorative elements to allow full video size */
 
 iframe {
     border-radius: 15px;
-    width: 1520px;
-    height: 4120px;
+    width: 1520px !important;
+    height: 4120px !important;
     max-width: 100%;
     display: block;
+    object-fit: fill;
 }
 
 /* Decorative Ornaments */
