@@ -155,74 +155,6 @@ body::after {
     100% { opacity: 0; }
 }
 
-/* Cinematic Crow Animation */
-.flying-crow {
-    position: fixed;
-    font-size: 4rem;
-    z-index: 99;
-    pointer-events: none;
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
-    animation: flyCross 12s ease-in-out infinite;
-    opacity: 0;
-}
-
-@keyframes flyCross {
-    0% {
-        left: -150px;
-        top: 15%;
-        opacity: 0;
-        transform: scale(1) rotateY(0deg);
-    }
-    5% {
-        opacity: 1;
-    }
-    45% {
-        opacity: 1;
-        transform: scale(1.3) rotateY(0deg);
-    }
-    50% {
-        transform: scale(1.3) rotateY(180deg);
-    }
-    95% {
-        opacity: 1;
-    }
-    100% {
-        left: calc(100% + 150px);
-        top: 35%;
-        opacity: 0;
-        transform: scale(1) rotateY(180deg);
-    }
-}
-
-/* Multiple Crows */
-.crow-flock {
-    position: fixed;
-    font-size: 2rem;
-    z-index: 98;
-    pointer-events: none;
-    opacity: 0;
-    animation: crowFlock 20s linear infinite;
-}
-
-@keyframes crowFlock {
-    0% {
-        left: 100%;
-        top: 10%;
-        opacity: 0;
-    }
-    5% {
-        opacity: 0.6;
-    }
-    95% {
-        opacity: 0.6;
-    }
-    100% {
-        left: -100px;
-        top: 40%;
-        opacity: 0;
-    }
-}
-
 /* Container */
 .container {
     position: relative;
@@ -266,46 +198,24 @@ body::after {
     50% { transform: translateX(50%); }
 }
 
-.crow-logo-container {
+.header-image-container {
     position: relative;
     display: inline-block;
     margin-bottom: 20px;
 }
 
-.crow-logo {
-    font-size: 7rem;
+.header-crow-image {
+    max-width: 300px;
+    height: auto;
+    filter: drop-shadow(0 0 30px rgba(138, 43, 226, 0.8));
+    animation: floatImage 4s ease-in-out infinite;
     position: relative;
     z-index: 2;
-    animation: floatCrow 4s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(138, 43, 226, 0.8));
 }
 
-@keyframes floatCrow {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-15px) rotate(5deg); }
-}
-
-@keyframes glowPulse {
-    0%, 100% { filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.6)); }
-    50% { filter: drop-shadow(0 0 40px rgba(138, 43, 226, 1)); }
-}
-
-.logo-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(138, 43, 226, 0.4), transparent 70%);
-    border-radius: 50%;
-    animation: glowExpand 4s ease-in-out infinite;
-    z-index: 1;
-}
-
-@keyframes glowExpand {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.3; }
+@keyframes floatImage {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
 }
 
 .main-title {
@@ -415,6 +325,71 @@ body::after {
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gallery Section */
+.gallery-section {
+    margin: 60px 0;
+    animation: fadeInUp 1.2s ease-out;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(138, 43, 226, 0.3);
+    box-shadow: 
+        0 5px 30px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(138, 43, 226, 0.2);
+    transition: all 0.4s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(138, 43, 226, 0.6);
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.9),
+        0 0 40px rgba(138, 43, 226, 0.5);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: all 0.4s ease;
+    filter: grayscale(20%) contrast(1.1);
+}
+
+.gallery-item:hover img {
+    filter: grayscale(0%) contrast(1.2) brightness(1.1);
+    transform: scale(1.05);
+}
+
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gallery-item:hover::before {
+    opacity: 1;
 }
 
 .movie-frame {
