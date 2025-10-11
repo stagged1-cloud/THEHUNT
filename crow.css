@@ -493,10 +493,10 @@ body::after {
 /* Stage 1: Memory Card Game */
 .memory-grid {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
     margin: 30px auto;
-    max-width: 1200px;
+    max-width: 600px;
 }
 
 .memory-card {
@@ -542,6 +542,7 @@ body::after {
 .card-back {
     background: linear-gradient(135deg, rgba(40, 20, 50, 0.95), rgba(20, 10, 30, 0.98));
     transform: rotateY(180deg);
+    padding: 0;
 }
 
 .card-back img {
@@ -550,6 +551,7 @@ body::after {
     object-fit: cover;
     display: block;
     filter: brightness(0.9) contrast(1.1);
+    border-radius: 8px;
 }
 
 .stage-progress {
@@ -957,8 +959,8 @@ body::after {
 /* Responsive */
 @media (max-width: 1024px) {
     .memory-grid {
-        grid-template-columns: repeat(6, 1fr);
-        max-width: 700px;
+        grid-template-columns: repeat(5, 1fr);
+        max-width: 600px;
     }
 }
 
@@ -968,8 +970,8 @@ body::after {
     }
 
     .memory-grid {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
         max-width: 500px;
     }
 
@@ -998,8 +1000,8 @@ body::after {
 
 @media (max-width: 480px) {
     .memory-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 6px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
     }
 
     .gallery-grid {

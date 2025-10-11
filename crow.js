@@ -142,7 +142,7 @@ setTimeout(playRandomCrowSound, 10000);
 let flippedCards = [];
 let matchedPairs = 0;
 
-// Images from crowmem folder
+// Images from crowmem folder - using first 12 for 5x5 grid (24 cards)
 const memoryImages = [
     '0d72354056a4ccbb18e93c510b94be84.jpg',
     '14a9fed56c53f21535c3d01357119926.jpg',
@@ -153,7 +153,9 @@ const memoryImages = [
     'ad25d5d325f76109a3faff9094e7f8d6.jpg',
     'b4c0b1a024c69d00e97b238b239f3fda.jpg',
     'c85d8a78d28f83b899d342805e96f307.jpg',
-    'ce8516ca2279c34732bc6e431194f737.jpg'
+    'ce8516ca2279c34732bc6e431194f737.jpg',
+    'd2f4c2f4b1d96ec0dd37043537fd6fc2.jpg',
+    'df357722245458805034cda34f21ba18.jpg'
 ];
 
 function initializeStage1() {
@@ -173,16 +175,25 @@ function generateMemoryGrid() {
     const memoryGrid = document.getElementById('memoryGrid');
     memoryGrid.innerHTML = '';
     
-    // Create array with 10 pairs of each image (10 images × 10 pairs = 100 cards)
+    // Create array with 2 pairs of each of the 12 images = 24 cards
+    // Plus 1 extra card to make 25 for 5x5 grid
     let cardsArray = [];
-    for (let i = 0; i < memoryImages.length; i++) {
-        for (let j = 0; j < 10; j++) {
-            cardsArray.push({
-                id: i + 1,
-                image: memoryImages[i]
-            });
-        }
+    for (let i = 0; i < 12; i++) {
+        cardsArray.push({
+            id: i + 1,
+            image: memoryImages[i]
+        });
+        cardsArray.push({
+            id: i + 1,
+            image: memoryImages[i]
+        });
     }
+    
+    // Add one more card to make it 25 (5x5)
+    cardsArray.push({
+        id: 13,
+        image: memoryImages[0]
+    });
     
     // Shuffle the cards
     cardsArray = shuffleArray(cardsArray);
@@ -194,7 +205,7 @@ function generateMemoryGrid() {
         card.setAttribute('data-memory', cardData.id);
         card.innerHTML = `
             <div class="card-front">?</div>
-            <div class="card-back"><img src="assets/images/crowmem/${cardData.image}" alt="Memory"></div>
+            <div class="card-back"><img src="assets/images/crowmem/${cardData.image}" alt="Memory" /></div>
         `;
         memoryGrid.appendChild(card);
     });
@@ -232,12 +243,12 @@ function checkMatch() {
         matchedPairs++;
         gameState.memoryMatches = matchedPairs;
 
-        document.getElementById('matchCount').textContent = `Matches: ${matchedPairs}/50`;
+        document.getElementById('matchCount').textContent = `Matches: ${matchedPairs}/12`;
 
         flippedCards = [];
 
         // Check if all pairs matched
-        if (matchedPairs === 50) {
+        if (matchedPairs === 12) {
             setTimeout(() => {
                 completeStage1();
             }, 1000);
