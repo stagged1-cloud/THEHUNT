@@ -252,19 +252,20 @@
     </div>
 
     <!-- Audio -->
-    <audio id="ambientAudio" loop preload="auto">
+    <audio id="ambientAudio" loop preload="auto" style="display: none;">
         <source src="assets/audio/crow-rain-ambient.mp3" type="audio/mpeg">
     </audio>
-    <audio id="cureMusic" loop preload="auto">
+    <audio autoplay loop id="cureMusic" preload="auto" controls style="position: fixed; bottom: 10px; left: 10px; opacity: 0.7; z-index: 1000; border-radius: 5px; background: rgba(0,0,0,0.8);">
         <source src="assets/audio/The_Cure_Burn.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
-    <audio id="thunderAudio">
+    <audio id="thunderAudio" style="display: none;">
         <source src="assets/audio/thunder.mp3" type="audio/mpeg">
     </audio>
-    <audio id="crowSound">
+    <audio id="crowSound" style="display: none;">
         <source src="assets/audio/crow-caw.mp3" type="audio/mpeg">
     </audio>
-    <audio id="gothicAmbient" loop preload="auto">
+    <audio id="gothicAmbient" loop preload="auto" style="display: none;">
         <source src="https://cdn.uppbeat.io/audio-files/e1e8c5ff8f2c0f3e8f2c0f3e8f2c0f3e/dark-gothic-atmosphere.mp3" type="audio/mpeg">
     </audio>
 

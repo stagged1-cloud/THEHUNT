@@ -34,31 +34,29 @@ function initializeAudio() {
     const gothicAmbient = document.getElementById('gothicAmbient');
 
     // Set volumes
-    if (ambientAudio) ambientAudio.volume = 0.4;
-    if (cureMusic) cureMusic.volume = 0.6;
-    if (gothicAmbient) gothicAmbient.volume = 0.3;
+    if (ambientAudio) ambientAudio.volume = 0.3;
+    if (cureMusic) cureMusic.volume = 0.7;
+    if (gothicAmbient) gothicAmbient.volume = 0.25;
 
-    // Try autoplay with fallback
-    const playAudio = () => {
+    // The Cure music has autoplay attribute, so it will start automatically
+    // Just handle the ambient tracks with fallback
+    const playAmbientAudio = () => {
         Promise.all([
             ambientAudio?.play().catch(e => console.log('Ambient audio autoplay prevented')),
             gothicAmbient?.play().catch(e => console.log('Gothic ambient autoplay prevented'))
-        ]).then(() => {
-            // Start The Cure music after 3 seconds
-            setTimeout(() => {
-                if (cureMusic) {
-                    cureMusic.play().catch(e => console.log('Music autoplay prevented'));
-                }
-            }, 3000);
-        });
+        ]);
     };
 
-    // Try immediate playback
-    playAudio();
+    // Try immediate playback for ambient
+    playAmbientAudio();
 
     // Fallback on user interaction
     const enableAudio = () => {
-        playAudio();
+        playAmbientAudio();
+        // Also try to ensure main music plays if autoplay was blocked
+        if (cureMusic && cureMusic.paused) {
+            cureMusic.play().catch(e => console.log('Music playback prevented'));
+        }
         document.removeEventListener('click', enableAudio);
         document.removeEventListener('keydown', enableAudio);
     };
