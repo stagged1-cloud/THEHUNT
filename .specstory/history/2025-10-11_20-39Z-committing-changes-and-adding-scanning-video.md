@@ -228,3 +228,50 @@ Your redesigned Crow page is now live at: **https://stagged1-cloud.github.io/THE
 
 ---
 
+_**User (2025-10-11 21:58Z)**_
+
+https://youtu.be/TvD3COT1248?si=qdd9pSx7ND5XMwyZ
+
+imbed this and sync, commit
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll embed this YouTube video into the `crow.html` page and commit the changes. 
+```
+
+```
+Now let me update the CSS to style the iframe properly: 
+```
+
+```
+Now let me commit and push these changes: Perfect! ✅ **YouTube Video Embedded and Pushed Successfully!**
+
+## **Changes Made:**
+
+### **📺 YouTube Embed:**
+- **Video ID**: TvD3COT1248 (The Crow)
+- **Features**: 
+  - ✅ Autoplay (muted initially)
+  - ✅ Loop enabled
+  - ✅ Fullscreen allowed
+  - ✅ Responsive 16:9 aspect ratio
+
+### **🎨 Styling Updates:**
+- **Video Container**: Responsive wrapper with 16:9 padding-bottom technique
+- **Purple Glow Border**: Matches the gothic theme
+- **Rounded Corners**: 10px border-radius
+- **Shadow Effects**: Deep shadows with purple glow
+
+### **✅ Committed & Pushed:**
+- **Commit**: `617f792`
+- **Message**: "Embed YouTube video (The Crow) with autoplay, loop, and responsive 16:9 iframe styling"
+- **Status**: Successfully pushed to GitHub
+
+**Live now at:** https://stagged1-cloud.github.io/THEHUNT/crow.html 🎬🐦‍⬛
+
+The video will autoplay (muted) and loop continuously with the cinematic Crow aesthetic! 🚀
+
+---
+
