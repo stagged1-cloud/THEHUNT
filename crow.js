@@ -179,12 +179,12 @@ function checkMatch() {
         matchedPairs++;
         gameState.memoryMatches = matchedPairs;
 
-        document.getElementById('matchCount').textContent = `Matches: ${matchedPairs}/6`;
+        document.getElementById('matchCount').textContent = `Matches: ${matchedPairs}/12`;
 
         flippedCards = [];
 
         // Check if all pairs matched
-        if (matchedPairs === 6) {
+        if (matchedPairs === 12) {
             setTimeout(() => {
                 completeStage1();
             }, 1000);
