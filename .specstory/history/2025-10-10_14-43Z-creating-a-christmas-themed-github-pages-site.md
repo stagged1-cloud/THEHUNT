@@ -2926,7 +2926,7 @@ The atmosphere should now look **dramatically better** with realistic rain, mood
 
 ---
 
-_**User (2025-10-11 09:36Z)**_
+_**User (2025-10-11 09:40Z)**_
 
 i see 3 bars red green and blue, flashing in the back, they are ugly remove them, but keep the rain effect
 
@@ -2938,6 +2938,35 @@ I'll remove the god rays (the colored bars) but keep the rain and smoke effects:
 ```
 
 ```
+
+```
+
+```
+
+```
+
+```
+Done! I've removed the ugly colored light bars (god rays) from the atmospheric effects. Now you'll only see:
+
+✅ **Realistic rain particles** - 300 raindrops with motion blur falling down the screen
+✅ **Subtle smoke/fog** - 50 atmospheric fog particles rising from the bottom
+✅ **Film grain** - Cinematic texture overlay
+
+The red, green, and blue flashing bars are completely removed!
+
+---
+
+_**User (2025-10-11 09:41Z)**_
+
+https://tympanus.net/Development/ParticleRainEffect/index3.html
+https://tympanus.net/codrops/2021/03/17/tropical-particles-rain-animation-with-three-js/
+https://github.com/akella/ParticleRainEffect
+I really like this affect above, can you implement this?
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
 
 
 ---

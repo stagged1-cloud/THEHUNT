@@ -1,164 +1,180 @@
-// Blade Runner Atmospheric Effects - Canvas Particle System
-class AtmosphericEffect {
+// Blade Runner Atmospheric Effects - Three.js Particle Rain
+// Inspired by https://tympanus.net/Development/ParticleRainEffect/
+
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js';
+
+class ParticleRainEffect {
     constructor() {
-        this.canvas = document.createElement('canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.canvas.style.position = 'fixed';
-        this.canvas.style.top = '0';
-        this.canvas.style.left = '0';
-        this.canvas.style.width = '100%';
-        this.canvas.style.height = '100%';
-        this.canvas.style.pointerEvents = 'none';
-        this.canvas.style.zIndex = '1';
-        document.body.insertBefore(this.canvas, document.body.firstChild);
+        this.container = document.createElement('div');
+        this.container.style.position = 'fixed';
+        this.container.style.top = '0';
+        this.container.style.left = '0';
+        this.container.style.width = '100%';
+        this.container.style.height = '100%';
+        this.container.style.pointerEvents = 'none';
+        this.container.style.zIndex = '1';
+        document.body.insertBefore(this.container, document.body.firstChild);
         
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.camera.position.z = 5;
         
-        this.raindrops = [];
-        this.smokeParticles = [];
+        this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.container.appendChild(this.renderer.domElement);
+        
+        this.particles = null;
+        this.particleCount = 2000;
         this.time = 0;
         
-        this.initRain();
-        this.initSmoke();
+        this.initParticles();
+        this.addLighting();
         this.animate();
-    }
-    
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-    }
-    
-    // Realistic rain system
-    initRain() {
-        const rainCount = 300;
-        for (let i = 0; i < rainCount; i++) {
-            this.raindrops.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height - this.canvas.height,
-                length: Math.random() * 20 + 10,
-                speed: Math.random() * 3 + 5,
-                opacity: Math.random() * 0.5 + 0.3,
-                width: Math.random() * 1.5 + 0.5
-            });
-        }
-    }
-    
-    drawRain() {
-        this.raindrops.forEach(drop => {
-            // Create gradient for motion blur effect
-            const gradient = this.ctx.createLinearGradient(
-                drop.x, drop.y,
-                drop.x, drop.y + drop.length
-            );
-            gradient.addColorStop(0, `rgba(255, 255, 255, 0)`);
-            gradient.addColorStop(0.5, `rgba(0, 255, 255, ${drop.opacity})`);
-            gradient.addColorStop(1, `rgba(255, 255, 255, ${drop.opacity * 0.5})`);
-            
-            this.ctx.strokeStyle = gradient;
-            this.ctx.lineWidth = drop.width;
-            this.ctx.beginPath();
-            this.ctx.moveTo(drop.x, drop.y);
-            this.ctx.lineTo(drop.x - 2, drop.y + drop.length);
-            this.ctx.stroke();
-            
-            // Update position
-            drop.y += drop.speed;
-            drop.x -= 0.5;
-            
-            // Reset if off screen
-            if (drop.y > this.canvas.height) {
-                drop.y = -drop.length;
-                drop.x = Math.random() * this.canvas.width;
-            }
-        });
-    }
-    
-    // Smoke/fog particles
-    initSmoke() {
-        for (let i = 0; i < 50; i++) {
-            this.smokeParticles.push({
-                x: Math.random() * this.canvas.width,
-                y: this.canvas.height + Math.random() * 200,
-                radius: Math.random() * 150 + 50,
-                speed: Math.random() * 0.5 + 0.2,
-                opacity: Math.random() * 0.1 + 0.05,
-                drift: Math.random() * 0.5 - 0.25
-            });
-        }
-    }
-    
-    drawSmoke() {
-        this.smokeParticles.forEach(particle => {
-            const gradient = this.ctx.createRadialGradient(
-                particle.x, particle.y, 0,
-                particle.x, particle.y, particle.radius
-            );
-            gradient.addColorStop(0, `rgba(100, 150, 200, ${particle.opacity})`);
-            gradient.addColorStop(0.5, `rgba(50, 100, 150, ${particle.opacity * 0.5})`);
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            
-            this.ctx.fillStyle = gradient;
-            this.ctx.fillRect(
-                particle.x - particle.radius,
-                particle.y - particle.radius,
-                particle.radius * 2,
-                particle.radius * 2
-            );
-            
-            // Update position
-            particle.y -= particle.speed;
-            particle.x += particle.drift;
-            
-            // Reset if off screen
-            if (particle.y < -particle.radius) {
-                particle.y = this.canvas.height + particle.radius;
-                particle.x = Math.random() * this.canvas.width;
-            }
-        });
-    }
-    
-    // Draw film grain
-    drawFilmGrain() {
-        const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
-        const data = imageData.data;
         
-        for (let i = 0; i < data.length; i += 4) {
-            if (Math.random() < 0.02) { // 2% grain density
-                const value = Math.random() * 50;
-                data[i] = value;     // R
-                data[i + 1] = value; // G
-                data[i + 2] = value; // B
-                data[i + 3] = 30;    // A
+        window.addEventListener('resize', () => this.onResize());
+    }
+    
+    initParticles() {
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(this.particleCount * 3);
+        const velocities = new Float32Array(this.particleCount);
+        const colors = new Float32Array(this.particleCount * 3);
+        const sizes = new Float32Array(this.particleCount);
+        
+        for (let i = 0; i < this.particleCount; i++) {
+            const i3 = i * 3;
+            
+            // Position
+            positions[i3] = (Math.random() - 0.5) * 20;     // x
+            positions[i3 + 1] = (Math.random() - 0.5) * 20; // y
+            positions[i3 + 2] = (Math.random() - 0.5) * 10; // z
+            
+            // Velocity
+            velocities[i] = 0.02 + Math.random() * 0.08;
+            
+            // Color - cyan/white Blade Runner rain
+            const colorChoice = Math.random();
+            if (colorChoice < 0.5) {
+                colors[i3] = 0.0;     // R
+                colors[i3 + 1] = 1.0; // G
+                colors[i3 + 2] = 1.0; // B (cyan)
+            } else {
+                colors[i3] = 1.0;     // R
+                colors[i3 + 1] = 1.0; // G
+                colors[i3 + 2] = 1.0; // B (white)
             }
+            
+            // Size
+            sizes[i] = Math.random() * 3 + 1;
         }
         
-        this.ctx.putImageData(imageData, 0, 0);
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 1));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+        
+        // Custom shader material for rain streaks
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 }
+            },
+            vertexShader: `
+                attribute float velocity;
+                attribute float size;
+                varying vec3 vColor;
+                
+                void main() {
+                    vColor = color;
+                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                    gl_PointSize = size * (300.0 / -mvPosition.z);
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vColor;
+                
+                void main() {
+                    // Create elongated streak effect
+                    vec2 uv = gl_PointCoord;
+                    float distY = abs(uv.y - 0.5);
+                    float alpha = 1.0 - (distY * 2.0);
+                    alpha = pow(alpha, 2.0);
+                    
+                    // Fade at edges
+                    float distX = abs(uv.x - 0.5);
+                    alpha *= 1.0 - (distX * 2.0);
+                    
+                    gl_FragColor = vec4(vColor, alpha * 0.8);
+                }
+            `,
+            transparent: true,
+            depthWrite: false,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending
+        });
+        
+        this.particles = new THREE.Points(geometry, material);
+        this.scene.add(this.particles);
+    }
+    
+    addLighting() {
+        // Ambient glow
+        const ambientLight = new THREE.AmbientLight(0x00ffff, 0.2);
+        this.scene.add(ambientLight);
+        
+        // Fog for depth
+        this.scene.fog = new THREE.FogExp2(0x000000, 0.05);
     }
     
     animate() {
-        this.time += 16;
+        requestAnimationFrame(() => this.animate());
         
-        // Clear with slight fade for trail effect
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.time += 0.016;
         
-        // Draw layers
-        this.drawSmoke();
-        this.drawRain();
+        // Update particle positions
+        const positions = this.particles.geometry.attributes.position.array;
+        const velocities = this.particles.geometry.attributes.velocity.array;
         
-        // Add film grain every few frames
-        if (Math.random() < 0.3) {
-            this.drawFilmGrain();
+        for (let i = 0; i < this.particleCount; i++) {
+            const i3 = i * 3;
+            
+            // Move particles down
+            positions[i3 + 1] -= velocities[i];
+            
+            // Slight wind effect
+            positions[i3] += Math.sin(this.time + i) * 0.002;
+            
+            // Reset particles that fall below
+            if (positions[i3 + 1] < -10) {
+                positions[i3 + 1] = 10;
+                positions[i3] = (Math.random() - 0.5) * 20;
+                positions[i3 + 2] = (Math.random() - 0.5) * 10;
+            }
         }
         
-        requestAnimationFrame(() => this.animate());
+        this.particles.geometry.attributes.position.needsUpdate = true;
+        
+        // Subtle rotation for depth
+        this.particles.rotation.y = Math.sin(this.time * 0.1) * 0.05;
+        
+        // Update shader time
+        this.particles.material.uniforms.time.value = this.time;
+        
+        this.renderer.render(this.scene, this.camera);
+    }
+    
+    onResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     }
 }
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new AtmosphericEffect());
+    document.addEventListener('DOMContentLoaded', () => new ParticleRainEffect());
 } else {
-    new AtmosphericEffect();
+    new ParticleRainEffect();
 }
