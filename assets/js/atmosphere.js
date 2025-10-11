@@ -53,8 +53,8 @@ class ParticleRainEffect {
     drawParticle(p) {
         // Calculate perspective based on z-depth
         const scale = (1000 - p.z) / 1000;
-        const x = p.x + (this.width / 2 - p.x) * (1 - scale);
-        const y = p.y + (this.height / 2 - p.y) * (1 - scale);
+        const x = p.x;  // Removed perspective pull to center
+        const y = p.y;  // Removed perspective pull to center
         const length = p.length * scale;
         const width = p.width * scale;
         
@@ -141,8 +141,8 @@ class ParticleRainEffect {
     animate() {
         requestAnimationFrame(() => this.animate());
         
-        // Fade previous frame for trail effect
-        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+        // Fade previous frame for trail effect (shorter trails)
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
         this.ctx.fillRect(0, 0, this.width, this.height);
         
         // Draw fog
