@@ -542,8 +542,7 @@ body::after {
 
 /* Question Panel */
 .question-panel {
-    flex: 1;
-    padding: 20px;
+    padding: 15px;
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid #0ff;
     border-radius: 5px;
@@ -554,7 +553,7 @@ body::after {
     line-height: 1.6;
     color: #fff;
     margin-bottom: 10px;
-    min-height: 100px;
+    min-height: 60px;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
@@ -1081,6 +1080,7 @@ body::after {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    height: fit-content;
 }
 
 .terminal-header {
@@ -1092,7 +1092,6 @@ body::after {
 }
 
 .terminal-content {
-    flex: 1;
     padding: 15px;
     font-family: 'Courier New', monospace;
     font-size: 12px;
