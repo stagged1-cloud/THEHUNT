@@ -275,3 +275,19 @@ The video will autoplay (muted) and loop continuously with the cinematic Crow ae
 
 ---
 
+_**User (2025-10-11 22:08Z)**_
+
+all the assets in C:\Users\don_t\Desktop\Projects\The Hunt\GitHub\THEHUNT\assets\images are from the crow movie, add them to the site, also no video is playing, also get rid of the crow/bird icons they are rubbish
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll add the Crow movie images to the site, fix the video playback, and remove the crow emoji icons. Let me first check what images are available. Great! Now let me update the HTML to add these images and remove the crow emojis: 
+```
+
+```
+Now let me fix the video iframe to not 
+
+---
+
