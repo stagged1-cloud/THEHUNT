@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE HUNT - The Crow: Vengeance Protocol</title>
+    <link rel="stylesheet" href="crow.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Cinzel:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Rain Effect -->
+    <div class="rain-container" id="rainContainer"></div>
+
+    <!-- Lightning Flash -->
+    <div class="lightning" id="lightning"></div>
+
+    <!-- Crow Flying Across Screen -->
+    <div class="flying-crow" id="flyingCrow">🐦‍⬛</div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="crow-logo">🐦‍⬛</div>
+            <h1 class="main-title">THE CROW</h1>
+            <p class="subtitle">Vengeance Protocol: Phase 3</p>
+            <div class="quote">"It can't rain all the time..."</div>
+        </header>
+
+        <!-- Main Game Container -->
+        <main class="game-container">
+            <!-- Stage 1: Memory Recovery -->
+            <section class="game-stage" id="stage1" style="display: block;">
+                <h2 class="stage-title">Memory Recovery</h2>
+                <p class="stage-description">The memories are fragmented. Piece them together to remember what happened...</p>
+
+                <div class="memory-grid">
+                    <div class="memory-card" data-memory="1">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🕯️</div>
+                    </div>
+                    <div class="memory-card" data-memory="2">
+                        <div class="card-front">?</div>
+                        <div class="card-back">💀</div>
+                    </div>
+                    <div class="memory-card" data-memory="3">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🗡️</div>
+                    </div>
+                    <div class="memory-card" data-memory="1">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🕯️</div>
+                    </div>
+                    <div class="memory-card" data-memory="4">
+                        <div class="card-front">?</div>
+                        <div class="card-back">⚰️</div>
+                    </div>
+                    <div class="memory-card" data-memory="5">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🦇</div>
+                    </div>
+                    <div class="memory-card" data-memory="2">
+                        <div class="card-front">?</div>
+                        <div class="card-back">💀</div>
+                    </div>
+                    <div class="memory-card" data-memory="6">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🌙</div>
+                    </div>
+                    <div class="memory-card" data-memory="3">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🗡️</div>
+                    </div>
+                    <div class="memory-card" data-memory="4">
+                        <div class="card-front">?</div>
+                        <div class="card-back">⚰️</div>
+                    </div>
+                    <div class="memory-card" data-memory="5">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🦇</div>
+                    </div>
+                    <div class="memory-card" data-memory="6">
+                        <div class="card-front">?</div>
+                        <div class="card-back">🌙</div>
+                    </div>
+                </div>
+
+                <div class="stage-progress">
+                    <span id="matchCount">Matches: 0/6</span>
+                </div>
+            </section>
+
+            <!-- Stage 2: Follow the Crow -->
+            <section class="game-stage" id="stage2" style="display: none;">
+                <h2 class="stage-title">Follow the Crow</h2>
+                <p class="stage-description">The crow guides you through the darkness. Click the crow before it disappears...</p>
+
+                <div class="crow-chase-area">
+                    <div class="clickable-crow" id="clickableCrow">🐦‍⬛</div>
+                    <div class="crow-counter">
+                        <span id="crowCount">Crows Caught: 0/10</span>
+                        <span id="crowTimer">Time: 30s</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 3: Gothic Symbols -->
+            <section class="game-stage" id="stage3" style="display: none;">
+                <h2 class="stage-title">Decipher the Symbols</h2>
+                <p class="stage-description">Ancient symbols hold the key to vengeance. Match the symbols to their meanings...</p>
+
+                <div class="symbols-container">
+                    <div class="symbol-pair">
+                        <div class="symbol">☠️</div>
+                        <select class="symbol-answer" data-correct="death">
+                            <option value="">Select meaning...</option>
+                            <option value="death">Death</option>
+                            <option value="life">Life</option>
+                            <option value="revenge">Revenge</option>
+                            <option value="love">Love</option>
+                        </select>
+                    </div>
+                    <div class="symbol-pair">
+                        <div class="symbol">🐦‍⬛</div>
+                        <select class="symbol-answer" data-correct="messenger">
+                            <option value="">Select meaning...</option>
+                            <option value="freedom">Freedom</option>
+                            <option value="messenger">Messenger of Souls</option>
+                            <option value="darkness">Darkness</option>
+                            <option value="flight">Flight</option>
+                        </select>
+                    </div>
+                    <div class="symbol-pair">
+                        <div class="symbol">⚔️</div>
+                        <select class="symbol-answer" data-correct="vengeance">
+                            <option value="">Select meaning...</option>
+                            <option value="war">War</option>
+                            <option value="vengeance">Vengeance</option>
+                            <option value="peace">Peace</option>
+                            <option value="honor">Honor</option>
+                        </select>
+                    </div>
+                    <div class="symbol-pair">
+                        <div class="symbol">💔</div>
+                        <select class="symbol-answer" data-correct="loss">
+                            <option value="">Select meaning...</option>
+                            <option value="heartbreak">Heartbreak</option>
+                            <option value="loss">Loss of Loved One</option>
+                            <option value="sadness">Sadness</option>
+                            <option value="pain">Pain</option>
+                        </select>
+                    </div>
+                    <div class="symbol-pair">
+                        <div class="symbol">🌩️</div>
+                        <select class="symbol-answer" data-correct="rebirth">
+                            <option value="">Select meaning...</option>
+                            <option value="storm">Storm</option>
+                            <option value="power">Power</option>
+                            <option value="rebirth">Rebirth</option>
+                            <option value="anger">Anger</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="submit-symbols-btn" id="submitSymbols">Submit Answers</button>
+            </section>
+
+            <!-- Stage 4: The Quote -->
+            <section class="game-stage" id="stage4" style="display: none;">
+                <h2 class="stage-title">Remember the Words</h2>
+                <p class="stage-description">Complete the iconic quote from The Crow...</p>
+
+                <div class="quote-puzzle">
+                    <p class="quote-text">
+                        "Buildings burn, people die, but real <input type="text" class="quote-input" id="word1" data-correct="love" placeholder="____"> is forever."
+                    </p>
+                    <p class="quote-text">
+                        "Mother is the name for <input type="text" class="quote-input" id="word2" data-correct="god" placeholder="___"> on the lips and hearts of all children."
+                    </p>
+                    <p class="quote-text">
+                        "Victims, aren't we <input type="text" class="quote-input" id="word3" data-correct="all" placeholder="___">?"
+                    </p>
+                </div>
+
+                <button class="submit-quotes-btn" id="submitQuotes">Submit Quotes</button>
+            </section>
+
+            <!-- Stage 5: Final Revelation -->
+            <section class="game-stage" id="stage5" style="display: none;">
+                <h2 class="stage-title">The Truth Revealed</h2>
+                <p class="stage-description">You've recovered your memories. Now identify those responsible...</p>
+
+                <div class="targets-container">
+                    <div class="target-card" data-guilty="true">
+                        <div class="target-image">👤</div>
+                        <div class="target-name">T-BIRD</div>
+                        <div class="target-info">Leader of the gang</div>
+                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                    </div>
+                    <div class="target-card" data-guilty="false">
+                        <div class="target-image">👤</div>
+                        <div class="target-name">OFFICER ALBRECHT</div>
+                        <div class="target-info">Police detective</div>
+                        <button class="judge-btn" data-verdict="innocent">INNOCENT</button>
+                    </div>
+                    <div class="target-card" data-guilty="true">
+                        <div class="target-image">👤</div>
+                        <div class="target-name">TOP DOLLAR</div>
+                        <div class="target-info">Crime lord</div>
+                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                    </div>
+                    <div class="target-card" data-guilty="false">
+                        <div class="target-image">👤</div>
+                        <div class="target-name">SARAH</div>
+                        <div class="target-info">Young friend</div>
+                        <button class="judge-btn" data-verdict="innocent">INNOCENT</button>
+                    </div>
+                </div>
+
+                <div class="judgment-progress">
+                    <span id="judgmentCount">Correct Judgments: 0/4</span>
+                </div>
+            </section>
+
+            <!-- Success Screen -->
+            <section class="game-stage success-screen" id="successScreen" style="display: none;">
+                <div class="success-content">
+                    <div class="crow-icon-large">🐦‍⬛</div>
+                    <h2 class="success-title">VENGEANCE IS COMPLETE</h2>
+                    <p class="success-message">
+                        You have successfully navigated the darkness and brought justice to those who wronged you.
+                        The crow's work is done. The souls can finally rest in peace.
+                    </p>
+                    <div class="final-quote">"It can't rain all the time."</div>
+
+                    <div class="next-phase-info">
+                        <p>Phase 3 Complete</p>
+                        <p class="coming-soon">Phase 4: Coming Soon...</p>
+                    </div>
+
+                    <button class="return-btn" onclick="window.location.href='index.html'">Return to Beginning</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Progress Indicator -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-label" id="progressLabel">Stage 1 of 5</div>
+        </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="ambientAudio" loop>
+        <source src="assets/audio/crow-ambient.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="thunderAudio">
+        <source src="assets/audio/thunder.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="crowSound">
+        <source src="assets/audio/crow-caw.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="crow.js"></script>
+</body>
+</html>
