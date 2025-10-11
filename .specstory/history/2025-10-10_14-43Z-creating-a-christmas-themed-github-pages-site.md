@@ -2607,7 +2607,7 @@ The text should now be properly contained within visible panels instead of being
 
 ---
 
-_**User (2025-10-10 22:04Z)**_
+_**User (2025-10-10 22:05Z)**_
 
 instead of expanding the window to the right with the text such as 
 [23:02:34] > Question 12 displayed. Monitoring subject response...
@@ -2622,7 +2622,42 @@ keep the original window the same size and then make that scrollable woith a nic
 
 _**Assistant (copilot/claude-sonnet-4.5)**_
 
-I'll add a scrollbar to the terminal content and style it with a green theme. Let me update the 
+I'll add a scrollbar to the terminal content and style it with a green theme. Let me update the CSS: 
+```
+
+```
+Perfect! I've added a custom green scrollbar to the terminal. The changes include:
+
+✅ **Fixed width terminal** - Window no longer expands to the right
+✅ **Vertical scrolling** - Content scrolls within a max-height of 400px
+✅ **Custom green scrollbar** with:
+   - Green gradient thumb (bright to dark green)
+   - Dark track with green border
+   - Glowing effect on the scrollbar
+   - Hover state that brightens the thumb
+   - Support for both Chrome/Edge (webkit) and Firefox
+
+The terminal will now maintain its original size and display a nice green-themed scrollbar when the content exceeds the viewing area.
+
+---
+
+_**User (2025-10-11 08:56Z)**_
+
+ok, change some of the answers in the test to be really offensive and not politically correct, make some really funny, add 5 more random questions.
+
+For deesha watkins pop up an alert stating DNA matches SABRINA a known criminal and possibly the leader of the replicants.
+Same for donald thompson.
+Ad to christopher watkins, likes japanese culture, was an ex-sniper, has lupus.
+for sabrina add to the alert suspected leader of the replicants.
+Before doing any of this make a backup folder in the project file and copy the files into it so i have a backup i can go back to if needed. unless the whole poin tof github is for that reason?
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+You're absolutely right - GitHub already serves as your backup! Every commit is saved in the repository history, so you can always go back to any previous version. You don't need a separate backup folder.
+
+Let me make those changes to the test questions and subject alerts: Now let me read the subject database section to update it: 
 
 ---
 

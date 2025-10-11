@@ -106,6 +106,31 @@ const psychopathQuestions = [
         question: "You accidentally hit someone's parked car with no witnesses. You:",
         answers: ["Leave your insurance information", "Wait for the owner to return", "Check if there's any real damage first", "Drive away quickly"],
         correct: 1
+    },
+    {
+        question: "Your vegan friend won't stop talking about being vegan. You:",
+        answers: ["Listen politely and respect their choice", "Change the subject tactfully", "Order a bacon cheeseburger and maintain eye contact", "Tell them plants have feelings too"],
+        correct: 1
+    },
+    {
+        question: "Someone with 47 items gets in the '10 items or less' checkout line. You:",
+        answers: ["Politely point out the sign", "Let it go, they might be in a hurry", "Loudly count their items out loud", "Follow them home"],
+        correct: 1
+    },
+    {
+        question: "Your neighbor plays terrible music at 3 AM. Your response:",
+        answers: ["Knock and politely ask them to turn it down", "Call the building manager in the morning", "Play death metal at 6 AM as revenge", "Learn to appreciate their music taste"],
+        correct: 1
+    },
+    {
+        question: "You find out your girlfriend is actually a replicant. You:",
+        answers: ["Accept her for who she is", "Have an honest conversation about it", "Wonder if that's why the relationship felt artificial", "Check if she has a warranty"],
+        correct: 1
+    },
+    {
+        question: "A stranger tells you to smile more. You:",
+        answers: ["Smile politely and move on", "Ignore them completely", "Tell them you'll smile when they mind their own business", "Practice your horror movie smile"],
+        correct: 1
     }
 ];
 
@@ -151,12 +176,14 @@ const subjectDatabase = {
         employment: 'GOLDEN HANDS TATTOO STUDIO, HASTINGS UK',
         maritalStatus: 'MARRIED TO JAMES MARTIN',
         associates: ['JAMES MARTIN', 'ASHA THOMPSON', 'DON'],
+        isReplicantLeader: true,
         records: [
             'CRIMINAL RECORD: WEAPONS OFFENSE',
             'COURT: CROWN COURT CONVICTION', 
             'SENTENCE: SUSPENDED PRISON',
             'EMPLOYMENT: GOLDEN HANDS TATTOO STUDIO',
-            'SPOUSE: JAMES MARTIN (BIOTRONICS 3D)'
+            'SPOUSE: JAMES MARTIN (BIOTRONICS 3D)',
+            '⚠️ SUSPECTED LEADER OF REPLICANT NETWORK'
         ]
     },
     'SABRINA MARTIN': {
@@ -169,12 +196,14 @@ const subjectDatabase = {
         employment: 'GOLDEN HANDS TATTOO STUDIO, HASTINGS UK',
         maritalStatus: 'MARRIED TO JAMES MARTIN',
         associates: ['JAMES MARTIN', 'ASHA THOMPSON', 'DON'],
+        isReplicantLeader: true,
         records: [
             'CRIMINAL RECORD: WEAPONS OFFENSE',
             'COURT: CROWN COURT CONVICTION', 
             'SENTENCE: SUSPENDED PRISON',
             'EMPLOYMENT: GOLDEN HANDS TATTOO STUDIO',
-            'SPOUSE: JAMES MARTIN (BIOTRONICS 3D)'
+            'SPOUSE: JAMES MARTIN (BIOTRONICS 3D)',
+            '⚠️ SUSPECTED LEADER OF REPLICANT NETWORK'
         ]
     },
     'ASHA': {
@@ -256,19 +285,20 @@ const subjectDatabase = {
         replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
-        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
-        employment: 'EX-ARMY SOLDIER (DISABLED)',
+        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND, LUPUS',
+        employment: 'EX-ARMY SNIPER (DISABLED)',
         maritalStatus: 'MARRIED TO DEESHA WATKINS',
-        interests: 'PS5 ELDEN RING GAMING',
+        interests: 'PS5 ELDEN RING GAMING, JAPANESE CULTURE',
         associates: ['DEESHA WATKINS'],
         sabinaAssociate: true,
         records: [
             'CLEAN CRIMINAL RECORD',
             'MEDICAL: SPINE DAMAGE - ACCIDENT',
+            'MEDICAL: LUPUS DIAGNOSIS',
             'STATUS: WHEELCHAIR BOUND',
-            'MILITARY: EX-ARMY SOLDIER',
+            'MILITARY: EX-ARMY SNIPER',
             'SPOUSE: DEESHA WATKINS',
-            'INTERESTS: PS5 ELDEN RING',
+            'INTERESTS: PS5 ELDEN RING, JAPANESE CULTURE',
             'ASSOCIATION: SABRINA MARTIN NETWORK'
         ]
     },
@@ -278,19 +308,20 @@ const subjectDatabase = {
         replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
-        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
-        employment: 'EX-ARMY SOLDIER (DISABLED)',
+        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND, LUPUS',
+        employment: 'EX-ARMY SNIPER (DISABLED)',
         maritalStatus: 'MARRIED TO DEESHA WATKINS',
-        interests: 'PS5 ELDEN RING GAMING',
+        interests: 'PS5 ELDEN RING GAMING, JAPANESE CULTURE',
         associates: ['DEESHA WATKINS'],
         sabinaAssociate: true,
         records: [
             'CLEAN CRIMINAL RECORD',
             'MEDICAL: SPINE DAMAGE - ACCIDENT',
+            'MEDICAL: LUPUS DIAGNOSIS',
             'STATUS: WHEELCHAIR BOUND',
-            'MILITARY: EX-ARMY SOLDIER',
+            'MILITARY: EX-ARMY SNIPER',
             'SPOUSE: DEESHA WATKINS',
-            'INTERESTS: PS5 ELDEN RING',
+            'INTERESTS: PS5 ELDEN RING, JAPANESE CULTURE',
             'ASSOCIATION: SABRINA MARTIN NETWORK'
         ]
     },
@@ -300,19 +331,20 @@ const subjectDatabase = {
         replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
         alertLevel: 'ORANGE',
-        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND',
-        employment: 'EX-ARMY SOLDIER (DISABLED)',
+        medicalStatus: 'SPINE DAMAGE - WHEELCHAIR BOUND, LUPUS',
+        employment: 'EX-ARMY SNIPER (DISABLED)',
         maritalStatus: 'MARRIED TO DEESHA WATKINS',
-        interests: 'PS5 ELDEN RING GAMING',
+        interests: 'PS5 ELDEN RING GAMING, JAPANESE CULTURE',
         associates: ['DEESHA WATKINS'],
         sabinaAssociate: true,
         records: [
             'CLEAN CRIMINAL RECORD',
             'MEDICAL: SPINE DAMAGE - ACCIDENT',
+            'MEDICAL: LUPUS DIAGNOSIS',
             'STATUS: WHEELCHAIR BOUND',
-            'MILITARY: EX-ARMY SOLDIER',
+            'MILITARY: EX-ARMY SNIPER',
             'SPOUSE: DEESHA WATKINS',
-            'INTERESTS: PS5 ELDEN RING',
+            'INTERESTS: PS5 ELDEN RING, JAPANESE CULTURE',
             'ASSOCIATION: SABRINA MARTIN NETWORK'
         ]
     },
@@ -321,14 +353,17 @@ const subjectDatabase = {
         location: 'COVENTRY, NOD LANE, UK',
         replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
-        alertLevel: 'ORANGE',
+        alertLevel: 'RED',
         employment: 'COVENTRY UNIVERSITY - PROJECT MANAGEMENT',
         maritalStatus: 'MARRIED TO CHRISTOPHER WATKINS',
         interests: 'CHOCOLATE, PS5 ELDEN RING GAMING',
         associates: ['CHRISTOPHER WATKINS'],
         sabinaAssociate: true,
+        dnaMatch: 'SABRINA MARTIN',
         records: [
             'CLEAN CRIMINAL RECORD',
+            '⚠️ DNA MATCH: SABRINA MARTIN - KNOWN CRIMINAL',
+            '⚠️ SUSPECTED LEADER OF REPLICANT NETWORK',
             'EMPLOYMENT: COVENTRY UNIVERSITY',
             'POSITION: PROJECT MANAGEMENT',
             'SPOUSE: CHRISTOPHER WATKINS (EX-ARMY)',
@@ -341,14 +376,17 @@ const subjectDatabase = {
         location: 'COVENTRY, NOD LANE, UK',
         replicantStatus: 'SUSPECTED REPLICANT',
         criminalRecord: false,
-        alertLevel: 'ORANGE',
+        alertLevel: 'RED',
         employment: 'COVENTRY UNIVERSITY - PROJECT MANAGEMENT',
         maritalStatus: 'MARRIED TO CHRISTOPHER WATKINS',
         interests: 'CHOCOLATE, PS5 ELDEN RING GAMING',
         associates: ['CHRISTOPHER WATKINS'],
         sabinaAssociate: true,
+        dnaMatch: 'SABRINA MARTIN',
         records: [
             'CLEAN CRIMINAL RECORD',
+            '⚠️ DNA MATCH: SABRINA MARTIN - KNOWN CRIMINAL',
+            '⚠️ SUSPECTED LEADER OF REPLICANT NETWORK',
             'EMPLOYMENT: COVENTRY UNIVERSITY',
             'POSITION: PROJECT MANAGEMENT',
             'SPOUSE: CHRISTOPHER WATKINS (EX-ARMY)',
@@ -368,6 +406,44 @@ const subjectDatabase = {
             'CLEAN CRIMINAL RECORD',
             'EMPLOYMENT HISTORY: VERIFIED',
             'MEDICAL RECORDS: ACCESSED',
+            'ASSOCIATION: SABRINA MARTIN (HIGH RISK)',
+            'WARNING: CONNECTED TO CRIMINAL NETWORK'
+        ]
+    },
+    'DONALD': {
+        fullName: 'DONALD THOMPSON',
+        location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
+        criminalRecord: false,
+        alertLevel: 'RED',
+        employment: 'SOFTWARE DEVELOPER',
+        associates: ['SABRINA MARTIN', 'ASHA THOMPSON', 'JAMES MARTIN'],
+        sabinaAssociate: true,
+        dnaMatch: 'SABRINA MARTIN',
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            '⚠️ DNA MATCH: SABRINA MARTIN - KNOWN CRIMINAL',
+            '⚠️ SUSPECTED LEADER OF REPLICANT NETWORK',
+            'EMPLOYMENT: SOFTWARE DEVELOPER',
+            'ASSOCIATION: SABRINA MARTIN (HIGH RISK)',
+            'WARNING: CONNECTED TO CRIMINAL NETWORK'
+        ]
+    },
+    'DONALD THOMPSON': {
+        fullName: 'DONALD THOMPSON',
+        location: 'HASTINGS, UK',
+        replicantStatus: 'SUSPECTED REPLICANT',
+        criminalRecord: false,
+        alertLevel: 'RED',
+        employment: 'SOFTWARE DEVELOPER',
+        associates: ['SABRINA MARTIN', 'ASHA THOMPSON', 'JAMES MARTIN'],
+        sabinaAssociate: true,
+        dnaMatch: 'SABRINA MARTIN',
+        records: [
+            'CLEAN CRIMINAL RECORD',
+            '⚠️ DNA MATCH: SABRINA MARTIN - KNOWN CRIMINAL',
+            '⚠️ SUSPECTED LEADER OF REPLICANT NETWORK',
+            'EMPLOYMENT: SOFTWARE DEVELOPER',
             'ASSOCIATION: SABRINA MARTIN (HIGH RISK)',
             'WARNING: CONNECTED TO CRIMINAL NETWORK'
         ]
@@ -538,10 +614,18 @@ function showCriminalWarningPopup(subject) {
     warningPopup.className = 'sabrina-warning-popup';
     
     let warningContent = `
-        <div class="warning-header">⚠️ ${subject.alertLevel === 'RED' ? 'CRIMINAL RECORD' : 'SECURITY'} ALERT ⚠️</div>
+        <div class="warning-header">⚠️ ${subject.alertLevel === 'RED' ? 'CRITICAL SECURITY' : 'SECURITY'} ALERT ⚠️</div>
         <div class="warning-content">
             <div class="warning-line">SUBJECT: ${subject.fullName}</div>
     `;
+    
+    if (subject.dnaMatch) {
+        warningContent += `<div class="warning-line">⚠️ DNA MATCH: ${subject.dnaMatch} - KNOWN CRIMINAL</div>`;
+    }
+    
+    if (subject.isReplicantLeader) {
+        warningContent += `<div class="warning-line">⚠️ SUSPECTED LEADER OF REPLICANT NETWORK</div>`;
+    }
     
     if (subject.criminalDetails) {
         warningContent += `<div class="warning-line">OFFENSE: ${subject.criminalDetails}</div>`;
@@ -564,16 +648,27 @@ function showCriminalWarningPopup(subject) {
     warningPopup.innerHTML = warningContent;
     document.body.appendChild(warningPopup);
     
-    // Remove popup after 6 seconds
+    // Remove popup after 8 seconds for DNA matches, 6 for others
+    const displayTime = subject.dnaMatch || subject.isReplicantLeader ? 8000 : 6000;
     setTimeout(() => {
         if (warningPopup.parentNode) {
             warningPopup.parentNode.removeChild(warningPopup);
         }
-    }, 6000);
+    }, displayTime);
     
     // Add terminal alerts
+    if (subject.dnaMatch) {
+        updateTerminal(`⚠️ CRITICAL ALERT: DNA MATCH DETECTED - ${subject.dnaMatch}`);
+        updateTerminal(`SUBJECT ${subject.fullName} SHARES DNA WITH KNOWN CRIMINAL`);
+    }
+    
+    if (subject.isReplicantLeader) {
+        updateTerminal(`⚠️ EXTREME THREAT: SUSPECTED REPLICANT NETWORK LEADER`);
+        updateTerminal(`SUBJECT ${subject.fullName} - MAXIMUM SECURITY PROTOCOLS ACTIVATED`);
+    }
+    
     if (subject.alertLevel === 'RED') {
-        updateTerminal(`ALERT: HIGH-RISK CRIMINAL RECORD DETECTED - ${subject.fullName}`);
+        updateTerminal(`ALERT: HIGH-RISK SUBJECT DETECTED - ${subject.fullName}`);
         if (subject.criminalDetails) {
             updateTerminal(`CRIMINAL OFFENSE: ${subject.criminalDetails}`);
         }
