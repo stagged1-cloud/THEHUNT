@@ -16,12 +16,10 @@ class AtmosphericEffect {
         window.addEventListener('resize', () => this.resize());
         
         this.raindrops = [];
-        this.godRays = [];
         this.smokeParticles = [];
         this.time = 0;
         
         this.initRain();
-        this.initGodRays();
         this.initSmoke();
         this.animate();
     }
@@ -73,34 +71,6 @@ class AtmosphericEffect {
                 drop.y = -drop.length;
                 drop.x = Math.random() * this.canvas.width;
             }
-        });
-    }
-    
-    // Volumetric light beams (god rays)
-    initGodRays() {
-        this.godRays = [
-            { x: this.canvas.width * 0.2, angle: -20, opacity: 0.15, color: 'rgba(0, 200, 255, 0.15)' },
-            { x: this.canvas.width * 0.7, angle: 15, opacity: 0.12, color: 'rgba(255, 100, 50, 0.12)' },
-            { x: this.canvas.width * 0.5, angle: 0, opacity: 0.1, color: 'rgba(0, 255, 200, 0.1)' }
-        ];
-    }
-    
-    drawGodRays() {
-        this.godRays.forEach(ray => {
-            this.ctx.save();
-            this.ctx.translate(ray.x, 0);
-            this.ctx.rotate(ray.angle * Math.PI / 180);
-            
-            // Animated opacity pulse
-            const pulse = Math.sin(this.time * 0.001) * 0.05;
-            const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-            gradient.addColorStop(0, ray.color.replace(/[\d.]+\)/, `${ray.opacity + pulse})`));
-            gradient.addColorStop(0.5, ray.color.replace(/[\d.]+\)/, `${(ray.opacity + pulse) * 0.5})`));
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            
-            this.ctx.fillStyle = gradient;
-            this.ctx.fillRect(-100, 0, 200, this.canvas.height);
-            this.ctx.restore();
         });
     }
     
@@ -174,7 +144,6 @@ class AtmosphericEffect {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // Draw layers
-        this.drawGodRays();
         this.drawSmoke();
         this.drawRain();
         

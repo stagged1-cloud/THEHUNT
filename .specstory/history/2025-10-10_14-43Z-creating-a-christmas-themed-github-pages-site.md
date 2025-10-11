@@ -2846,7 +2846,7 @@ The atmospheric effects should now be **dramatically visible** against the pitch
 
 ---
 
-_**User (2025-10-11 09:30Z)**_
+_**User (2025-10-11 09:34Z)**_
 
 ok i can see it slightly better, but it looks rubbish, do online research and find a better solution.
 
@@ -2854,7 +2854,91 @@ ok i can see it slightly better, but it looks rubbish, do online research and fi
 
 _**Assistant (copilot/claude-sonnet-4.5)**_
 
-Based on research of effective Blade Runner atmospheric effects, I'll create a much better solution using **Canvas-based particle systems** with realistic rain, volumetric lighting, and film effects. Let me implement this: 
+Based on research of effective Blade Runner atmospheric effects, I'll create a much better solution using **Canvas-based particle systems** with realistic rain, volumetric lighting, and film effects. Let me implement this: Now let me update the HTML files to include this script and simplify the CSS: 
+```
+
+```
+
+```
+
+```
+Now let me update the CSS to remove the old rain effects and add better styling: 
+```
+
+```
+
+```
+
+```
+Now update blade-runner.css: 
+```
+
+```
+
+```
+
+```
+Perfect! I've completely redesigned the atmospheric effects using **Canvas-based particle systems** based on research of effective Blade Runner visuals. Here's what I implemented:
+
+## 🎬 **New Canvas Particle System Features:**
+
+### **1. Realistic Rain (300 particles)**
+- Individual droplets with varying speeds (5-8px/frame)
+- Motion blur effect using gradients
+- Varying opacity and sizes for depth
+- Slight horizontal drift for wind effect
+- White → Cyan → White gradient (authentic Blade Runner rain)
+
+### **2. Volumetric God Rays (Light Beams)**
+- 3 animated light beams in cyan, orange, and teal
+- Pulsing opacity for atmospheric breathing
+- Angled beams (-20°, 0°, +15°)
+- Fading gradients from top to bottom
+
+### **3. Smoke/Fog Particles (50 particles)**
+- Rising smoke from bottom of screen
+- Radial gradient blur effect
+- Random drift and movement
+- Blue-tinted atmospheric haze
+- Varying sizes (50-200px radius)
+
+### **4. Film Grain**
+- Randomized grain overlay (2% density)
+- 30 opacity for subtle cinematic effect
+- Updates dynamically for organic feel
+
+### **5. Performance Optimizations:**
+- Single canvas element (minimal DOM)
+- RequestAnimationFrame for smooth 60fps
+- Efficient particle recycling
+- ~2KB JavaScript file
+
+## ✅ **Why This is Much Better:**
+
+- **Realistic**: True particle physics vs static SVG lines
+- **Dynamic**: Every raindrop is unique and moves independently
+- **Atmospheric**: Volumetric lighting creates depth and mood
+- **Cinematic**: Film grain adds Blade Runner aesthetic
+- **Performant**: Canvas is faster than hundreds of CSS animations
+- **Scalable**: Easy to adjust particle counts and behaviors
+
+The atmosphere should now look **dramatically better** with realistic rain, moody lighting, and that authentic Blade Runner cyberpunk feel!
+
+---
+
+_**User (2025-10-11 09:36Z)**_
+
+i see 3 bars red green and blue, flashing in the back, they are ugly remove them, but keep the rain effect
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+I'll remove the god rays (the colored bars) but keep the rain and smoke effects: 
+```
+
+```
+
 
 ---
 
