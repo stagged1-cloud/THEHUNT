@@ -142,7 +142,7 @@ setTimeout(playRandomCrowSound, 10000);
 let flippedCards = [];
 let matchedPairs = 0;
 
-// Images from crowmem folder - 25 unique images for 5x5 grid (no pairs, all unique)
+// Images from crowmem folder - 12 unique images for 4x6 grid (24 cards, 12 pairs)
 const memoryImages = [
     '0d72354056a4ccbb18e93c510b94be84.jpg',
     '14a9fed56c53f21535c3d01357119926.jpg',
@@ -155,20 +155,7 @@ const memoryImages = [
     'c85d8a78d28f83b899d342805e96f307.jpg',
     'ce8516ca2279c34732bc6e431194f737.jpg',
     'd2f4c2f4b1d96ec0dd37043537fd6fc2.jpg',
-    'df357722245458805034cda34f21ba18.jpg',
-    'e03bfe59da2b569bdcd219543da412c4.jpg',
-    'Screenshot 2025-10-11 233511.png',
-    'Screenshot 2025-10-11 233557.png',
-    'Screenshot 2025-10-11 233612.png',
-    'Screenshot 2025-10-11 233633.png',
-    'Screenshot 2025-10-11 233657.png',
-    'Screenshot 2025-10-11 233945.png',
-    'Screenshot 2025-10-11 234115.png',
-    'Screenshot 2025-10-11 234204.png',
-    'Screenshot 2025-10-11 234255.png',
-    'Screenshot 2025-10-11 234321.png',
-    'Screenshot 2025-10-11 235002.png',
-    'Screenshot 2025-10-11 235022.png'
+    'df357722245458805034cda34f21ba18.jpg'
 ];
 
 function initializeStage1() {
@@ -188,8 +175,7 @@ function generateMemoryGrid() {
     const memoryGrid = document.getElementById('memoryGrid');
     memoryGrid.innerHTML = '';
     
-    // Use first 12 unique images and create ONE pair of each (24 cards)
-    // Then add 1 more unique image to make 25 cards for 5x5 grid
+    // Use 12 unique images and create ONE pair of each (24 cards total for 4x6 grid)
     let cardsArray = [];
     
     // Add 12 pairs (24 cards) - each image used exactly twice
@@ -205,12 +191,6 @@ function generateMemoryGrid() {
             image: memoryImages[i]
         });
     }
-    
-    // Add one more unique image (25th card - unpaired)
-    cardsArray.push({
-        id: 13,
-        image: memoryImages[12]
-    });
     
     // Shuffle the cards
     cardsArray = shuffleArray(cardsArray);

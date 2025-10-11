@@ -493,10 +493,10 @@ body::after {
 /* Stage 1: Memory Card Game */
 .memory-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 15px;
     margin: 30px auto;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 .memory-card {
@@ -960,8 +960,8 @@ body::after {
 /* Responsive */
 @media (max-width: 1024px) {
     .memory-grid {
-        grid-template-columns: repeat(5, 1fr);
-        max-width: 600px;
+        grid-template-columns: repeat(6, 1fr);
+        max-width: 700px;
     }
 }
 
