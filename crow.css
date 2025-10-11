@@ -439,7 +439,25 @@ body::after {
     text-transform: uppercase;
 }
 
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 50.625%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 
+        0 10px 50px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(138, 43, 226, 0.4);
+    border: 2px solid rgba(138, 43, 226, 0.3);
+}
+
 .movie-clip {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     max-width: 900px;
     display: block;
@@ -449,6 +467,7 @@ body::after {
         0 10px 50px rgba(0, 0, 0, 0.8),
         0 0 30px rgba(138, 43, 226, 0.4);
     border: 2px solid rgba(138, 43, 226, 0.3);
+    height: 100%;
 }
 
 .frame-caption {
