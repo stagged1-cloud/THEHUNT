@@ -1,4 +1,4 @@
-// The Crow - Vengeance Protocol Game Logic
+// The Crow - Cinematic Gothic Experience
 
 // Game State
 let currentStage = 1;
@@ -16,34 +16,70 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeLightning();
     initializeStage1();
     updateProgressBar();
+    initializeAudio();
 
-    // Try to play ambient audio
-    const ambientAudio = document.getElementById('ambientAudio');
-    if (ambientAudio) {
-        ambientAudio.volume = 0.3;
-        ambientAudio.play().catch(e => console.log('Audio autoplay prevented'));
-    }
-
-    // Enable audio on user interaction
-    document.addEventListener('click', function enableAudio() {
-        if (ambientAudio && ambientAudio.paused) {
-            ambientAudio.play().catch(e => console.log('Audio play failed'));
-        }
-    }, { once: true });
+    // Cinematic fade-in
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 2s ease-in';
+        document.body.style.opacity = '1';
+    }, 100);
 });
+
+// ===== AUDIO INITIALIZATION =====
+
+function initializeAudio() {
+    const ambientAudio = document.getElementById('ambientAudio');
+    const cureMusic = document.getElementById('cureMusic');
+    const gothicAmbient = document.getElementById('gothicAmbient');
+
+    // Set volumes
+    if (ambientAudio) ambientAudio.volume = 0.4;
+    if (cureMusic) cureMusic.volume = 0.6;
+    if (gothicAmbient) gothicAmbient.volume = 0.3;
+
+    // Try autoplay with fallback
+    const playAudio = () => {
+        Promise.all([
+            ambientAudio?.play().catch(e => console.log('Ambient audio autoplay prevented')),
+            gothicAmbient?.play().catch(e => console.log('Gothic ambient autoplay prevented'))
+        ]).then(() => {
+            // Start The Cure music after 3 seconds
+            setTimeout(() => {
+                if (cureMusic) {
+                    cureMusic.play().catch(e => console.log('Music autoplay prevented'));
+                }
+            }, 3000);
+        });
+    };
+
+    // Try immediate playback
+    playAudio();
+
+    // Fallback on user interaction
+    const enableAudio = () => {
+        playAudio();
+        document.removeEventListener('click', enableAudio);
+        document.removeEventListener('keydown', enableAudio);
+    };
+
+    document.addEventListener('click', enableAudio, { once: true });
+    document.addEventListener('keydown', enableAudio, { once: true });
+}
 
 // ===== ATMOSPHERIC EFFECTS =====
 
 function initializeRain() {
     const rainContainer = document.getElementById('rainContainer');
-    const rainDropCount = 150;
+    const rainDropCount = 200; // Increased for more cinematic effect
 
     for (let i = 0; i < rainDropCount; i++) {
         const rain = document.createElement('div');
         rain.className = 'rain';
         rain.style.left = Math.random() * 100 + '%';
-        rain.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+        rain.style.animationDuration = (Math.random() * 0.5 + 0.4) + 's';
         rain.style.animationDelay = Math.random() * 2 + 's';
+        rain.style.opacity = Math.random() * 0.5 + 0.3;
         rainContainer.appendChild(rain);
     }
 }
@@ -54,25 +90,54 @@ function initializeLightning() {
     function flash() {
         lightning.classList.add('flash');
 
-        // Play thunder sound
-        const thunder = document.getElementById('thunderAudio');
-        if (thunder) {
-            thunder.currentTime = 0;
-            thunder.volume = 0.4;
-            thunder.play().catch(e => console.log('Thunder sound failed'));
-        }
+        // Play thunder sound with random delay
+        setTimeout(() => {
+            const thunder = document.getElementById('thunderAudio');
+            if (thunder) {
+                thunder.currentTime = 0;
+                thunder.volume = 0.5;
+                thunder.play().catch(e => console.log('Thunder sound failed'));
+            }
+        }, Math.random() * 500 + 200);
 
+        // Create multiple flashes for realism
         setTimeout(() => {
             lightning.classList.remove('flash');
-        }, 100);
+            
+            // Secondary flash (optional)
+            if (Math.random() > 0.5) {
+                setTimeout(() => {
+                    lightning.classList.add('flash');
+                    setTimeout(() => {
+                        lightning.classList.remove('flash');
+                    }, 100);
+                }, 200);
+            }
+        }, 150);
 
-        // Random next flash
-        setTimeout(flash, Math.random() * 15000 + 10000);
+        // Random next flash between 10-30 seconds
+        setTimeout(flash, Math.random() * 20000 + 10000);
     }
 
-    // Start lightning after 3 seconds
-    setTimeout(flash, 3000);
+    // Start lightning after 5 seconds
+    setTimeout(flash, 5000);
 }
+
+// Play crow sound randomly
+function playRandomCrowSound() {
+    const crowSound = document.getElementById('crowSound');
+    if (crowSound && Math.random() > 0.7) {
+        crowSound.currentTime = 0;
+        crowSound.volume = 0.3;
+        crowSound.play().catch(e => console.log('Crow sound failed'));
+    }
+    
+    // Schedule next crow sound
+    setTimeout(playRandomCrowSound, Math.random() * 15000 + 10000);
+}
+
+// Start crow sounds after 10 seconds
+setTimeout(playRandomCrowSound, 10000);
 
 // ===== STAGE 1: MEMORY CARD GAME =====
 

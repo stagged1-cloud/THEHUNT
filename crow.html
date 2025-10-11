@@ -3,28 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE HUNT - The Crow: Vengeance Protocol</title>
+    <title>THE CROW - It Can't Rain All The Time</title>
     <link rel="stylesheet" href="crow.css">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Cinzel:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Background Video (placeholder) -->
+    <video class="background-video" autoplay loop muted playsinline>
+        <source src="assets/videos/crow-background.mp4" type="video/mp4">
+        <!-- Fallback gradient if video not available -->
+    </video>
+
+    <!-- Atmospheric Fog -->
+    <div class="fog"></div>
+
     <!-- Rain Effect -->
     <div class="rain-container" id="rainContainer"></div>
 
     <!-- Lightning Flash -->
     <div class="lightning" id="lightning"></div>
 
-    <!-- Crow Flying Across Screen -->
+    <!-- Flying Crows -->
     <div class="flying-crow" id="flyingCrow">🐦‍⬛</div>
+    <div class="crow-flock" id="crowFlock1" style="animation-delay: 3s;">🐦‍⬛</div>
+    <div class="crow-flock" id="crowFlock2" style="animation-delay: 8s;">🐦‍⬛</div>
+    <div class="crow-flock" id="crowFlock3" style="animation-delay: 15s;">🐦‍⬛</div>
 
     <div class="container">
-        <!-- Header -->
+        <!-- Cinematic Header -->
         <header class="header">
-            <div class="crow-logo">🐦‍⬛</div>
+            <div class="crow-logo-container">
+                <div class="crow-logo">🐦‍⬛</div>
+                <div class="logo-glow"></div>
+            </div>
             <h1 class="main-title">THE CROW</h1>
-            <p class="subtitle">Vengeance Protocol: Phase 3</p>
-            <div class="quote">"It can't rain all the time..."</div>
+            <div class="title-underline"></div>
+            <p class="subtitle">Believe in angels</p>
+            <div class="quote-container">
+                <div class="quote-mark">"</div>
+                <div class="quote">It can't rain all the time...</div>
+                <div class="quote-mark">"</div>
+            </div>
+            <div class="subtitle-tagline">- Eric Draven</div>
         </header>
+
+        <!-- Movie Clip Section -->
+        <section class="movie-section">
+            <div class="movie-frame">
+                <div class="frame-title">THE RESURRECTION</div>
+                <video class="movie-clip" controls poster="assets/images/crow-poster.jpg">
+                    <source src="assets/videos/crow-clip1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="frame-caption">A soul cannot rest until those who wronged it have been punished</div>
+            </div>
+        </section>
 
         <!-- Main Game Container -->
         <main class="game-container">
@@ -250,14 +283,20 @@
     </div>
 
     <!-- Audio -->
-    <audio id="ambientAudio" loop>
-        <source src="assets/audio/crow-ambient.mp3" type="audio/mpeg">
+    <audio id="ambientAudio" loop preload="auto">
+        <source src="assets/audio/crow-rain-ambient.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="cureMusic" loop preload="auto">
+        <source src="https://archive.org/download/cd_the-crow-original-motion-picture-soundtr_various-artists-the-cure-stone-temple-pilots/disc1/01.%20The%20Cure%20-%20Burn_sample.mp3" type="audio/mpeg">
     </audio>
     <audio id="thunderAudio">
         <source src="assets/audio/thunder.mp3" type="audio/mpeg">
     </audio>
     <audio id="crowSound">
         <source src="assets/audio/crow-caw.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="gothicAmbient" loop preload="auto">
+        <source src="https://cdn.uppbeat.io/audio-files/e1e8c5ff8f2c0f3e8f2c0f3e8f2c0f3e/dark-gothic-atmosphere.mp3" type="audio/mpeg">
     </audio>
 
     <script src="crow.js"></script>
