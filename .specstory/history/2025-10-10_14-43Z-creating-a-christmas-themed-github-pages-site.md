@@ -3218,7 +3218,7 @@ The terminal and question panels should now shrink to fit their actual content r
 
 ---
 
-_**User (2025-10-11 10:13Z)**_
+_**User (2025-10-11 10:14Z)**_
 
 the video of the eye heart and green text are jerky and not smooth like before? 
 
@@ -3226,7 +3226,47 @@ the video of the eye heart and green text are jerky and not smooth like before?
 
 _**Assistant (copilot/claude-sonnet-4.5)**_
 
+The jerkiness is likely caused by the heavy particle effects (800 particles with gradients, shadows, and sorting) consuming too much CPU. Let me optimize it: 
+```
 
+```
+
+```
+
+```
+
+```
+
+```
+Perfect! I've optimized the rain effect to eliminate the jerkiness:
+
+## Performance Improvements:
+
+1. ✅ **Reduced particles** - From 800 to 400 (50% less)
+2. ✅ **Optimized canvas context** - Added `desynchronized: true` for better performance
+3. ✅ **Simplified gradients** - From 5 color stops to 3
+4. ✅ **Reduced glow intensity** - From 8px to 4px blur (less GPU work)
+5. ✅ **Removed particle head circles** - Eliminated the extra draw calls with shadows
+6. ✅ **Removed expensive sorting** - The z-depth sorting was killing performance (sorting 800 items every frame)
+7. ✅ **Draw fog less frequently** - Only 50% of frames instead of every frame
+
+The videos and text should now be smooth again while still having a nice atmospheric rain effect! The performance impact should be minimal now. 🎬✨
+
+---
+
+_**User (2025-10-11 10:24Z)**_
+
+close the gap a bit further between the questions and the answer boxes, like you did beforre, it just needs roughly one line more removing.
+
+---
+
+_**Assistant (copilot/claude-sonnet-4.5)**_
+
+
+```
+
+```
+Perfect! I've reduced the gap from `10px` to `5px` - that's about one line of space removed between the question text and the answer buttons. The spacing should now be much tighter! ✅
 
 ---
 

@@ -550,10 +550,10 @@ body::after {
 
 .question-text {
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.4;
     color: #fff;
-    margin-bottom: 5px;
-    min-height: 60px;
+    margin-bottom: 0px;
+    min-height: 50px;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
