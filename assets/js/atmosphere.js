@@ -4,7 +4,7 @@
 class ParticleRainEffect {
     constructor() {
         this.canvas = document.createElement('canvas');
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx = this.canvas.getContext('2d', { alpha: true, desynchronized: true });
         this.canvas.style.position = 'fixed';
         this.canvas.style.top = '0';
         this.canvas.style.left = '0';
@@ -18,7 +18,7 @@ class ParticleRainEffect {
         window.addEventListener('resize', () => this.resize());
         
         this.particles = [];
-        this.particleCount = 800;
+        this.particleCount = 400;  // Reduced from 800
         this.time = 0;
         
         this.init();
@@ -53,31 +53,27 @@ class ParticleRainEffect {
     drawParticle(p) {
         // Calculate perspective based on z-depth
         const scale = (1000 - p.z) / 1000;
-        const x = p.x;  // Removed perspective pull to center
-        const y = p.y;  // Removed perspective pull to center
+        const x = p.x;
+        const y = p.y;
         const length = p.length * scale;
         const width = p.width * scale;
         
-        // Create gradient for rain streak with glow
-        const gradient = this.ctx.createLinearGradient(x, y, x - 3 * scale, y + length);
+        // Simplified gradient for better performance
+        const gradient = this.ctx.createLinearGradient(x, y, x - 2 * scale, y + length);
         
         if (p.color === 'cyan') {
             gradient.addColorStop(0, `rgba(0, 255, 255, 0)`);
-            gradient.addColorStop(0.1, `rgba(0, 255, 255, ${p.opacity * 0.3})`);
             gradient.addColorStop(0.5, `rgba(100, 255, 255, ${p.opacity})`);
-            gradient.addColorStop(0.8, `rgba(0, 200, 255, ${p.opacity * 0.6})`);
             gradient.addColorStop(1, `rgba(0, 150, 200, 0)`);
         } else {
             gradient.addColorStop(0, `rgba(255, 255, 255, 0)`);
-            gradient.addColorStop(0.1, `rgba(255, 255, 255, ${p.opacity * 0.3})`);
             gradient.addColorStop(0.5, `rgba(255, 255, 255, ${p.opacity})`);
-            gradient.addColorStop(0.8, `rgba(200, 200, 255, ${p.opacity * 0.6})`);
             gradient.addColorStop(1, `rgba(150, 150, 200, 0)`);
         }
         
-        // Draw glow effect
-        this.ctx.shadowBlur = 8 * scale;
-        this.ctx.shadowColor = p.color === 'cyan' ? 'rgba(0, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.3)';
+        // Reduced glow for performance
+        this.ctx.shadowBlur = 4 * scale;
+        this.ctx.shadowColor = p.color === 'cyan' ? 'rgba(0, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.2)';
         
         // Draw main streak
         this.ctx.strokeStyle = gradient;
@@ -85,15 +81,8 @@ class ParticleRainEffect {
         this.ctx.lineCap = 'round';
         this.ctx.beginPath();
         this.ctx.moveTo(x, y);
-        this.ctx.lineTo(x - 3 * scale, y + length);
+        this.ctx.lineTo(x - 2 * scale, y + length);
         this.ctx.stroke();
-        
-        // Draw bright head
-        this.ctx.shadowBlur = 15 * scale;
-        this.ctx.fillStyle = p.color === 'cyan' ? `rgba(150, 255, 255, ${p.opacity * 0.8})` : `rgba(255, 255, 255, ${p.opacity * 0.8})`;
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, width * 1.5, 0, Math.PI * 2);
-        this.ctx.fill();
         
         // Reset shadow
         this.ctx.shadowBlur = 0;
@@ -141,18 +130,18 @@ class ParticleRainEffect {
     animate() {
         requestAnimationFrame(() => this.animate());
         
-        // Fade previous frame for trail effect (shorter trails)
+        // Fade previous frame for trail effect
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
         this.ctx.fillRect(0, 0, this.width, this.height);
         
-        // Draw fog
-        this.drawFog();
+        // Draw fog (less frequently for performance)
+        if (Math.random() < 0.5) {
+            this.drawFog();
+        }
         
-        // Update and draw particles (sort by z-depth for proper layering)
+        // Update and draw particles (removed expensive sorting)
         this.update();
-        this.particles
-            .sort((a, b) => b.z - a.z)
-            .forEach(p => this.drawParticle(p));
+        this.particles.forEach(p => this.drawParticle(p));
     }
 }
 
