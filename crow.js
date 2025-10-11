@@ -144,9 +144,24 @@ setTimeout(playRandomCrowSound, 10000);
 let flippedCards = [];
 let matchedPairs = 0;
 
-function initializeStage1() {
-    const cards = document.querySelectorAll('.memory-card');
+// Images from crowmem folder
+const memoryImages = [
+    '0d72354056a4ccbb18e93c510b94be84.jpg',
+    '14a9fed56c53f21535c3d01357119926.jpg',
+    '1e978071d06615a6fb36327ea60dc19b.jpg',
+    '550dc6976e17bbf78850c7bb830eefa8.jpg',
+    '70c9b0a2551b78cd23317aaf87b64c78.jpg',
+    'a2fbca4d1eaae1a22520a3789f8189b7.jpg',
+    'ad25d5d325f76109a3faff9094e7f8d6.jpg',
+    'b4c0b1a024c69d00e97b238b239f3fda.jpg',
+    'c85d8a78d28f83b899d342805e96f307.jpg',
+    'ce8516ca2279c34732bc6e431194f737.jpg'
+];
 
+function initializeStage1() {
+    generateMemoryGrid();
+    
+    const cards = document.querySelectorAll('.memory-card');
     cards.forEach(card => {
         card.addEventListener('click', function() {
             if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
@@ -154,6 +169,46 @@ function initializeStage1() {
             }
         });
     });
+}
+
+function generateMemoryGrid() {
+    const memoryGrid = document.getElementById('memoryGrid');
+    memoryGrid.innerHTML = '';
+    
+    // Create array with 10 pairs of each image (10 images × 10 pairs = 100 cards)
+    let cardsArray = [];
+    for (let i = 0; i < memoryImages.length; i++) {
+        for (let j = 0; j < 10; j++) {
+            cardsArray.push({
+                id: i + 1,
+                image: memoryImages[i]
+            });
+        }
+    }
+    
+    // Shuffle the cards
+    cardsArray = shuffleArray(cardsArray);
+    
+    // Generate HTML for each card
+    cardsArray.forEach(cardData => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.setAttribute('data-memory', cardData.id);
+        card.innerHTML = `
+            <div class="card-front">?</div>
+            <div class="card-back"><img src="assets/images/crowmem/${cardData.image}" alt="Memory"></div>
+        `;
+        memoryGrid.appendChild(card);
+    });
+}
+
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
 }
 
 function flipCard(card) {
@@ -179,12 +234,12 @@ function checkMatch() {
         matchedPairs++;
         gameState.memoryMatches = matchedPairs;
 
-        document.getElementById('matchCount').textContent = `Matches: ${matchedPairs}/12`;
+        document.getElementById('matchCount').textContent = `Matches: ${matchedPairs}/50`;
 
         flippedCards = [];
 
         // Check if all pairs matched
-        if (matchedPairs === 12) {
+        if (matchedPairs === 50) {
             setTimeout(() => {
                 completeStage1();
             }, 1000);
