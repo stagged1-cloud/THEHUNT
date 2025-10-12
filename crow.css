@@ -50,6 +50,7 @@ body {
 
 .side-video-right {
     right: 20px;
+    transform: translateY(-50%) scaleX(-1);
 }
 
 /* Dark Gothic Overlay */
