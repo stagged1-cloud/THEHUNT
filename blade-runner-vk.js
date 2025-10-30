@@ -596,6 +596,10 @@ function submitIdentification() {
     // Store the subject name for use in questions
     subjectName = name.split(' ')[0]; // Use first name
     
+    // Store in localStorage for other games to access
+    localStorage.setItem('subjectName', subjectName);
+    sessionStorage.setItem('subjectName', subjectName);
+    
     // Hide form and show background check
     document.querySelector('.id-form').style.display = 'none';
     document.getElementById('backgroundCheck').style.display = 'block';
