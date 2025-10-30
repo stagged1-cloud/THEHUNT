@@ -1,0 +1,588 @@
+/* PREDATOR GAME STYLES */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #ff0000;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Background Effects */
+.background-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(0deg, transparent 24%, rgba(255, 0, 0, 0.05) 25%, rgba(255, 0, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.05) 75%, rgba(255, 0, 0, 0.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(255, 0, 0, 0.05) 25%, rgba(255, 0, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.05) 75%, rgba(255, 0, 0, 0.05) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(255, 0, 0, 0.1) 50%,
+        transparent 100%
+    );
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+}
+
+.jungle-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.2;
+    z-index: 0;
+    filter: sepia(100%) hue-rotate(90deg) saturate(200%);
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.predator-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 3px solid #ff0000;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+}
+
+.main-title {
+    font-size: 4rem;
+    font-weight: bold;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    letter-spacing: 10px;
+    margin-bottom: 10px;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    from { text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+    to { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #ff0000; }
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #ff6666;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.mission-briefing {
+    font-size: 0.9rem;
+    color: #ff4444;
+    letter-spacing: 2px;
+    margin-top: 15px;
+}
+
+/* Wrist Display */
+.wrist-display {
+    background: rgba(10, 10, 10, 0.95);
+    border: 3px solid #330000;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 
+        0 0 40px rgba(255, 0, 0, 0.4),
+        inset 0 0 20px rgba(255, 0, 0, 0.1);
+}
+
+.stage-title {
+    font-size: 2rem;
+    text-align: center;
+    color: #ff0000;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+.stage-description {
+    text-align: center;
+    color: #ff6666;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* ===== STAGE 1: THERMAL HUNT ===== */
+.thermal-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: radial-gradient(circle, #1a0000, #000000);
+    border: 3px solid #660000;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.thermal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 30% 40%, rgba(255, 100, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(255, 50, 0, 0.1) 0%, transparent 50%);
+    animation: thermalPulse 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes thermalPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+.crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 255, 0, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.crosshair::before,
+.crosshair::after {
+    content: '';
+    position: absolute;
+    background: rgba(0, 255, 0, 0.6);
+}
+
+.crosshair::before {
+    top: 50%;
+    left: -10px;
+    right: -10px;
+    height: 2px;
+    transform: translateY(-50%);
+}
+
+.crosshair::after {
+    left: 50%;
+    top: -10px;
+    bottom: -10px;
+    width: 2px;
+    transform: translateX(-50%);
+}
+
+#heatSignatures {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.heat-signature {
+    position: absolute;
+    width: 80px;
+    height: 120px;
+    cursor: crosshair;
+    transition: all 0.3s ease;
+    filter: blur(1px);
+}
+
+.heat-signature:hover {
+    transform: scale(1.1);
+    filter: blur(0px);
+}
+
+.heat-armed {
+    background: radial-gradient(ellipse, #ff6600 0%, #ff0000 40%, transparent 70%);
+    box-shadow: 0 0 30px rgba(255, 100, 0, 0.8);
+    animation: heatGlow 2s ease-in-out infinite;
+}
+
+.heat-civilian {
+    background: radial-gradient(ellipse, #0066ff 0%, #0033aa 40%, transparent 70%);
+    box-shadow: 0 0 20px rgba(0, 100, 255, 0.6);
+}
+
+@keyframes heatGlow {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+.hunt-hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Courier New', monospace;
+    color: #00ff00;
+    font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.timer-display,
+.stats-display {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 15px;
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.timer-label,
+.stat-label {
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.timer-value,
+.stat-value {
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+/* ===== STAGE 2: CODE BREAKER ===== */
+.code-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.encrypted-message {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #660000;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.encrypted-message h3 {
+    font-size: 1rem;
+    color: #ff6666;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.yautja-symbols {
+    font-size: 3rem;
+    color: #ff0000;
+    letter-spacing: 10px;
+    text-shadow: 0 0 15px #ff0000;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+}
+
+.translator-panel {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #440000;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+
+.translator-panel h3 {
+    font-size: 0.9rem;
+    color: #ff6666;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.symbol-key {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #660000;
+    padding: 10px;
+    text-align: center;
+    border-radius: 3px;
+    transition: all 0.3s;
+}
+
+.symbol-key:hover {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: #ff0000;
+}
+
+.symbol-char {
+    font-size: 1.5rem;
+    color: #ff0000;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.symbol-letter {
+    font-size: 0.8rem;
+    color: #ff6666;
+    font-weight: bold;
+}
+
+.decoder-input {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#decodeInput {
+    width: 80%;
+    max-width: 500px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    color: #ff0000;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-right: 10px;
+}
+
+#decodeInput::placeholder {
+    color: #660000;
+}
+
+#decodeInput:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+.plasma-btn {
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #00ff00, #008800);
+    border: 2px solid #00ff00;
+    border-radius: 5px;
+    color: #000;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.plasma-btn:hover {
+    background: linear-gradient(135deg, #00ff00, #00dd00);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+    transform: translateY(-2px);
+}
+
+.attempts-display {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ff6666;
+}
+
+.attempts-label {
+    margin-right: 10px;
+}
+
+.attempts-value {
+    font-weight: bold;
+    color: #ff0000;
+    text-shadow: 0 0 5px #ff0000;
+}
+
+/* ===== SUCCESS SCREEN ===== */
+.success-content {
+    text-align: center;
+    padding: 40px;
+}
+
+.predator-skull {
+    font-size: 6rem;
+    margin-bottom: 20px;
+    animation: skullFloat 3s ease-in-out infinite;
+}
+
+@keyframes skullFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.success-title {
+    font-size: 3rem;
+    color: #00ff00;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px #00ff00;
+    letter-spacing: 3px;
+}
+
+.success-message {
+    font-size: 1.2rem;
+    color: #ff6666;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.final-quote {
+    font-size: 1.1rem;
+    color: #ff4444;
+    font-style: italic;
+    margin: 30px 0;
+    letter-spacing: 1px;
+}
+
+.phase-complete {
+    font-size: 1.3rem;
+    color: #00ff00;
+    margin: 40px 0;
+    letter-spacing: 2px;
+}
+
+.next-buttons {
+    margin-top: 40px;
+}
+
+.phase-btn,
+.return-btn {
+    padding: 15px 40px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+}
+
+.phase-btn {
+    background: linear-gradient(135deg, #00ff00, #008800);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.phase-btn:hover {
+    background: linear-gradient(135deg, #00ff00, #00dd00);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+    transform: translateY(-2px);
+}
+
+.return-btn {
+    background: linear-gradient(135deg, #ff0000, #880000);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.return-btn:hover {
+    background: linear-gradient(135deg, #ff0000, #aa0000);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    transform: translateY(-2px);
+}
+
+/* ===== FAILURE SCREEN ===== */
+.failure-content {
+    text-align: center;
+    padding: 60px;
+}
+
+.failure-title {
+    font-size: 3rem;
+    color: #ff0000;
+    margin-bottom: 40px;
+    text-shadow: 0 0 30px #ff0000;
+    letter-spacing: 5px;
+    animation: dangerPulse 1s ease-in-out infinite;
+}
+
+@keyframes dangerPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.countdown-display {
+    font-size: 8rem;
+    color: #ff0000;
+    font-weight: bold;
+    text-shadow: 0 0 40px #ff0000, 0 0 80px #ff0000;
+    margin: 40px 0;
+    animation: countdownPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes countdownPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.failure-message {
+    font-size: 1.5rem;
+    color: #ff6666;
+    letter-spacing: 3px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+        letter-spacing: 5px;
+    }
+    
+    .thermal-container {
+        height: 400px;
+    }
+    
+    .yautja-symbols {
+        font-size: 2rem;
+        letter-spacing: 5px;
+    }
+    
+    #decodeInput {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    
+    .symbol-grid {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+}

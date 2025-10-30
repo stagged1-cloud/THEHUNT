@@ -968,8 +968,32 @@ body::after {
     color: #c8c8c8 !important;
 }
 
+.continue-btn {
+    padding: 15px 40px;
+    margin: 10px;
+    background: linear-gradient(135deg, #00ff00, #008800);
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    color: #000;
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.continue-btn:hover {
+    background: linear-gradient(135deg, #00ff00, #00dd00);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+    transform: translateY(-2px);
+}
+
 .return-btn {
     padding: 15px 40px;
+    margin: 10px;
     background: linear-gradient(135deg, #6a0dad, #9370db);
     border: none;
     border-radius: 8px;
