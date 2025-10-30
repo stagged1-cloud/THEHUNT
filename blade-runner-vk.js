@@ -5,7 +5,7 @@ let wrongAnswers = 0;
 let testStarted = false;
 let questions = [];
 let countdownTimer = null;
-let timeRemaining = 10;
+let timeRemaining = 20;
 let subjectName = '';
 
 // Psychopath test questions (20 questions with correct answers)
@@ -1130,7 +1130,7 @@ function startCountdown() {
         clearInterval(countdownTimer);
     }
     
-    timeRemaining = 10;
+    timeRemaining = 20;
     updateCountdownDisplay();
     
     countdownTimer = setInterval(() => {
@@ -1173,7 +1173,7 @@ function updateCountdownDisplay() {
             <svg width="80" height="80">
                 <circle cx="40" cy="40" r="35" stroke="${timeRemaining <= 3 ? '#ff3030' : '#00ff88'}" stroke-width="3" fill="none" 
                     stroke-dasharray="${2 * Math.PI * 35}" 
-                    stroke-dashoffset="${2 * Math.PI * 35 * (1 - timeRemaining / 10)}"
+                    stroke-dashoffset="${2 * Math.PI * 35 * (1 - timeRemaining / 20)}"
                     transform="rotate(-90 40 40)" />
             </svg>
             <div class="countdown-number">${timeRemaining}</div>
