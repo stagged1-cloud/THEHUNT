@@ -487,22 +487,37 @@ let judgementsComplete = 0;
 let correctJudgements = 0;
 let attemptsRemaining = 3;
 let userChoices = {};
+let isSubmitting = false;
 
 function initializeStage5() {
     attemptsRemaining = 3;
     userChoices = {};
     judgementsComplete = 0;
+    isSubmitting = false;
     
     const judgeBtns = document.querySelectorAll('.judge-btn');
     const submitBtn = document.getElementById('submitJudgment');
 
+    // Remove all existing event listeners by cloning
     judgeBtns.forEach(btn => {
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+    });
+
+    // Re-query after cloning
+    const newJudgeBtns = document.querySelectorAll('.judge-btn');
+    newJudgeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             selectVerdict(this);
         });
     });
 
-    submitBtn.addEventListener('click', function() {
+    // Clone submit button to remove old listeners
+    const newSubmitBtn = submitBtn.cloneNode(true);
+    submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+    
+    // Add event listener to the new submit button
+    document.getElementById('submitJudgment').addEventListener('click', function() {
         submitJudgment();
     });
     
@@ -543,6 +558,12 @@ function updateJudgmentCount() {
 }
 
 function submitJudgment() {
+    // Prevent multiple submissions
+    if (isSubmitting) {
+        return;
+    }
+    
+    isSubmitting = true;
     const cards = document.querySelectorAll('.target-card');
     let correctCount = 0;
     
@@ -559,6 +580,9 @@ function submitJudgment() {
         }
     });
     
+    // Disable submit button after submission
+    document.getElementById('submitJudgment').disabled = true;
+    
     if (correctCount === 9) {
         // Perfect! Complete the stage
         setTimeout(() => {
@@ -568,17 +592,22 @@ function submitJudgment() {
         // Wrong answers
         attemptsRemaining--;
         
-        if (attemptsRemaining <= 0) {
-            // Failed - redirect to crow main page
-            alert(`Only ${correctCount} correct. Justice demands perfection. You have failed. Returning to the beginning...`);
-            setTimeout(() => {
-                window.location.href = 'crow.html';
-            }, 1000);
-        } else {
-            // Let them try again
-            alert(`Only ${correctCount} correct. Justice demands perfection. ${attemptsRemaining} attempts remaining. Try again.`);
-            resetStage5();
-        }
+        setTimeout(() => {
+            if (attemptsRemaining <= 0) {
+                // Failed - redirect to crow main page
+                alert(`Only ${correctCount} correct. Justice demands perfection. You have failed. Returning to the beginning...`);
+                setTimeout(() => {
+                    window.location.href = 'crow.html';
+                }, 1000);
+            } else {
+                // Let them try again
+                alert(`Only ${correctCount} correct. Justice demands perfection. ${attemptsRemaining} attempts remaining. Try again.`);
+                setTimeout(() => {
+                    resetStage5();
+                    isSubmitting = false;
+                }, 500);
+            }
+        }, 1000);
     }
 }
 
