@@ -1246,9 +1246,10 @@ body::after {
 
 /* Countdown Timer Styles */
 .countdown-display {
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    position: absolute;
+    left: -100px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 1000;
     background: rgba(0, 0, 0, 0.9);
     border: 2px solid #00ff88;

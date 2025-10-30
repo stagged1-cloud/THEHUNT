@@ -281,18 +281,18 @@ function shuffleQuestionAnswers() {
 
 // Initialize the test
 function initializeTest() {
-    // Separate the first question (tortoise) from the rest
-    const tortoiseQuestion = psychopathQuestions.find(q => q.isFirst);
-    const otherQuestions = psychopathQuestions.filter(q => !q.isFirst);
+    // Separate Blade Runner (Voight-Kampff) questions from others
+    const bladeRunnerQuestions = psychopathQuestions.filter(q => q.isVoightKampff);
+    const otherQuestions = psychopathQuestions.filter(q => !q.isVoightKampff);
     
     // Shuffle answer positions for all questions
     shuffleQuestionAnswers();
     
-    // Shuffle only the non-first questions
+    // Shuffle only the non-Blade Runner questions
     shuffleArray(otherQuestions);
     
-    // Combine: tortoise first, then randomized others (limit to 20 total)
-    questions = [tortoiseQuestion, ...otherQuestions].slice(0, 20);
+    // Combine: all Blade Runner questions first, then randomized others (limit to 20 total)
+    questions = [...bladeRunnerQuestions, ...otherQuestions].slice(0, 20);
     
     updateTerminal("System initialized. Awaiting subject identification...");
 }
@@ -1066,15 +1066,15 @@ function showQuestion() {
         return;
     }
     
-    // Show popup for Voight-Kampff questions
-    if (question.isVoightKampff) {
+    // Show popup only for the FIRST question (which is the first Blade Runner question)
+    if (currentQuestion === 0) {
         showVoightKampffPopup();
         // Start countdown after popup disappears (4 seconds)
         setTimeout(() => {
             startCountdown();
         }, 4000);
     } else {
-        // Start countdown immediately for non-VK questions
+        // Start countdown immediately for all other questions
         startCountdown();
     }
     
