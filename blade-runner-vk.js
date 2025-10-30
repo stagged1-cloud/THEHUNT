@@ -1005,14 +1005,30 @@ function startTest() {
     }
     
     // Re-randomize questions every time test starts
-    const bladeRunnerQuestions = psychopathQuestions.filter(q => q.isVoightKampff);
+    // Separate tortoise question, other Blade Runner questions, and random questions
+    const tortoiseQuestion = psychopathQuestions.find(q => q.isFirst);
+    const bladeRunnerQuestions = psychopathQuestions.filter(q => q.isVoightKampff && !q.isFirst);
     const otherQuestions = psychopathQuestions.filter(q => !q.isVoightKampff);
     
     // Shuffle the non-Blade Runner questions for a new random order
     shuffleArray(otherQuestions);
     
-    // Combine: all Blade Runner questions first, then randomized others (limit to 20 total)
-    questions = [...bladeRunnerQuestions, ...otherQuestions].slice(0, 20);
+    // Stagger: Start with tortoise, then alternate Blade Runner and random
+    // Pattern: Tortoise, BR1, Random1, BR2, Random2, BR3, Random3, etc.
+    questions = [tortoiseQuestion]; // Start with tortoise
+    
+    const maxLength = Math.max(bladeRunnerQuestions.length, otherQuestions.length);
+    for (let i = 0; i < maxLength; i++) {
+        if (i < bladeRunnerQuestions.length) {
+            questions.push(bladeRunnerQuestions[i]);
+        }
+        if (i < otherQuestions.length) {
+            questions.push(otherQuestions[i]);
+        }
+    }
+    
+    // Limit to 20 total questions
+    questions = questions.slice(0, 20);
     
     // Shuffle answer positions for all questions
     shuffleQuestionAnswers();
