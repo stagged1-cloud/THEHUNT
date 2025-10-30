@@ -567,23 +567,29 @@ function submitJudgment() {
     const cards = document.querySelectorAll('.target-card');
     let correctCount = 0;
     
+    // Calculate score without showing visual feedback yet
+    const results = [];
     cards.forEach(card => {
         const characterName = card.querySelector('.target-name').textContent;
         const isGuilty = card.getAttribute('data-guilty') === 'true';
         const userVerdict = userChoices[characterName];
         
-        if ((isGuilty && userVerdict === 'guilty') || (!isGuilty && userVerdict === 'innocent')) {
+        const isCorrect = (isGuilty && userVerdict === 'guilty') || (!isGuilty && userVerdict === 'innocent');
+        if (isCorrect) {
             correctCount++;
-            card.classList.add('correct');
-        } else {
-            card.classList.add('incorrect');
         }
+        results.push({ card, isCorrect });
     });
     
     // Disable submit button after submission
     document.getElementById('submitJudgment').disabled = true;
     
     if (correctCount === 9) {
+        // Show visual feedback for perfect score
+        results.forEach(({ card, isCorrect }) => {
+            if (isCorrect) card.classList.add('correct');
+        });
+        
         // Perfect! Complete the stage
         setTimeout(() => {
             completeStage5();
@@ -592,22 +598,40 @@ function submitJudgment() {
         // Wrong answers
         attemptsRemaining--;
         
-        setTimeout(() => {
-            if (attemptsRemaining <= 0) {
-                // Failed - redirect to crow main page
-                alert(`Only ${correctCount} correct. Justice demands perfection. You have failed. Returning to the beginning...`);
-                setTimeout(() => {
-                    window.location.href = 'crow.html';
-                }, 1000);
-            } else {
-                // Let them try again
-                alert(`Only ${correctCount} correct. Justice demands perfection. ${attemptsRemaining} attempts remaining. Try again.`);
-                setTimeout(() => {
-                    resetStage5();
-                    isSubmitting = false;
-                }, 500);
-            }
-        }, 1000);
+        if (attemptsRemaining <= 0) {
+            // Failed - show alert first, THEN visual feedback, THEN redirect
+            alert(`Only ${correctCount} correct. Justice demands perfection. You have failed. Returning to the beginning...`);
+            
+            // Show correct/incorrect after alert is dismissed
+            results.forEach(({ card, isCorrect }) => {
+                if (isCorrect) {
+                    card.classList.add('correct');
+                } else {
+                    card.classList.add('incorrect');
+                }
+            });
+            
+            setTimeout(() => {
+                window.location.href = 'crow.html';
+            }, 2000);
+        } else {
+            // Let them try again - show alert first, THEN visual feedback briefly, THEN reset
+            alert(`Only ${correctCount} correct. Justice demands perfection. ${attemptsRemaining} attempts remaining. Try again.`);
+            
+            // Show correct/incorrect after alert is dismissed
+            results.forEach(({ card, isCorrect }) => {
+                if (isCorrect) {
+                    card.classList.add('correct');
+                } else {
+                    card.classList.add('incorrect');
+                }
+            });
+            
+            setTimeout(() => {
+                resetStage5();
+                isSubmitting = false;
+            }, 1500);
+        }
     }
 }
 
