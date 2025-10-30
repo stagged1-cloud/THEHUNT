@@ -1113,7 +1113,8 @@ function showQuestion() {
         displayQuestion = displayQuestion.replace(/Leon/g, subjectName || 'Subject');
     }
     if (displayQuestion.includes('your mother')) {
-        displayQuestion = displayQuestion.replace('your mother', `your mother, ${subjectName || 'Subject'}`);
+        // Replace the period with a comma, add the name, and end with a question mark
+        displayQuestion = displayQuestion.replace('your mother.', `your mother, ${subjectName || 'Subject'}?`);
     }
     
     questionText.textContent = `Question ${currentQuestion + 1}: ${displayQuestion}`;
