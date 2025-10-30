@@ -8,7 +8,7 @@ let targetsHit = 0;
 let civiliansHit = 0;
 let attemptsRemaining = 3;
 
-// Yautja Symbol Mapping (simplified symbols using special characters)
+// Yautja Symbol Mapping (corrected)
 const yautjaAlphabet = {
     'A': '⟁', 'B': '⟃', 'C': '⟅', 'D': '⟇', 'E': '⟉',
     'F': '⟋', 'G': '⟍', 'H': '⟏', 'I': '⟑', 'J': '⟓',
@@ -21,7 +21,7 @@ const yautjaAlphabet = {
 // Messages to decode (film quotes)
 const messages = [
     "GET TO THE CHOPPER",
-    "IF IT BLEEDS WE CAN KILL IT",
+    "THERE IS NO ESCAPE",
     "YOU ARE ONE UGLY MOTHER"
 ];
 
