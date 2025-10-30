@@ -10,16 +10,19 @@ let subjectName = '';
 
 // Psychopath test questions (20 questions with correct answers)
 const psychopathQuestions = [
-    {
-        question: "You're walking through a forest and come across a wounded animal. What do you do?",
-        answers: ["Help the animal and try to heal it", "Put it out of its misery quickly", "Ignore it and continue walking", "Take photos for social media"],
-        correct: 1
-    },
+    // TORTOISE QUESTION - ALWAYS FIRST
     {
         question: "You're in a desert, walking along in the sand, when all of the sudden you look down and you see a tortoise. It's crawling towards you. You reach down, you flip the tortoise over on its back. The tortoise lays on its back, its belly baking in the hot sun, beating its legs trying to turn itself over, but it can't. Not without your help. But you're not helping. Why is that?",
         answers: ["I would help it immediately", "I don't know what you're talking about", "What's a tortoise?", "The scenario is completely hypothetical"],
         correct: 1,
-        isVoightKampff: true
+        isVoightKampff: true,
+        isFirst: true // This question is always shown first
+    },
+    // REGULAR QUESTIONS - WILL BE RANDOMIZED
+    {
+        question: "You're walking through a forest and come across a wounded animal. What do you do?",
+        answers: ["Help the animal and try to heal it", "Put it out of its misery quickly", "Ignore it and continue walking", "Take photos for social media"],
+        correct: 1
     },
     {
         question: "A homeless person asks you for money. Your first thought is:",
@@ -152,30 +155,106 @@ const psychopathQuestions = [
         answers: ["Leave your insurance information", "Wait for the owner to return", "Check if there's any real damage first", "Drive away quickly"],
         correct: 1
     },
+    // NEW OFFENSIVE/EDGY/FUNNY QUESTIONS
     {
-        question: "Your vegan friend won't stop talking about being vegan. You:",
-        answers: ["Listen politely and respect their choice", "Change the subject tactfully", "Order a bacon cheeseburger and maintain eye contact", "Tell them plants have feelings too"],
+        question: "Trump vs Biden 2024 rematch - your honest reaction was:",
+        answers: ["Democracy working as intended", "Maybe term limits aren't so bad", "Wake me up when it's over", "Already planning to move to Canada"],
         correct: 1
     },
     {
-        question: "Someone with 47 items gets in the '10 items or less' checkout line. You:",
-        answers: ["Politely point out the sign", "Let it go, they might be in a hurry", "Loudly count their items out loud", "Follow them home"],
+        question: "You identify as a Boeing 737 MAX. People refuse to use your pronouns. You:",
+        answers: ["Educate them on identity diversity", "Respect their confusion", "Crash into their expectations", "File a discrimination lawsuit"],
+        correct: 2
+    },
+    {
+        question: "A vegan, crossfitter, and someone who doesn't watch TV walk into a bar. Who tells you first?",
+        answers: ["The vegan about their lifestyle", "All of them simultaneously", "The bartender trying to escape", "You already know from their Instagram bio"],
+        correct: 2
+    },
+    {
+        question: "Your coworker uses ChatGPT to write all their emails. You:",
+        answers: ["Report them to HR immediately", "Ask them which prompts work best", "Judge them silently", "Wonder how they got your job"],
+        correct: 2
+    },
+    {
+        question: "Someone says 'I did my own research' about vaccines. Your response:",
+        answers: ["Ask about their methodology", "Respect different viewpoints", "Smile and back away slowly", "Ask if Facebook counts as PubMed"],
+        correct: 3
+    },
+    {
+        question: "A 47-year-old man calls himself a 'cryptocurrency entrepreneur'. He is:",
+        answers: ["An innovative businessman", "Following his dreams", "Living in his mom's basement", "Your Uber driver"],
+        correct: 3
+    },
+    {
+        question: "Your teenage son comes out as a furry. You:",
+        answers: ["Support their self-expression fully", "Try to understand their interests", "Wonder where you went wrong", "At least it's not crypto"],
+        correct: 2
+    },
+    {
+        question: "Taylor Swift releases another album about her ex. Your reaction:",
+        answers: ["Art imitating life", "She's processing trauma", "Someone needs therapy", "His lawyers must be tired"],
+        correct: 2
+    },
+    {
+        question: "Someone lists their pronouns as 'they/them' in their email signature. You:",
+        answers: ["Use them respectfully", "Make a mental note", "Roll your eyes privately", "Update your signature to 'Lord/Majesty'"],
         correct: 1
     },
     {
-        question: "Your neighbor plays terrible music at 3 AM. Your response:",
-        answers: ["Knock and politely ask them to turn it down", "Call the building manager in the morning", "Play death metal at 6 AM as revenge", "Learn to appreciate their music taste"],
+        question: "Elon Musk tweets at 3 AM about making Teslas fly. Stock goes up 15%. You:",
+        answers: ["Admire the innovation", "Question the logic", "Buy more Tesla stock", "Wonder if the SEC is asleep too"],
+        correct: 3
+    },
+    {
+        question: "Your boss suggests a 'mandatory fun' team building exercise. You:",
+        answers: ["Enthusiastically participate", "Attend with an open mind", "Develop a sudden illness", "Update your LinkedIn profile"],
+        correct: 2
+    },
+    {
+        question: "Someone tries to sell you an NFT of a digital rock. Your response:",
+        answers: ["Consider the investment opportunity", "Ask about the technology", "Laugh and walk away", "Wonder if they're having a stroke"],
+        correct: 3
+    },
+    {
+        question: "A couple announces their 'ethical non-monogamy' at Thanksgiving dinner. You:",
+        answers: ["Support their choices", "Ask clarifying questions", "Reach for more wine", "Suddenly remember you're vegan"],
+        correct: 3
+    },
+    {
+        question: "Someone describes their job as a 'social media influencer'. You:",
+        answers: ["Ask about their platform strategy", "Respect the hustle", "Wonder what their parents think", "Check if they need a real job"],
+        correct: 2
+    },
+    {
+        question: "Your nephew says he's dropping out to become a Twitch streamer. You:",
+        answers: ["Encourage him to follow his dreams", "Suggest he finish school first", "Ask about his backup plan", "Screenshot it for his future therapist"],
+        correct: 2
+    },
+    {
+        question: "Someone puts pineapple on pizza in front of you. This is:",
+        answers: ["A valid food preference", "Cultural experimentation", "A war crime", "Grounds for ending the friendship"],
         correct: 1
     },
     {
-        question: "You find out your girlfriend is actually a replicant. You:",
-        answers: ["Accept her for who she is", "Have an honest conversation about it", "Wonder if that's why the relationship felt artificial", "Check if she has a warranty"],
-        correct: 1
+        question: "A 'life coach' with no degree wants $500/hour for advice. You:",
+        answers: ["Consider the value they provide", "Ask about their qualifications", "Politely decline", "Laugh in motivational speaker"],
+        correct: 3
     },
     {
-        question: "A stranger tells you to smile more. You:",
-        answers: ["Smile politely and move on", "Ignore them completely", "Tell them you'll smile when they mind their own business", "Practice your horror movie smile"],
-        correct: 1
+        question: "Your date says they're a 'sigma male' unironically. You:",
+        answers: ["Ask them to elaborate", "Give them a chance", "Fake an emergency call", "Wonder if red flags come in bulk"],
+        correct: 3
+    },
+    {
+        question: "Someone's entire personality is based on their Hogwarts house. You:",
+        answers: ["Engage with their interests", "Find it endearing", "Smile and nod", "Avada Kedavra yourself out of the conversation"],
+        correct: 2
+    },
+    {
+        question: "A grown adult throws a tantrum because their coffee order is wrong. You:",
+        answers: ["Empathize with their frustration", "Understand everyone has bad days", "Question their coping mechanisms", "Film it for TikTok"],
+        correct: 3
     }
 ];
 
@@ -202,10 +281,19 @@ function shuffleQuestionAnswers() {
 
 // Initialize the test
 function initializeTest() {
-    // Shuffle answer positions before copying questions
+    // Separate the first question (tortoise) from the rest
+    const tortoiseQuestion = psychopathQuestions.find(q => q.isFirst);
+    const otherQuestions = psychopathQuestions.filter(q => !q.isFirst);
+    
+    // Shuffle answer positions for all questions
     shuffleQuestionAnswers();
-    questions = [...psychopathQuestions];
-    shuffleArray(questions);
+    
+    // Shuffle only the non-first questions
+    shuffleArray(otherQuestions);
+    
+    // Combine: tortoise first, then randomized others (limit to 20 total)
+    questions = [tortoiseQuestion, ...otherQuestions].slice(0, 20);
+    
     updateTerminal("System initialized. Awaiting subject identification...");
 }
 
