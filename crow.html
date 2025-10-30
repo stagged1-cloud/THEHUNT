@@ -205,61 +205,91 @@
                         <div class="target-image">👤</div>
                         <div class="target-name">T-BIRD</div>
                         <div class="target-info">Leader of the gang</div>
-                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="true">
                         <div class="target-image">👤</div>
                         <div class="target-name">FUNBOY</div>
                         <div class="target-info">Gang member - drug dealer</div>
-                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="true">
                         <div class="target-image">👤</div>
                         <div class="target-name">TIN TIN</div>
                         <div class="target-info">Gang member - martial artist</div>
-                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="true">
                         <div class="target-image">👤</div>
                         <div class="target-name">SKANK</div>
                         <div class="target-info">Gang member - pyromaniac</div>
-                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="false">
                         <div class="target-image">👤</div>
                         <div class="target-name">OFFICER ALBRECHT</div>
                         <div class="target-info">Police detective</div>
-                        <button class="judge-btn" data-verdict="innocent">INNOCENT</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="true">
                         <div class="target-image">👤</div>
                         <div class="target-name">TOP DOLLAR</div>
                         <div class="target-info">Crime lord</div>
-                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="true">
                         <div class="target-image">👤</div>
                         <div class="target-name">MYCA</div>
                         <div class="target-info">Top Dollar's half-sister</div>
-                        <button class="judge-btn" data-verdict="guilty">GUILTY</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="false">
                         <div class="target-image">👤</div>
                         <div class="target-name">SARAH</div>
                         <div class="target-info">Young friend</div>
-                        <button class="judge-btn" data-verdict="innocent">INNOCENT</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                     <div class="target-card" data-guilty="false">
                         <div class="target-image">👤</div>
                         <div class="target-name">DARLA</div>
                         <div class="target-info">Funboy's girlfriend</div>
-                        <button class="judge-btn" data-verdict="innocent">INNOCENT</button>
+                        <div class="judgment-buttons">
+                            <button class="judge-btn guilty-btn" data-verdict="guilty">GUILTY</button>
+                            <button class="judge-btn innocent-btn" data-verdict="innocent">INNOCENT</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="judgment-progress">
-                    <span id="judgmentCount">Correct Judgments: 0/9</span>
+                    <span id="judgmentCount">Judgments Made: 0/9</span>
+                    <span id="attemptsRemaining" style="margin-left: 20px;">Attempts Remaining: 3</span>
                 </div>
+
+                <button class="submit-judgment-btn" id="submitJudgment" disabled>SUBMIT JUDGMENT</button>
             </section>
 
             <!-- Success Screen -->

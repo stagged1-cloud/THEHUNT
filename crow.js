@@ -485,59 +485,114 @@ function completeStage4() {
 
 let judgementsComplete = 0;
 let correctJudgements = 0;
+let attemptsRemaining = 3;
+let userChoices = {};
 
 function initializeStage5() {
+    attemptsRemaining = 3;
+    userChoices = {};
+    judgementsComplete = 0;
+    
     const judgeBtns = document.querySelectorAll('.judge-btn');
+    const submitBtn = document.getElementById('submitJudgment');
 
     judgeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            makeJudgment(this);
+            selectVerdict(this);
         });
     });
+
+    submitBtn.addEventListener('click', function() {
+        submitJudgment();
+    });
+    
+    updateJudgmentCount();
 }
 
-function makeJudgment(btn) {
+function selectVerdict(btn) {
     const card = btn.closest('.target-card');
-    const isGuilty = card.getAttribute('data-guilty') === 'true';
+    const characterName = card.querySelector('.target-name').textContent;
     const verdict = btn.getAttribute('data-verdict');
+    
+    // Remove 'selected' class from both buttons in this card
+    const buttons = card.querySelectorAll('.judge-btn');
+    buttons.forEach(b => b.classList.remove('selected'));
+    
+    // Add 'selected' class to clicked button
+    btn.classList.add('selected');
+    
+    // Store the user's choice
+    userChoices[characterName] = verdict;
+    
+    // Update count and enable/disable submit button
+    updateJudgmentCount();
+}
 
-    judgementsComplete++;
-
-    if ((isGuilty && verdict === 'guilty') || (!isGuilty && verdict === 'innocent')) {
-        // Correct judgment
-        card.classList.add('judged', 'correct');
-        correctJudgements++;
-        gameState.judgmentsCorrect = correctJudgements;
+function updateJudgmentCount() {
+    const judgedCount = Object.keys(userChoices).length;
+    document.getElementById('judgmentCount').textContent = `Judgments Made: ${judgedCount}/9`;
+    document.getElementById('attemptsRemaining').textContent = `Attempts Remaining: ${attemptsRemaining}`;
+    
+    // Enable submit button only if all 9 characters have been judged
+    const submitBtn = document.getElementById('submitJudgment');
+    if (judgedCount === 9) {
+        submitBtn.disabled = false;
     } else {
-        // Incorrect judgment
-        card.classList.add('judged', 'incorrect');
+        submitBtn.disabled = true;
     }
+}
 
-    document.getElementById('judgmentCount').textContent = `Correct Judgments: ${correctJudgements}/9`;
-
-    // Check if all judgments made
-    if (judgementsComplete === 9) {
+function submitJudgment() {
+    const cards = document.querySelectorAll('.target-card');
+    let correctCount = 0;
+    
+    cards.forEach(card => {
+        const characterName = card.querySelector('.target-name').textContent;
+        const isGuilty = card.getAttribute('data-guilty') === 'true';
+        const userVerdict = userChoices[characterName];
+        
+        if ((isGuilty && userVerdict === 'guilty') || (!isGuilty && userVerdict === 'innocent')) {
+            correctCount++;
+            card.classList.add('correct');
+        } else {
+            card.classList.add('incorrect');
+        }
+    });
+    
+    if (correctCount === 9) {
+        // Perfect! Complete the stage
         setTimeout(() => {
-            if (correctJudgements === 9) {
-                completeStage5();
-            } else {
-                alert(`Only ${correctJudgements} correct. Justice demands perfection. Try again.`);
-                resetStage5();
-            }
-        }, 1000);
+            completeStage5();
+        }, 1500);
+    } else {
+        // Wrong answers
+        attemptsRemaining--;
+        
+        if (attemptsRemaining <= 0) {
+            // Failed - redirect to crow main page
+            alert(`Only ${correctCount} correct. Justice demands perfection. You have failed. Returning to the beginning...`);
+            setTimeout(() => {
+                window.location.href = 'crow.html';
+            }, 1000);
+        } else {
+            // Let them try again
+            alert(`Only ${correctCount} correct. Justice demands perfection. ${attemptsRemaining} attempts remaining. Try again.`);
+            resetStage5();
+        }
     }
 }
 
 function resetStage5() {
     const cards = document.querySelectorAll('.target-card');
     cards.forEach(card => {
-        card.classList.remove('judged', 'correct', 'incorrect');
+        card.classList.remove('correct', 'incorrect');
+        const buttons = card.querySelectorAll('.judge-btn');
+        buttons.forEach(btn => btn.classList.remove('selected'));
     });
 
-    judgementsComplete = 0;
-    correctJudgements = 0;
-    gameState.judgmentsCorrect = 0;
-    document.getElementById('judgmentCount').textContent = 'Correct Judgments: 0/9';
+    userChoices = {};
+    document.getElementById('submitJudgment').disabled = true;
+    updateJudgmentCount();
 }
 
 function completeStage5() {
