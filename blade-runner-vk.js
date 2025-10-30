@@ -1004,6 +1004,19 @@ function startTest() {
         return;
     }
     
+    // Re-randomize questions every time test starts
+    const bladeRunnerQuestions = psychopathQuestions.filter(q => q.isVoightKampff);
+    const otherQuestions = psychopathQuestions.filter(q => !q.isVoightKampff);
+    
+    // Shuffle the non-Blade Runner questions for a new random order
+    shuffleArray(otherQuestions);
+    
+    // Combine: all Blade Runner questions first, then randomized others (limit to 20 total)
+    questions = [...bladeRunnerQuestions, ...otherQuestions].slice(0, 20);
+    
+    // Shuffle answer positions for all questions
+    shuffleQuestionAnswers();
+    
     testStarted = true;
     currentQuestion = 0;
     stressLevel = 0;
