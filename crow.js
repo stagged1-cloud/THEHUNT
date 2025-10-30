@@ -513,12 +513,12 @@ function makeJudgment(btn) {
         card.classList.add('judged', 'incorrect');
     }
 
-    document.getElementById('judgmentCount').textContent = `Correct Judgments: ${correctJudgements}/4`;
+    document.getElementById('judgmentCount').textContent = `Correct Judgments: ${correctJudgements}/9`;
 
     // Check if all judgments made
-    if (judgementsComplete === 4) {
+    if (judgementsComplete === 9) {
         setTimeout(() => {
-            if (correctJudgements === 4) {
+            if (correctJudgements === 9) {
                 completeStage5();
             } else {
                 alert(`Only ${correctJudgements} correct. Justice demands perfection. Try again.`);
@@ -537,7 +537,7 @@ function resetStage5() {
     judgementsComplete = 0;
     correctJudgements = 0;
     gameState.judgmentsCorrect = 0;
-    document.getElementById('judgmentCount').textContent = 'Correct Judgments: 0/4';
+    document.getElementById('judgmentCount').textContent = 'Correct Judgments: 0/9';
 }
 
 function completeStage5() {
