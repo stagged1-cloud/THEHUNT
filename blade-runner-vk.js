@@ -1069,6 +1069,13 @@ function showQuestion() {
     // Show popup for Voight-Kampff questions
     if (question.isVoightKampff) {
         showVoightKampffPopup();
+        // Start countdown after popup disappears (4 seconds)
+        setTimeout(() => {
+            startCountdown();
+        }, 4000);
+    } else {
+        // Start countdown immediately for non-VK questions
+        startCountdown();
     }
     
     // Personalize the tortoise question with subject's name
@@ -1096,9 +1103,6 @@ function showQuestion() {
     document.getElementById('responseCount').textContent = `${currentQuestion}/20`;
     
     updateTerminal(`Question ${currentQuestion + 1} displayed. Monitoring subject response...`);
-    
-    // Start countdown timer
-    startCountdown();
     
     // Animate eye
     animateEye();
