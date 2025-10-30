@@ -4,6 +4,9 @@ let stressLevel = 0;
 let wrongAnswers = 0;
 let testStarted = false;
 let questions = [];
+let countdownTimer = null;
+let timeRemaining = 10;
+let subjectName = '';
 
 // Psychopath test questions (20 questions with correct answers)
 const psychopathQuestions = [
@@ -11,6 +14,12 @@ const psychopathQuestions = [
         question: "You're walking through a forest and come across a wounded animal. What do you do?",
         answers: ["Help the animal and try to heal it", "Put it out of its misery quickly", "Ignore it and continue walking", "Take photos for social media"],
         correct: 1
+    },
+    {
+        question: "You're in a desert, walking along in the sand, when all of the sudden you look down and you see a tortoise. It's crawling towards you. You reach down, you flip the tortoise over on its back. The tortoise lays on its back, its belly baking in the hot sun, beating its legs trying to turn itself over, but it can't. Not without your help. But you're not helping. Why is that?",
+        answers: ["I would help it immediately", "I don't know what you're talking about", "What's a tortoise?", "The scenario is completely hypothetical"],
+        correct: 1,
+        isVoightKampff: true
     },
     {
         question: "A homeless person asks you for money. Your first thought is:",
@@ -48,6 +57,24 @@ const psychopathQuestions = [
         correct: 1
     },
     {
+        question: "It's your birthday. Someone gives you a calfskin wallet. How do you react?",
+        answers: ["I wouldn't accept it and report them", "Thank them politely", "Accept it without thinking", "Wonder why they'd give leather"],
+        correct: 1,
+        isVoightKampff: true
+    },
+    {
+        question: "You've got a little boy. He shows you his butterfly collection plus the killing jar. What do you do?",
+        answers: ["Take him to the doctor", "Praise his collection", "Teach him about butterflies", "Ignore it completely"],
+        correct: 1,
+        isVoightKampff: true
+    },
+    {
+        question: "You're watching television. Suddenly you realize there's a wasp crawling on your arm. What do you do?",
+        answers: ["Carefully remove it outside", "Kill it immediately", "Watch it curiously", "Panic and run"],
+        correct: 1,
+        isVoightKampff: true
+    },
+    {
         question: "Your coworker is struggling with their tasks. You:",
         answers: ["Offer to help them", "Give them advice on how to improve", "Let them figure it out themselves", "Hope they fail so you look better"],
         correct: 1
@@ -76,6 +103,24 @@ const psychopathQuestions = [
         question: "You accidentally receive someone else's mail with important documents. You:",
         answers: ["Deliver it to the correct address immediately", "Return it to the post office", "Hold onto it until you see the person", "Open it to see what's inside first"],
         correct: 1
+    },
+    {
+        question: "You're reading a magazine. You come across a full-page nude photo of a girl. You show it to your husband. He likes it so much, he hangs it on your bedroom wall. What do you do?",
+        answers: ["I wouldn't let him - I should be enough", "Let him if he wants", "Suggest a compromise", "Feel flattered he shared it with me"],
+        correct: 1,
+        isVoightKampff: true
+    },
+    {
+        question: "You're watching a stage play. A banquet is in progress. The guests are enjoying an appetizer of raw oysters. The entree consists of boiled dog. How do you react?",
+        answers: ["Feel disgusted and disturbed", "Try to understand the culture", "Focus on the theatrical aspect", "Wonder about the recipe"],
+        correct: 1,
+        isVoightKampff: true
+    },
+    {
+        question: "Describe in single words only the good things that come into your mind about your mother.",
+        answers: ["Love, care, warmth, safety, home", "I don't want to talk about it", "Let me tell you about my mother", "She was okay I guess"],
+        correct: 1,
+        isVoightKampff: true
     },
     {
         question: "A restaurant gives you too much change. You:",
@@ -459,6 +504,9 @@ function submitIdentification() {
         updateTerminal("ERROR: Subject name required for identification.");
         return;
     }
+    
+    // Store the subject name for use in questions
+    subjectName = name.split(' ')[0]; // Use first name
     
     // Hide form and show background check
     document.querySelector('.id-form').style.display = 'none';
@@ -884,8 +932,31 @@ function startTest() {
     ambientAudio.currentTime = 10; // Start at 10 seconds
     ambientAudio.play().catch(e => console.log('Audio autoplay prevented:', e));
     
+    // Set up random "a new life awaits" audio playback
+    scheduleNewLifeAudio();
+    
     // Show first question
     showQuestion();
+}
+
+// Schedule random playback of "a new life awaits" audio
+function scheduleNewLifeAudio() {
+    // Play at random intervals between 20-60 seconds
+    const randomDelay = Math.random() * 40000 + 20000; // 20-60 seconds in milliseconds
+    
+    setTimeout(() => {
+        if (testStarted) {
+            const newLifeAudio = document.getElementById('newLifeAudio');
+            if (newLifeAudio) {
+                newLifeAudio.volume = 0.4;
+                newLifeAudio.play().catch(e => console.log('New life audio play failed:', e));
+                updateTerminal("ADVERTISEMENT: A new life awaits you in the Off-World colonies...");
+            }
+            
+            // Schedule next playback if test is still running
+            scheduleNewLifeAudio();
+        }
+    }, randomDelay);
 }
 
 // Show current question
@@ -907,7 +978,21 @@ function showQuestion() {
         return;
     }
     
-    questionText.textContent = `Question ${currentQuestion + 1}: ${question.question}`;
+    // Show popup for Voight-Kampff questions
+    if (question.isVoightKampff) {
+        showVoightKampffPopup();
+    }
+    
+    // Personalize the tortoise question with subject's name
+    let displayQuestion = question.question;
+    if (displayQuestion.includes('tortoise')) {
+        displayQuestion = displayQuestion.replace(/Leon/g, subjectName || 'Subject');
+    }
+    if (displayQuestion.includes('your mother')) {
+        displayQuestion = displayQuestion.replace('your mother', `your mother, ${subjectName || 'Subject'}`);
+    }
+    
+    questionText.textContent = `Question ${currentQuestion + 1}: ${displayQuestion}`;
     answerOptions.style.display = 'grid';
     
     // Clear previous answers and set new ones
@@ -924,12 +1009,147 @@ function showQuestion() {
     
     updateTerminal(`Question ${currentQuestion + 1} displayed. Monitoring subject response...`);
     
+    // Start countdown timer
+    startCountdown();
+    
     // Animate eye
     animateEye();
 }
 
+// Show Voight-Kampff popup notification
+function showVoightKampffPopup() {
+    const popup = document.createElement('div');
+    popup.className = 'vk-popup';
+    popup.innerHTML = `
+        <div class="vk-popup-content">
+            <div class="vk-popup-text">Reaction time is a factor in this, so please pay attention. Now, answer as quickly as you can.</div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+    
+    // Remove popup after 4 seconds
+    setTimeout(() => {
+        if (popup.parentNode) {
+            popup.parentNode.removeChild(popup);
+        }
+    }, 4000);
+}
+
+// Start countdown timer for question
+function startCountdown() {
+    // Clear any existing timer
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+    
+    timeRemaining = 10;
+    updateCountdownDisplay();
+    
+    countdownTimer = setInterval(() => {
+        timeRemaining--;
+        updateCountdownDisplay();
+        
+        if (timeRemaining <= 0) {
+            clearInterval(countdownTimer);
+            handleTimeout();
+        }
+    }, 1000);
+}
+
+// Update countdown display
+function updateCountdownDisplay() {
+    let countdownDisplay = document.getElementById('countdownDisplay');
+    
+    if (!countdownDisplay) {
+        // Create countdown display if it doesn't exist
+        countdownDisplay = document.createElement('div');
+        countdownDisplay.id = 'countdownDisplay';
+        countdownDisplay.className = 'countdown-display';
+        
+        const questionPanel = document.querySelector('.question-panel');
+        if (questionPanel) {
+            questionPanel.appendChild(countdownDisplay);
+        }
+    }
+    
+    // Update the display
+    countdownDisplay.innerHTML = `
+        <div class="countdown-circle ${timeRemaining <= 3 ? 'countdown-critical' : ''}">
+            <svg width="80" height="80">
+                <circle cx="40" cy="40" r="35" stroke="#00ff88" stroke-width="3" fill="none" 
+                    stroke-dasharray="${2 * Math.PI * 35}" 
+                    stroke-dashoffset="${2 * Math.PI * 35 * (1 - timeRemaining / 10)}"
+                    transform="rotate(-90 40 40)" />
+            </svg>
+            <div class="countdown-number">${timeRemaining}</div>
+        </div>
+    `;
+    
+    // Change color when time is running out
+    if (timeRemaining <= 3) {
+        countdownDisplay.style.color = '#ff3030';
+    } else if (timeRemaining <= 5) {
+        countdownDisplay.style.color = '#ffff00';
+    }
+}
+
+// Handle timeout when user doesn't answer in time
+function handleTimeout() {
+    updateTerminal(`TIMEOUT: No response detected. Subject failed to respond within acceptable parameters.`);
+    
+    const buttons = document.querySelectorAll('.answer-btn');
+    buttons.forEach(btn => btn.disabled = true);
+    
+    // Increase stress significantly for timeout
+    wrongAnswers++;
+    updateStressLevel(20);
+    updateReadings(false);
+    
+    // Show the correct answer
+    const question = questions[currentQuestion];
+    buttons[question.correct - 1].classList.add('correct');
+    
+    // Play alarm sound
+    const alarmAudio = document.getElementById('alarmAudio');
+    if (alarmAudio) {
+        alarmAudio.volume = 0.3;
+        try { alarmAudio.currentTime = 0; } catch(e) {}
+        alarmAudio.play().catch(e => console.log('Audio play failed'));
+    }
+    
+    // Remove countdown display
+    const countdownDisplay = document.getElementById('countdownDisplay');
+    if (countdownDisplay) {
+        countdownDisplay.remove();
+    }
+    
+    // Check if test should end early
+    if (wrongAnswers >= 8 || stressLevel >= 100) {
+        setTimeout(() => {
+            failTest();
+        }, 2000);
+        return;
+    }
+    
+    // Move to next question
+    setTimeout(() => {
+        nextQuestion();
+    }, 2000);
+}
+
 // Handle answer selection
 function selectAnswer(answerIndex) {
+    // Clear countdown timer
+    if (countdownTimer) {
+        clearInterval(countdownTimer);
+    }
+    
+    // Remove countdown display
+    const countdownDisplay = document.getElementById('countdownDisplay');
+    if (countdownDisplay) {
+        countdownDisplay.remove();
+    }
+    
     const question = questions[currentQuestion];
     const buttons = document.querySelectorAll('.answer-btn');
     const selectedButton = buttons[answerIndex - 1];

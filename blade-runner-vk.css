@@ -1242,3 +1242,106 @@ body::after {
         backdrop-filter: blur(2px);
     }
 }
+
+/* Countdown Timer Styles */
+.countdown-display {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+.countdown-circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.countdown-circle svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+}
+
+.countdown-circle circle {
+    transition: stroke-dashoffset 1s linear, stroke 0.3s;
+}
+
+.countdown-critical circle {
+    stroke: #ff3030 !important;
+    animation: pulse-red 0.5s infinite;
+}
+
+.countdown-number {
+    font-size: 32px;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+    z-index: 10;
+}
+
+.countdown-critical .countdown-number {
+    color: #ff3030;
+    text-shadow: 0 0 10px rgba(255, 48, 48, 0.8);
+    animation: pulse-scale 0.5s infinite;
+}
+
+@keyframes pulse-red {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+@keyframes pulse-scale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Voight-Kampff Popup */
+.vk-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.95);
+    border: 3px solid #ff6b35;
+    border-radius: 10px;
+    padding: 30px 50px;
+    box-shadow: 0 0 50px rgba(255, 107, 53, 0.8), inset 0 0 30px rgba(255, 107, 53, 0.2);
+    animation: vk-popup-appear 0.5s ease-out;
+}
+
+.vk-popup-content {
+    text-align: center;
+}
+
+.vk-popup-text {
+    font-size: 20px;
+    color: #ff6b35;
+    text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+    letter-spacing: 2px;
+    line-height: 1.6;
+    max-width: 600px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+@keyframes vk-popup-appear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Question panel position relative for countdown */
+.question-panel {
+    position: relative;
+}
