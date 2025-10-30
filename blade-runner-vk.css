@@ -542,6 +542,7 @@ body::after {
 
 /* Question Panel */
 .question-panel {
+    position: relative;
     padding: 15px;
     background: rgba(0, 0, 0, 0.7);
     border: 1px solid #0ff;
@@ -1246,9 +1247,14 @@ body::after {
 /* Countdown Timer Styles */
 .countdown-display {
     position: absolute;
-    top: 10px;
+    top: -50px;
     right: 10px;
-    z-index: 100;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #00ff88;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
 }
 
 .countdown-circle {
@@ -1264,11 +1270,15 @@ body::after {
     position: absolute;
     top: 0;
     left: 0;
-    transform: rotate(-90deg);
 }
 
 .countdown-circle circle {
     transition: stroke-dashoffset 1s linear, stroke 0.3s;
+}
+
+.countdown-critical {
+    border-color: #ff3030 !important;
+    box-shadow: 0 0 20px rgba(255, 48, 48, 0.8) !important;
 }
 
 .countdown-critical circle {
@@ -1277,16 +1287,17 @@ body::after {
 }
 
 .countdown-number {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
     color: #00ff88;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+    text-shadow: 0 0 15px rgba(0, 255, 136, 1);
     z-index: 10;
+    position: relative;
 }
 
 .countdown-critical .countdown-number {
     color: #ff3030;
-    text-shadow: 0 0 10px rgba(255, 48, 48, 0.8);
+    text-shadow: 0 0 15px rgba(255, 48, 48, 1);
     animation: pulse-scale 0.5s infinite;
 }
 

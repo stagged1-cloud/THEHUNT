@@ -1160,11 +1160,18 @@ function updateCountdownDisplay() {
         }
     }
     
+    // Add critical class to the countdown display itself
+    if (timeRemaining <= 3) {
+        countdownDisplay.classList.add('countdown-critical');
+    } else {
+        countdownDisplay.classList.remove('countdown-critical');
+    }
+    
     // Update the display
     countdownDisplay.innerHTML = `
         <div class="countdown-circle ${timeRemaining <= 3 ? 'countdown-critical' : ''}">
             <svg width="80" height="80">
-                <circle cx="40" cy="40" r="35" stroke="#00ff88" stroke-width="3" fill="none" 
+                <circle cx="40" cy="40" r="35" stroke="${timeRemaining <= 3 ? '#ff3030' : '#00ff88'}" stroke-width="3" fill="none" 
                     stroke-dasharray="${2 * Math.PI * 35}" 
                     stroke-dashoffset="${2 * Math.PI * 35 * (1 - timeRemaining / 10)}"
                     transform="rotate(-90 40 40)" />
@@ -1172,13 +1179,6 @@ function updateCountdownDisplay() {
             <div class="countdown-number">${timeRemaining}</div>
         </div>
     `;
-    
-    // Change color when time is running out
-    if (timeRemaining <= 3) {
-        countdownDisplay.style.color = '#ff3030';
-    } else if (timeRemaining <= 5) {
-        countdownDisplay.style.color = '#ffff00';
-    }
 }
 
 // Handle timeout when user doesn't answer in time
