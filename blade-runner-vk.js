@@ -1036,7 +1036,7 @@ function scheduleNewLifeAudio() {
         if (testStarted) {
             const newLifeAudio = document.getElementById('newLifeAudio');
             if (newLifeAudio) {
-                newLifeAudio.volume = 0.4;
+                newLifeAudio.volume = 0.24; // Reduced by 40% from 0.4
                 newLifeAudio.play().catch(e => console.log('New life audio play failed:', e));
                 updateTerminal("ADVERTISEMENT: A new life awaits you in the Off-World colonies...");
             }
