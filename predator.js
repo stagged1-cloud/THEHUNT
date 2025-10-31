@@ -149,32 +149,32 @@ function initializeStage1() {
 function generateThermalTargets() {
     thermalTargets = [];
     
-    // Generate 3 armed targets (barely visible small dots)
-    for (let i = 0; i < 3; i++) {
+    // Generate 6 armed targets (more challenging)
+    for (let i = 0; i < 6; i++) {
         thermalTargets.push({
             id: 'armed_' + i,
             type: 'armed',
             x: Math.random() * 700 + 50,
             y: Math.random() * 500 + 50,
-            radius: 4 + Math.random() * 2, // Slightly larger
+            radius: 4 + Math.random() * 2,
             temperature: 0.4,
             vx: (Math.random() - 0.5) * 0.3,
             vy: (Math.random() - 0.5) * 0.3,
             active: true,
             pulseOffset: Math.random() * Math.PI * 2,
-            baseOpacity: 0.4 + Math.random() * 0.2, // Slightly more visible
+            baseOpacity: 0.4 + Math.random() * 0.2,
             lastRelocate: Date.now()
         });
     }
     
-    // Generate 3 civilians (even more subtle)
-    for (let i = 0; i < 3; i++) {
+    // Generate 6 civilians (more to avoid)
+    for (let i = 0; i < 6; i++) {
         thermalTargets.push({
             id: 'civilian_' + i,
             type: 'civilian',
             x: Math.random() * 700 + 50,
             y: Math.random() * 500 + 50,
-            radius: 3 + Math.random() * 2, // Slightly larger
+            radius: 3 + Math.random() * 2,
             temperature: 0.2,
             vx: (Math.random() - 0.5) * 0.2,
             vy: (Math.random() - 0.5) * 0.2,
@@ -332,10 +332,10 @@ function handleCursorFeedback(event) {
     
     // Update cursor with shifted reticle when over target
     if (overTarget) {
-        // Shifted reticle (dots move together 1px closer)
-        canvas.style.cursor = 'url(\'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="11" r="2.5" fill="%23ff0000"/><circle cx="15" cy="27" r="2.5" fill="%23ff0000"/><circle cx="25" cy="27" r="2.5" fill="%23ff0000"/></svg>\') 20 20, crosshair';
+        // Shifted reticle (dots move 5px closer together - tighter triangle)
+        canvas.style.cursor = 'url(\'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="15" r="2.5" fill="%23ff0000"/><circle cx="17" cy="23" r="2.5" fill="%23ff0000"/><circle cx="23" cy="23" r="2.5" fill="%23ff0000"/></svg>\') 20 20, crosshair';
     } else {
-        // Normal reticle
+        // Normal reticle (wider triangle)
         canvas.style.cursor = 'url(\'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="10" r="2.5" fill="%23ff0000"/><circle cx="14" cy="28" r="2.5" fill="%23ff0000"/><circle cx="26" cy="28" r="2.5" fill="%23ff0000"/></svg>\') 20 20, crosshair';
     }
 }
@@ -524,7 +524,7 @@ function handleThermalTargetHit(target, clickX, clickY) {
         targetsHit++;
         target.active = false;
         
-        if (targetsHit >= 3) {
+        if (targetsHit >= 6) {
             completeStage1();
         }
     } else if (target.type === 'civilian') {
@@ -568,7 +568,7 @@ function handleHeatSignatureClick(element) {
         element.style.opacity = '0';
         setTimeout(() => element.remove(), 300);
         
-        if (targetsHit >= 3) {
+        if (targetsHit >= 6) {
             completeStage1();
         }
     } else if (type === 'civilian') {
@@ -605,7 +605,7 @@ function startHuntTimer() {
 
 function updateHuntDisplay() {
     document.getElementById('huntTimer').textContent = huntTimer;
-    document.getElementById('targetsHit').textContent = `${targetsHit}/3`;
+    document.getElementById('targetsHit').textContent = `${targetsHit}/6`;
     document.getElementById('civiliansHit').textContent = civiliansHit;
     document.getElementById('videoBonus').textContent = videoTargetBonus;
 }
