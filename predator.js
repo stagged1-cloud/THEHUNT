@@ -189,11 +189,14 @@ function startThermalAnimation() {
 }
 
 function drawThermalScene() {
-    // Clear canvas with thermal background
+    // Clear canvas (transparent to let videos show through)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Add subtle thermal overlay (very transparent)
     const gradient = ctx.createRadialGradient(400, 300, 0, 400, 300, 400);
-    gradient.addColorStop(0, '#001100');
-    gradient.addColorStop(0.5, '#000800');
-    gradient.addColorStop(1, '#000300');
+    gradient.addColorStop(0, 'rgba(0, 17, 0, 0.1)');
+    gradient.addColorStop(0.5, 'rgba(0, 8, 0, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 3, 0, 0.3)');
     
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
