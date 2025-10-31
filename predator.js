@@ -450,24 +450,11 @@ function initializeVideoSwitch() {
     const video2 = document.getElementById('thermalVideo2');
     const video3 = document.getElementById('thermalVideo3');
     
-    console.log('Video elements found:', video1, video2, video3);
-    
     if (video1 && video2 && video3) {
-        console.log('All videos found, initializing...');
         let currentVideo = 0;
         
-        // Debug: Check if videos are loading
-        video1.addEventListener('loadeddata', () => console.log('Video 1 loaded'));
-        video2.addEventListener('loadeddata', () => console.log('Video 2 loaded'));
-        video3.addEventListener('loadeddata', () => console.log('Video 3 loaded'));
-        
-        video1.addEventListener('error', (e) => console.log('Video 1 error:', e));
-        video2.addEventListener('error', (e) => console.log('Video 2 error:', e));
-        video3.addEventListener('error', (e) => console.log('Video 3 error:', e));
-        
-        // Initial state - make first video very visible
-        video1.style.opacity = '1.0';
-        video1.style.zIndex = '15';
+        // Initial state - show first video
+        video1.style.opacity = '0.8';
         video2.style.opacity = '0.0';
         video3.style.opacity = '0.0';
         
