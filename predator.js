@@ -202,8 +202,12 @@ function drawThermalScene() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // NO VISIBLE SPHERES - targets are tracked invisibly for click detection only
-    // thermalTargets are still updated for hit detection but not drawn
+    // Draw VERY subtle target indicators (barely visible dots)
+    thermalTargets.forEach(target => {
+        if (target.active) {
+            drawThermalTarget(target);
+        }
+    });
     
     // Add screen effects
     drawThermalEffects();
@@ -211,34 +215,26 @@ function drawThermalScene() {
 
 function drawThermalTarget(target) {
     const time = Date.now() * 0.002; // Slower pulse
-    const pulseIntensity = 0.5 + 0.1 * Math.sin(time + target.pulseOffset); // Much more subtle
-    const opacity = (target.baseOpacity || 0.3) * pulseIntensity;
+    const pulseIntensity = 0.6 + 0.2 * Math.sin(time + target.pulseOffset); // Slightly more visible
+    const opacity = (target.baseOpacity || 0.4) * pulseIntensity;
     
     if (target.type === 'armed') {
-        // Barely visible warm signature - very subtle orange
-        ctx.fillStyle = `rgba(255, 120, 60, ${opacity * 0.4})`;
+        // Subtle warm signature - soft orange glow
+        ctx.fillStyle = `rgba(255, 120, 60, ${opacity * 0.5})`;
         ctx.beginPath();
         ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
         ctx.fill();
         
-        // Tiny bright center (almost invisible)
-        ctx.fillStyle = `rgba(255, 180, 100, ${opacity * 0.6})`;
+        // Small bright center
+        ctx.fillStyle = `rgba(255, 180, 100, ${opacity * 0.8})`;
         ctx.beginPath();
-        ctx.arc(target.x, target.y, target.radius * 0.4, 0, Math.PI * 2);
+        ctx.arc(target.x, target.y, target.radius * 0.5, 0, Math.PI * 2);
         ctx.fill();
     } else {
-        // Even more subtle cool signature
-        ctx.fillStyle = `rgba(80, 120, 150, ${opacity * 0.3})`;
+        // Subtle cool signature - blue tint
+        ctx.fillStyle = `rgba(80, 120, 150, ${opacity * 0.4})`;
         ctx.beginPath();
         ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    
-    // Add inner bright core for armed targets
-    if (target.type === 'armed') {
-        ctx.fillStyle = `rgba(255, 255, 255, ${0.3 * pulseIntensity})`;
-        ctx.beginPath();
-        ctx.arc(target.x, target.y, target.radius * 0.3, 0, Math.PI * 2);
         ctx.fill();
     }
 }
