@@ -2,7 +2,7 @@
 
 // Game State
 let currentStage = 1;
-let huntTimer = 180; // 3 minutes
+let huntTimer = 20; // 20 seconds
 let huntInterval = null;
 let targetsHit = 0;
 let civiliansHit = 0;
@@ -168,10 +168,9 @@ let animationFrame;
 function initializeStage1() {
     targetsHit = 0;
     civiliansHit = 0;
-    huntTimer = 180;
+    huntTimer = 20;
     
     // Initialize canvas
-    canvas = document.getElementById('thermalCanvas');
     ctx = canvas.getContext('2d');
     
     // Set canvas size
