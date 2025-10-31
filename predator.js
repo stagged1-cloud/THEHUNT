@@ -141,6 +141,9 @@ function initializeStage1() {
     
     // Add click event to canvas
     canvas.addEventListener('click', handleCanvasClick);
+    
+    // Add mouse move event for cursor feedback
+    canvas.addEventListener('mousemove', handleCursorFeedback);
 }
 
 function generateThermalTargets() {
@@ -153,13 +156,14 @@ function generateThermalTargets() {
             type: 'armed',
             x: Math.random() * 700 + 50,
             y: Math.random() * 500 + 50,
-            radius: 3 + Math.random() * 2, // Much smaller
-            temperature: 0.4, // Lower heat signature
-            vx: (Math.random() - 0.5) * 0.3, // Very slow movement
+            radius: 4 + Math.random() * 2, // Slightly larger
+            temperature: 0.4,
+            vx: (Math.random() - 0.5) * 0.3,
             vy: (Math.random() - 0.5) * 0.3,
             active: true,
             pulseOffset: Math.random() * Math.PI * 2,
-            baseOpacity: 0.3 + Math.random() * 0.2 // Very low opacity
+            baseOpacity: 0.4 + Math.random() * 0.2, // Slightly more visible
+            lastRelocate: Date.now()
         });
     }
     
@@ -170,12 +174,14 @@ function generateThermalTargets() {
             type: 'civilian',
             x: Math.random() * 700 + 50,
             y: Math.random() * 500 + 50,
-            radius: 2 + Math.random() * 2, // Tiny
-            temperature: 0.2, // Very low heat signature
-            vx: (Math.random() - 0.5) * 0.2, // Almost stationary
+            radius: 3 + Math.random() * 2, // Slightly larger
+            temperature: 0.2,
+            vx: (Math.random() - 0.5) * 0.2,
             vy: (Math.random() - 0.5) * 0.2,
             active: true,
-            pulseOffset: Math.random() * Math.PI * 2
+            pulseOffset: Math.random() * Math.PI * 2,
+            baseOpacity: 0.3 + Math.random() * 0.15,
+            lastRelocate: Date.now()
         });
     }
 }
@@ -214,25 +220,25 @@ function drawThermalScene() {
 }
 
 function drawThermalTarget(target) {
-    const time = Date.now() * 0.002; // Slower pulse
-    const pulseIntensity = 0.6 + 0.2 * Math.sin(time + target.pulseOffset); // Slightly more visible
-    const opacity = (target.baseOpacity || 0.4) * pulseIntensity;
+    const time = Date.now() * 0.002;
+    const pulseIntensity = 0.7 + 0.3 * Math.sin(time + target.pulseOffset); // More visible pulse
+    const opacity = (target.baseOpacity || 0.5) * pulseIntensity;
     
     if (target.type === 'armed') {
-        // Subtle warm signature - soft orange glow
-        ctx.fillStyle = `rgba(255, 120, 60, ${opacity * 0.5})`;
+        // Subtle warm signature - soft orange glow (slightly more visible)
+        ctx.fillStyle = `rgba(255, 120, 60, ${opacity * 0.6})`;
         ctx.beginPath();
         ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
         ctx.fill();
         
         // Small bright center
-        ctx.fillStyle = `rgba(255, 180, 100, ${opacity * 0.8})`;
+        ctx.fillStyle = `rgba(255, 200, 120, ${opacity * 0.9})`;
         ctx.beginPath();
         ctx.arc(target.x, target.y, target.radius * 0.5, 0, Math.PI * 2);
         ctx.fill();
     } else {
         // Subtle cool signature - blue tint
-        ctx.fillStyle = `rgba(80, 120, 150, ${opacity * 0.4})`;
+        ctx.fillStyle = `rgba(100, 140, 180, ${opacity * 0.5})`;
         ctx.beginPath();
         ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
         ctx.fill();
@@ -254,28 +260,40 @@ function drawThermalEffects() {
 }
 
 function updateTargetPositions() {
+    const currentTime = Date.now();
+    
     thermalTargets.forEach(target => {
         if (target.active) {
+            // Check if target should relocate (every 5 seconds)
+            if (currentTime - target.lastRelocate > 5000) {
+                // Relocate to new random position
+                target.x = Math.random() * 700 + 50;
+                target.y = Math.random() * 500 + 50;
+                target.vx = (Math.random() - 0.5) * 0.3;
+                target.vy = (Math.random() - 0.5) * 0.3;
+                target.lastRelocate = currentTime;
+            }
+            
             // Very slow, subtle movement
             target.x += target.vx;
             target.y += target.vy;
             
             // Soft wall collision (slow down instead of bounce)
             if (target.x <= target.radius || target.x >= canvas.width - target.radius) {
-                target.vx *= -0.8; // Dampen movement
+                target.vx *= -0.8;
                 target.x = Math.max(target.radius, Math.min(canvas.width - target.radius, target.x));
             }
             if (target.y <= target.radius || target.y >= canvas.height - target.radius) {
-                target.vy *= -0.8; // Dampen movement  
+                target.vy *= -0.8;
                 target.y = Math.max(target.radius, Math.min(canvas.height - target.radius, target.y));
             }
             
             // Very subtle random drift
-            target.vx += (Math.random() - 0.5) * 0.02; // Much smaller random movement
+            target.vx += (Math.random() - 0.5) * 0.02;
             target.vy += (Math.random() - 0.5) * 0.02;
             
             // Very low max speeds for almost stationary movement
-            const maxSpeed = target.type === 'armed' ? 0.3 : 0.2; // Much slower
+            const maxSpeed = target.type === 'armed' ? 0.3 : 0.2;
             const speed = Math.sqrt(target.vx * target.vx + target.vy * target.vy);
             if (speed > maxSpeed) {
                 target.vx = (target.vx / speed) * maxSpeed;
@@ -287,6 +305,39 @@ function updateTargetPositions() {
             target.vy *= 0.995;
         }
     });
+}
+
+function handleCursorFeedback(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    const mouseX = (event.clientX - rect.left) * scaleX;
+    const mouseY = (event.clientY - rect.top) * scaleY;
+    
+    // Check if mouse is over any target
+    let overTarget = false;
+    for (let target of thermalTargets) {
+        if (target.active) {
+            const distance = Math.sqrt(
+                Math.pow(mouseX - target.x, 2) + Math.pow(mouseY - target.y, 2)
+            );
+            
+            if (distance <= target.radius * 1.5) {
+                overTarget = true;
+                break;
+            }
+        }
+    }
+    
+    // Update cursor with shifted reticle when over target
+    if (overTarget) {
+        // Shifted reticle (dots move together 1px closer)
+        canvas.style.cursor = 'url(\'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="11" r="2.5" fill="%23ff0000"/><circle cx="15" cy="27" r="2.5" fill="%23ff0000"/><circle cx="25" cy="27" r="2.5" fill="%23ff0000"/></svg>\') 20 20, crosshair';
+    } else {
+        // Normal reticle
+        canvas.style.cursor = 'url(\'data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="10" r="2.5" fill="%23ff0000"/><circle cx="14" cy="28" r="2.5" fill="%23ff0000"/><circle cx="26" cy="28" r="2.5" fill="%23ff0000"/></svg>\') 20 20, crosshair';
+    }
 }
 
 function handleCanvasClick(event) {
