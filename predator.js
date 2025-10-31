@@ -125,28 +125,38 @@ function initializeAudio() {
 }
 
 function playRandomPredatorSounds() {
-    const randomSounds = ['predator1', 'predator3', 'predator4'];
+    // Shuffle the sounds into a random order
+    const sounds = ['predator1', 'predator3', 'predator4'];
+    let playlist = [...sounds];
+    shuffleArray(playlist);
+    let currentIndex = 0;
     
-    function playRandomSound() {
-        const randomIndex = Math.floor(Math.random() * randomSounds.length);
-        const soundId = randomSounds[randomIndex];
+    function playNextSound() {
+        const soundId = playlist[currentIndex];
         const audio = document.getElementById(soundId);
         
         if (audio) {
             audio.volume = 0.35;
             audio.play().catch(e => console.log(`${soundId} autoplay prevented:`, e));
             
-            // When this sound ends, schedule the next random sound
+            // When this sound ends, play the next one
             audio.addEventListener('ended', () => {
-                // Wait 3-8 seconds before playing next random sound
-                const delay = 3000 + Math.random() * 5000;
-                setTimeout(playRandomSound, delay);
+                currentIndex++;
+                
+                // If we've played all sounds, reshuffle and start over
+                if (currentIndex >= playlist.length) {
+                    currentIndex = 0;
+                    shuffleArray(playlist);
+                }
+                
+                // Play next sound after a short delay
+                setTimeout(playNextSound, 1000);
             }, { once: true });
         }
     }
     
-    // Start the first random sound after a short delay
-    setTimeout(playRandomSound, 2000);
+    // Start playing the first sound after a short delay
+    setTimeout(playNextSound, 2000);
 }
 
 // ===== STAGE 1: THERMAL HUNT =====
