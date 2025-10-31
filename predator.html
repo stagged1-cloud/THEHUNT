@@ -28,14 +28,32 @@
         <section class="game-stage" id="stage1" style="display: block;">
             <div class="wrist-display">
                 <h2 class="stage-title">THERMAL VISION HUNT</h2>
-                <p class="stage-description">Eliminate armed hostiles. Avoid civilians. Time is critical.</p>
+                <p class="stage-description">Eliminate armed hostiles. Avoid civilians. Find hidden targets in the thermal feed. Time is critical.</p>
                 
                 <div class="thermal-container" id="thermalContainer">
+                    <!-- Video Background Layer -->
+                    <div class="thermal-video-layer">
+                        <video class="thermal-video" id="thermalVideo1" autoplay loop muted playsinline>
+                            <source src="assets/videos/thermal_export_1761911723189.webm" type="video/webm">
+                        </video>
+                        <video class="thermal-video" id="thermalVideo2" autoplay loop muted playsinline>
+                            <source src="assets/videos/thermal_export_1761912035914.webm" type="video/webm">
+                        </video>
+                    </div>
+                    
+                    <!-- Canvas Layer for Interactive Elements -->
                     <canvas id="thermalCanvas" width="800" height="600"></canvas>
+                    
+                    <!-- Overlay Effects -->
                     <div class="thermal-overlay">
                         <div class="crosshair"></div>
                         <div class="thermal-grid"></div>
                         <div class="scan-lines"></div>
+                    </div>
+                    
+                    <!-- Hidden Video Targets -->
+                    <div class="hidden-targets" id="hiddenTargets">
+                        <!-- These will be dynamically generated -->
                     </div>
                     
                     <div class="hunt-hud">
@@ -55,6 +73,10 @@
                             <span class="stat-label">MODE:</span>
                             <span class="stat-value thermal-text">THERMAL</span>
                         </div>
+                        <div class="stats-display">
+                            <span class="stat-label">BONUS:</span>
+                            <span id="videoBonus" class="stat-value">0</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,7 +86,7 @@
         <section class="game-stage" id="stage2" style="display: none;">
             <div class="wrist-display">
                 <h2 class="stage-title">YAUTJA CODE BREAKER</h2>
-                <p class="stage-description">Decrypt the message from the wrist gauntlet. You have 3 attempts.</p>
+                <p class="stage-description">Decrypt the message from the wrist gauntlet. Some letters may be missing. You have 3 attempts.</p>
                 
                 <div class="code-container">
                     <div class="encrypted-message">

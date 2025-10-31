@@ -133,6 +133,8 @@ function initializeStage1() {
     canvas.height = 600;
     
     generateThermalTargets();
+    generateHiddenVideoTargets();
+    initializeVideoSwitch();
     startHuntTimer();
     updateHuntDisplay();
     startThermalAnimation();
@@ -322,6 +324,144 @@ function handleCanvasClick(event) {
     }
 }
 
+// Hidden Video Target System
+let hiddenTargets = [];
+let videoTargetBonus = 0;
+
+function generateHiddenVideoTargets() {
+    const targetContainer = document.getElementById('hiddenTargets');
+    targetContainer.innerHTML = '';
+    hiddenTargets = [];
+    
+    // Generate 2-4 hidden targets per stage
+    const numTargets = 2 + Math.floor(Math.random() * 3);
+    
+    for (let i = 0; i < numTargets; i++) {
+        const target = createHiddenTarget(i);
+        hiddenTargets.push(target);
+        targetContainer.appendChild(target.element);
+    }
+}
+
+function createHiddenTarget(index) {
+    const targetDiv = document.createElement('div');
+    targetDiv.className = 'hidden-target';
+    
+    // Random position (avoiding edges and center crosshair area)
+    const x = Math.random() * 600 + 100; // Keep away from edges
+    const y = Math.random() * 400 + 100;
+    
+    // Avoid the center area where crosshair is
+    const centerX = 400, centerY = 300;
+    if (Math.abs(x - centerX) < 80 && Math.abs(y - centerY) < 80) {
+        // Move away from center
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 120;
+        targetDiv.style.left = (centerX + Math.cos(angle) * distance) + 'px';
+        targetDiv.style.top = (centerY + Math.sin(angle) * distance) + 'px';
+    } else {
+        targetDiv.style.left = x + 'px';
+        targetDiv.style.top = y + 'px';
+    }
+    
+    // Add slight movement
+    const moveOffset = Math.random() * 20 - 10;
+    targetDiv.style.animationDelay = (index * 0.5) + 's';
+    
+    const target = {
+        element: targetDiv,
+        id: 'hidden_' + index,
+        clicked: false,
+        points: 50
+    };
+    
+    targetDiv.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleHiddenTargetClick(target);
+    });
+    
+    return target;
+}
+
+function handleHiddenTargetClick(target) {
+    if (target.clicked) return;
+    
+    target.clicked = true;
+    videoTargetBonus += target.points;
+    
+    // Visual feedback
+    target.element.style.background = 'radial-gradient(circle, rgba(0, 255, 0, 0.9) 0%, rgba(0, 255, 0, 0.5) 50%, transparent 70%)';
+    target.element.style.transform = 'scale(1.5)';
+    
+    // Sound effect
+    playSound('predatorClick');
+    
+    // Remove after animation
+    setTimeout(() => {
+        target.element.style.opacity = '0';
+        setTimeout(() => {
+            if (target.element.parentNode) {
+                target.element.parentNode.removeChild(target.element);
+            }
+        }, 300);
+    }, 500);
+    
+    // Bonus time reduction
+    huntTimer = Math.max(huntTimer - 10, 1); // Reduce timer by 10 seconds (makes it easier)
+    updateHuntDisplay();
+    
+    // Check if all hidden targets found
+    const allFound = hiddenTargets.every(t => t.clicked);
+    if (allFound) {
+        // Extra bonus for finding all
+        videoTargetBonus += 100;
+        huntTimer = Math.max(huntTimer - 20, 1); // Extra time bonus
+        
+        // Visual feedback for bonus
+        const bonusMsg = document.createElement('div');
+        bonusMsg.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff00;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00;
+            z-index: 1000;
+            pointer-events: none;
+        `;
+        bonusMsg.textContent = `STEALTH BONUS: +${videoTargetBonus} POINTS`;
+        document.body.appendChild(bonusMsg);
+        
+        setTimeout(() => {
+            bonusMsg.style.opacity = '0';
+            setTimeout(() => document.body.removeChild(bonusMsg), 1000);
+        }, 2000);
+    }
+}
+
+function initializeVideoSwitch() {
+    // Alternate between thermal videos
+    const video1 = document.getElementById('thermalVideo1');
+    const video2 = document.getElementById('thermalVideo2');
+    
+    if (video1 && video2) {
+        video1.style.opacity = '0.7';
+        video2.style.opacity = '0.2';
+        
+        setInterval(() => {
+            if (video1.style.opacity === '0.7') {
+                video1.style.opacity = '0.2';
+                video2.style.opacity = '0.7';
+            } else {
+                video1.style.opacity = '0.7';
+                video2.style.opacity = '0.2';
+            }
+        }, 5000); // Switch every 5 seconds
+    }
+}
+
 function handleThermalTargetHit(target, clickX, clickY) {
     playSound('plasmaShot');
     
@@ -415,6 +555,7 @@ function updateHuntDisplay() {
     document.getElementById('huntTimer').textContent = huntTimer;
     document.getElementById('targetsHit').textContent = `${targetsHit}/3`;
     document.getElementById('civiliansHit').textContent = civiliansHit;
+    document.getElementById('videoBonus').textContent = videoTargetBonus;
 }
 
 function completeStage1() {
@@ -475,7 +616,13 @@ function initializeStage2() {
 }
 
 function encodeToYautja(text) {
-    return text.toUpperCase().split('').map(char => yautjaAlphabet[char] || char).join('');
+    // Remove vowels to make decoding more challenging
+    const textWithoutVowels = text.toUpperCase().replace(/[AEIOU]/g, '');
+    return textWithoutVowels.split('').map(char => yautjaAlphabet[char] || char).join('');
+}
+
+function removeVowelsFromText(text) {
+    return text.replace(/[AEIOU]/g, '');
 }
 
 function generateSymbolGrid() {
@@ -496,7 +643,12 @@ function generateSymbolGrid() {
 function checkDecode() {
     const input = document.getElementById('decodeInput').value.toUpperCase().trim();
     
-    if (input === currentMessage) {
+    // Check if input matches the original message OR the vowel-less version
+    // This gives players flexibility to decode with or without vowels
+    const inputNoVowels = removeVowelsFromText(input);
+    const messageNoVowels = removeVowelsFromText(currentMessage);
+    
+    if (input === currentMessage || inputNoVowels === messageNoVowels || input === messageNoVowels) {
         // Correct!
         playSound('predatorRoar');
         completeStage2();
