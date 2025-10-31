@@ -146,33 +146,34 @@ function initializeStage1() {
 function generateThermalTargets() {
     thermalTargets = [];
     
-    // Generate 3 armed targets (hot - red/orange)
+    // Generate 3 armed targets (barely visible small dots)
     for (let i = 0; i < 3; i++) {
         thermalTargets.push({
             id: 'armed_' + i,
             type: 'armed',
             x: Math.random() * 700 + 50,
             y: Math.random() * 500 + 50,
-            radius: 15 + Math.random() * 10,
-            temperature: 0.9, // High heat signature
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
+            radius: 3 + Math.random() * 2, // Much smaller
+            temperature: 0.4, // Lower heat signature
+            vx: (Math.random() - 0.5) * 0.3, // Very slow movement
+            vy: (Math.random() - 0.5) * 0.3,
             active: true,
-            pulseOffset: Math.random() * Math.PI * 2
+            pulseOffset: Math.random() * Math.PI * 2,
+            baseOpacity: 0.3 + Math.random() * 0.2 // Very low opacity
         });
     }
     
-    // Generate 3 civilians (cool - blue/green)
+    // Generate 3 civilians (even more subtle)
     for (let i = 0; i < 3; i++) {
         thermalTargets.push({
             id: 'civilian_' + i,
             type: 'civilian',
             x: Math.random() * 700 + 50,
             y: Math.random() * 500 + 50,
-            radius: 12 + Math.random() * 8,
-            temperature: 0.3, // Low heat signature
-            vx: (Math.random() - 0.5) * 1.5,
-            vy: (Math.random() - 0.5) * 1.5,
+            radius: 2 + Math.random() * 2, // Tiny
+            temperature: 0.2, // Very low heat signature
+            vx: (Math.random() - 0.5) * 0.2, // Almost stationary
+            vy: (Math.random() - 0.5) * 0.2,
             active: true,
             pulseOffset: Math.random() * Math.PI * 2
         });
@@ -219,33 +220,29 @@ function drawThermalScene() {
 }
 
 function drawThermalTarget(target) {
-    const time = Date.now() * 0.005;
-    const pulseIntensity = 0.8 + 0.2 * Math.sin(time + target.pulseOffset);
-    
-    // Create heat signature gradient
-    const gradient = ctx.createRadialGradient(
-        target.x, target.y, 0,
-        target.x, target.y, target.radius * 2
-    );
+    const time = Date.now() * 0.002; // Slower pulse
+    const pulseIntensity = 0.5 + 0.1 * Math.sin(time + target.pulseOffset); // Much more subtle
+    const opacity = (target.baseOpacity || 0.3) * pulseIntensity;
     
     if (target.type === 'armed') {
-        // Hot signature - red/orange/yellow
-        gradient.addColorStop(0, `rgba(255, 255, 100, ${0.9 * pulseIntensity})`);
-        gradient.addColorStop(0.3, `rgba(255, 150, 0, ${0.7 * pulseIntensity})`);
-        gradient.addColorStop(0.6, `rgba(255, 50, 0, ${0.5 * pulseIntensity})`);
-        gradient.addColorStop(1, 'rgba(100, 0, 0, 0)');
+        // Barely visible warm signature - very subtle orange
+        ctx.fillStyle = `rgba(255, 120, 60, ${opacity * 0.4})`;
+        ctx.beginPath();
+        ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Tiny bright center (almost invisible)
+        ctx.fillStyle = `rgba(255, 180, 100, ${opacity * 0.6})`;
+        ctx.beginPath();
+        ctx.arc(target.x, target.y, target.radius * 0.4, 0, Math.PI * 2);
+        ctx.fill();
     } else {
-        // Cool signature - blue/green
-        gradient.addColorStop(0, `rgba(0, 200, 255, ${0.6 * pulseIntensity})`);
-        gradient.addColorStop(0.4, `rgba(0, 150, 200, ${0.4 * pulseIntensity})`);
-        gradient.addColorStop(0.7, `rgba(0, 100, 150, ${0.2 * pulseIntensity})`);
-        gradient.addColorStop(1, 'rgba(0, 50, 100, 0)');
+        // Even more subtle cool signature
+        ctx.fillStyle = `rgba(80, 120, 150, ${opacity * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(target.x, target.y, target.radius, 0, Math.PI * 2);
+        ctx.fill();
     }
-    
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.arc(target.x, target.y, target.radius * 1.5, 0, Math.PI * 2);
-    ctx.fill();
     
     // Add inner bright core for armed targets
     if (target.type === 'armed') {
@@ -273,33 +270,35 @@ function drawThermalEffects() {
 function updateTargetPositions() {
     thermalTargets.forEach(target => {
         if (target.active) {
-            // Update position
+            // Very slow, subtle movement
             target.x += target.vx;
             target.y += target.vy;
             
-            // Bounce off walls
+            // Soft wall collision (slow down instead of bounce)
             if (target.x <= target.radius || target.x >= canvas.width - target.radius) {
-                target.vx *= -1;
+                target.vx *= -0.8; // Dampen movement
+                target.x = Math.max(target.radius, Math.min(canvas.width - target.radius, target.x));
             }
             if (target.y <= target.radius || target.y >= canvas.height - target.radius) {
-                target.vy *= -1;
+                target.vy *= -0.8; // Dampen movement  
+                target.y = Math.max(target.radius, Math.min(canvas.height - target.radius, target.y));
             }
             
-            // Keep within bounds
-            target.x = Math.max(target.radius, Math.min(canvas.width - target.radius, target.x));
-            target.y = Math.max(target.radius, Math.min(canvas.height - target.radius, target.y));
+            // Very subtle random drift
+            target.vx += (Math.random() - 0.5) * 0.02; // Much smaller random movement
+            target.vy += (Math.random() - 0.5) * 0.02;
             
-            // Slight random movement
-            target.vx += (Math.random() - 0.5) * 0.1;
-            target.vy += (Math.random() - 0.5) * 0.1;
-            
-            // Limit velocity
-            const maxSpeed = target.type === 'armed' ? 2 : 1.5;
+            // Very low max speeds for almost stationary movement
+            const maxSpeed = target.type === 'armed' ? 0.3 : 0.2; // Much slower
             const speed = Math.sqrt(target.vx * target.vx + target.vy * target.vy);
             if (speed > maxSpeed) {
                 target.vx = (target.vx / speed) * maxSpeed;
                 target.vy = (target.vy / speed) * maxSpeed;
             }
+            
+            // Natural velocity decay (targets slow down over time)
+            target.vx *= 0.995;
+            target.vy *= 0.995;
         }
     });
 }
