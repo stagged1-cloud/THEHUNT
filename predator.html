@@ -24,6 +24,14 @@
             <div class="mission-briefing">YAUTJA TRIAL INITIATED • PROVE YOUR WORTH</div>
         </header>
 
+        <!-- Test Video Layer Outside Container -->
+        <div class="test-video-layer">
+            <video class="thermal-video" id="thermalVideo1" autoplay loop muted playsinline controls style="position: absolute; top: 100px; left: 100px; width: 200px; height: 150px; z-index: 1000; border: 5px solid yellow;">
+                <source src="assets/videos/thermal_export_1761911723189.webm" type="video/webm">
+                <p>Video not supported</p>
+            </video>
+        </div>
+
         <!-- Stage 1: Thermal Vision Hunt -->
         <section class="game-stage" id="stage1" style="display: block;">
             <div class="wrist-display">
@@ -33,9 +41,6 @@
                 <div class="thermal-container" id="thermalContainer">
                     <!-- Video Background Layer -->
                     <div class="thermal-video-layer">
-                        <video class="thermal-video" id="thermalVideo1" autoplay loop muted playsinline>
-                            <source src="assets/videos/thermal_export_1761911723189.webm" type="video/webm">
-                        </video>
                         <video class="thermal-video" id="thermalVideo2" autoplay loop muted playsinline>
                             <source src="assets/videos/thermal_export_1761912035914.webm" type="video/webm">
                         </video>
