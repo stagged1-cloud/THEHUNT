@@ -10,12 +10,13 @@ let attemptsRemaining = 3;
 
 // Yautja Symbol Mapping (corrected)
 const yautjaAlphabet = {
-    'A': '⟁', 'B': '⟃', 'C': '⟅', 'D': '⟇', 'E': '⟉',
-    'F': '⟋', 'G': '⟍', 'H': '⟏', 'I': '⟑', 'J': '⟓',
-    'K': '⟕', 'L': '⟗', 'M': '⟙', 'N': '⟛', 'O': '⟝',
+    'B': '⟃', 'C': '⟅', 'D': '⟇',
+    'F': '⟋', 'G': '⟍', 'H': '⟏', 'J': '⟓',
+    'K': '⟕', 'L': '⟗', 'M': '⟙', 'N': '⟛',
     'P': '⟟', 'Q': '⟡', 'R': '⟣', 'S': '⟥', 'T': '⟧',
-    'U': '⟩', 'V': '⟫', 'W': '⟭', 'X': '⟯', 'Y': '⟱', 'Z': '⟳',
-    ' ': '•'
+    'V': '⟫', 'W': '⟭', 'X': '⟯', 'Y': '⟱', 'Z': '⟳',
+    ' ': '•',
+    '_': '◇'  // Placeholder for missing vowels
 };
 
 // Messages to decode (film quotes) - will be randomized and personalized
@@ -111,6 +112,41 @@ function initializeAudio() {
         jungleAudio.volume = 0.3;
         jungleAudio.play().catch(e => console.log('Audio autoplay prevented:', e));
     }
+    
+    // Play predator_2.mp3 on loop continuously
+    const predator2 = document.getElementById('predator2');
+    if (predator2) {
+        predator2.volume = 0.4;
+        predator2.play().catch(e => console.log('Predator 2 audio autoplay prevented:', e));
+    }
+    
+    // Play predator_1, predator_3, and predator_4 randomly in the background
+    playRandomPredatorSounds();
+}
+
+function playRandomPredatorSounds() {
+    const randomSounds = ['predator1', 'predator3', 'predator4'];
+    
+    function playRandomSound() {
+        const randomIndex = Math.floor(Math.random() * randomSounds.length);
+        const soundId = randomSounds[randomIndex];
+        const audio = document.getElementById(soundId);
+        
+        if (audio) {
+            audio.volume = 0.35;
+            audio.play().catch(e => console.log(`${soundId} autoplay prevented:`, e));
+            
+            // When this sound ends, schedule the next random sound
+            audio.addEventListener('ended', () => {
+                // Wait 3-8 seconds before playing next random sound
+                const delay = 3000 + Math.random() * 5000;
+                setTimeout(playRandomSound, delay);
+            }, { once: true });
+        }
+    }
+    
+    // Start the first random sound after a short delay
+    setTimeout(playRandomSound, 2000);
 }
 
 // ===== STAGE 1: THERMAL HUNT =====
@@ -668,20 +704,24 @@ function initializeStage2() {
 }
 
 function encodeToYautja(text) {
-    // Remove vowels to make decoding more challenging
-    const textWithoutVowels = text.toUpperCase().replace(/[AEIOU]/g, '');
-    return textWithoutVowels.split('').map(char => yautjaAlphabet[char] || char).join('');
+    // Replace vowels with placeholder to make decoding more challenging
+    const textWithPlaceholders = text.toUpperCase().replace(/[AEIOU]/g, '_');
+    return textWithPlaceholders.split('').map(char => yautjaAlphabet[char] || char).join('');
 }
 
 function removeVowelsFromText(text) {
-    return text.replace(/[AEIOU]/g, '');
+    return text.replace(/[AEIOU]/g, '_');
 }
 
 function generateSymbolGrid() {
     const grid = document.getElementById('symbolGrid');
     grid.innerHTML = '';
     
+    // Only show consonants and special characters (no vowels)
     for (const [letter, symbol] of Object.entries(yautjaAlphabet)) {
+        // Skip vowel entries (A, E, I, O, U)
+        if (['A', 'E', 'I', 'O', 'U'].includes(letter)) continue;
+        
         const keyDiv = document.createElement('div');
         keyDiv.className = 'symbol-key';
         keyDiv.innerHTML = `

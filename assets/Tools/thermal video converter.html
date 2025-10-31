@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THERMAL‑VIS</title>
+  <style>
+    /*
+      Simple dark theme for the thermal viewer.  The page is organised into a control
+      bar along the top and a two‑panel viewer beneath.  The left panel shows the
+      original video and the right panel shows the colour‑mapped thermal output.
+      Crosshairs are implemented using pseudo elements on a small overlay that
+      sits above each viewer.  The overlay is absolutely positioned relative to
+      its container so it never escapes into the rest of the page – fixing the
+      issue where green lines were drawn across the whole document.
+    */
+    :root {
+      --accent: #39ff14;
+      --bg: #0d1117;
+      --fg: #e5e5e5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: sans-serif; }
+    header { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; padding: 0.5rem 1rem; border-bottom: 1px solid rgba(57,255,20,0.15); }
+    header label { margin-right: 0.25rem; }
+    select, button, input[type="range"] {
+      background: var(--bg);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    select:disabled, button:disabled { opacity: 0.4; cursor: not-allowed; }
+    input[type="range"] { width: 8rem; height: 0.5rem; }
+    button { cursor: pointer; }
+    .viewer { display: flex; flex-wrap: wrap; gap: 1rem; padding: 1rem; }
+    .video-wrapper, .canvas-wrapper { position: relative; flex: 1 1 45%; min-width: 280px; }
+    .video-wrapper video, .canvas-wrapper canvas {
+      width: 100%;
+      height: auto;
+      background: #222;
+      border: 1px solid rgba(57,255,20,0.5);
+      border-radius: 8px;
+      display: block;
+      /* constrain the height so that loaded videos do not blow up to their
+         intrinsic resolution.  This keeps the preview and thermal output
+         roughly similar in size regardless of the source. */
+      max-height: 60vh;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    /* Crosshair using pseudo elements */
+    .overlay::before,
+    .overlay::after {
+      content: "";
+      position: absolute;
+      background: rgba(57,255,20,0.3);
+    }
+    .overlay::before { /* horizontal crosshair line */
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      transform: translateY(-0.5px);
+    }
+    .overlay::after { /* vertical crosshair line */
+      left: 50%;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      transform: translateX(-0.5px);
+    }
+
+    /* Hide crosshairs on the source video preview to reduce clutter */
+    .video-wrapper .overlay::before,
+    .video-wrapper .overlay::after {
+      display: none;
+    }
+    .progress-container { width: 100%; height: 5px; background: rgba(255,255,255,0.1); margin: 0 0 1rem; display: none; }
+    .progress-bar { height: 100%; width: 0%; background: var(--accent); transition: width 0.1s linear; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #222;
+      color: var(--accent);
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      display: none;
+      z-index: 100;
+    }
+    .toast a { color: var(--accent); text-decoration: underline; margin-left: 0.5rem; }
+    .note { text-align: center; font-size: 0.8rem; margin: 0 1rem 1rem; color: rgba(57,255,20,0.7); }
+  </style>
+</head>
+<body>
+  <header>
+    <label><strong>THERMAL‑VIS</strong></label>
+    <input id="fileInput" type="file" accept="video/*" style="display:none;" />
+    <button id="fileButton">Choose file</button>
+    <button id="webcamButton">Use webcam</button>
+    <label>Palette:</label>
+    <select id="paletteSelect">
+      <option value="Inferno">Inferno</option>
+      <option value="Jet">Jet</option>
+      <option value="Turbo">Turbo</option>
+    </select>
+    <label>Intensity:</label>
+    <input id="intensitySlider" type="range" min="0.5" max="3" step="0.1" value="1" />
+    <label>Blur(px):</label>
+    <input id="blurSlider" type="range" min="0" max="8" step="0.5" value="0" />
+    <label>Format:</label>
+    <select id="formatSelect">
+      <option value="video">Video (WebM)</option>
+      <option value="gif">GIF</option>
+    </select>
+    <label>Scale:</label>
+    <select id="scaleSelect">
+      <option value="0.5">0.5x</option>
+      <option value="1" selected>1.0x</option>
+      <option value="1.5">1.5x</option>
+      <option value="2">2.0x</option>
+    </select>
+    <label>FPS:</label>
+    <select id="fpsSelect">
+      <option value="12">12</option>
+      <option value="24" selected>24</option>
+      <option value="30">30</option>
+      <option value="60">60</option>
+    </select>
+
+    <!-- When using the webcam, allow the user to choose how long the recorded clip should last.  Hidden by default and shown when the webcam is active. -->
+    <label id="durationLabel" style="display:none;">Clip length:</label>
+    <select id="durationSelect" style="display:none;">
+      <option value="5">5s</option>
+      <option value="10">10s</option>
+      <option value="15">15s</option>
+      <option value="20">20s</option>
+      <option value="30">30s</option>
+      <option value="45">45s</option>
+      <option value="60">60s</option>
+    </select>
+    <button id="startButton">Start Export</button>
+    <button id="stopButton" disabled>Stop</button>
+    <button id="folderButton">Choose folder</button>
+    <span id="folderLabel">No folder selected</span>
+  </header>
+  <div class="progress-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="viewer">
+    <div class="video-wrapper">
+      <video id="previewVideo" controls muted></video>
+      <!-- No overlay on preview video; crosshairs are only drawn on thermal output -->
+    </div>
+    <div class="canvas-wrapper">
+      <canvas id="outputCanvas"></canvas>
+      <div class="overlay"></div>
+    </div>
+  </div>
+  <p class="note">Drop a video or pick a file to see the thermal effect. Processing is done locally in your browser using Canvas. Note: some formats may not be supported by your browser's codecs; if a file won't play, convert it to H.264 MP4.</p>
+  <div class="toast" id="toast"><span id="toastMessage"></span><a id="toastLink" href="#" target="_blank">Open</a> <button id="toastClose" style="margin-left:0.5rem; background:none; border:none; color:var(--accent); cursor:pointer;">×</button></div>
+  <script>
+    (() => {
+      /* ============ Setup elements ============ */
+      const fileButton = document.getElementById('fileButton');
+      const fileInput = document.getElementById('fileInput');
+      const webcamButton = document.getElementById('webcamButton');
+      const paletteSelect = document.getElementById('paletteSelect');
+      const intensitySlider = document.getElementById('intensitySlider');
+      const blurSlider = document.getElementById('blurSlider');
+      const formatSelect = document.getElementById('formatSelect');
+      const scaleSelect = document.getElementById('scaleSelect');
+      const fpsSelect = document.getElementById('fpsSelect');
+      const startButton = document.getElementById('startButton');
+      const stopButton = document.getElementById('stopButton');
+      const folderButton = document.getElementById('folderButton');
+      const folderLabel = document.getElementById('folderLabel');
+      const progressContainer = document.getElementById('progressContainer');
+      const progressBar = document.getElementById('progressBar');
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastLink = document.getElementById('toastLink');
+      const toastClose = document.getElementById('toastClose');
+      const previewVideo = document.getElementById('previewVideo');
+      const outputCanvas = document.getElementById('outputCanvas');
+      // Use willReadFrequently to optimise repeated getImageData calls.  This
+      // hint improves performance on some browsers when many readback
+      // operations are performed.
+      const outputCtx = outputCanvas.getContext('2d', { willReadFrequently: true });
+      // Hidden source video used for processing.  It continues playing even when the
+      // on‑screen preview is paused during export.
+      const sourceVideo = document.createElement('video');
+      sourceVideo.muted = true;
+      sourceVideo.playsInline = true;
+      sourceVideo.crossOrigin = 'anonymous';
+
+      // Elements used to select the duration of a clip when recording from the webcam
+      const durationLabel = document.getElementById('durationLabel');
+      const durationSelect = document.getElementById('durationSelect');
+      // State variables to track whether the source is a webcam and how long the
+      // recording should last.  exportStartTime is set at the beginning of an
+      // export so we can compute elapsed time for webcam recordings.
+      let isWebcam = false;
+      let exportDuration = 0;
+      let exportStartTime = 0;
+      /* Palette generation using colour stops.  To easily adjust the look, modify
+         the stops arrays below. */
+      function createPalette(stops) {
+        const out = [];
+        for (let i = 0; i < 256; i++) {
+          const t = i / 255;
+          let j = 0;
+          while (j < stops.length - 1 && t > stops[j + 1][0]) j++;
+          const t0 = stops[j][0], c0 = stops[j][1];
+          const t1 = stops[j + 1][0], c1 = stops[j + 1][1];
+          const f = (t - t0) / (t1 - t0);
+          out[i] = [
+            Math.round(c0[0] + (c1[0] - c0[0]) * f),
+            Math.round(c0[1] + (c1[1] - c0[1]) * f),
+            Math.round(c0[2] + (c1[2] - c0[2]) * f)
+          ];
+        }
+        return out;
+      }
+      const palettes = {
+        'Inferno': createPalette([
+          [0.0, [0, 0, 0]],
+          [0.25, [52, 0, 67]],
+          [0.5, [192, 14, 32]],
+          [0.75, [252, 139, 0]],
+          [1.0, [255, 255, 188]]
+        ]),
+        'Jet': createPalette([
+          [0.0, [0, 0, 128]],
+          [0.35, [0, 255, 255]],
+          [0.66, [255, 255, 0]],
+          [1.0, [128, 0, 0]]
+        ]),
+        'Turbo': createPalette([
+          [0.0, [48, 18, 59]],
+          [0.25, [0, 171, 185]],
+          [0.5, [97, 252, 59]],
+          [0.75, [255, 159, 24]],
+          [1.0, [255, 28, 65]]
+        ])
+      };
+      let currentPalette = palettes[paletteSelect.value];
+      paletteSelect.addEventListener('change', () => {
+        currentPalette = palettes[paletteSelect.value];
+      });
+
+      // Keep track of whether a video or webcam stream is loaded.  The start
+      // export button should only be enabled when both a source is loaded and
+      // a destination folder has been chosen.
+      let videoLoaded = false;
+      function updateExportButton() {
+        startButton.disabled = !(videoLoaded && folderHandle);
+      }
+      // Initialise the export button state on page load
+      updateExportButton();
+      /* Video/file handling */
+      fileButton.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        loadVideoFile(file);
+      });
+      async function loadVideoFile(file) {
+        // Read the file as a data URL.  Using a data URL avoids cross origin
+        // restrictions that can prevent reading pixel data from a canvas when
+        // drawing a local file.  URL.createObjectURL can result in a
+        // file:// URL which is treated as a different origin and will taint
+        // the canvas, causing GIF encoding to fail.
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(file);
+        });
+        await setVideoSource(dataUrl);
+        fileButton.textContent = file.name.replace(/\.[^/.]+$/, '') || 'Selected file';
+        // This is a regular file, not webcam, so hide the duration selector
+        isWebcam = false;
+        durationLabel.style.display = 'none';
+        durationSelect.style.display = 'none';
+        // Mark that a video source has been loaded and update the export button
+        videoLoaded = true;
+        updateExportButton();
+      }
+      async function setVideoSource(src, stream = false) {
+        pauseExport();
+        // When switching sources reset the loaded flag until playback starts
+        videoLoaded = false;
+        updateExportButton();
+        // Reset states
+        stopExport(true);
+        progressContainer.style.display = 'none';
+        progressBar.style.width = '0%';
+        previewVideo.srcObject = null;
+        previewVideo.src = '';
+        sourceVideo.srcObject = null;
+        sourceVideo.src = '';
+        if (stream) {
+          previewVideo.srcObject = src;
+          sourceVideo.srcObject = src;
+        } else {
+          previewVideo.src = src;
+          sourceVideo.src = src;
+        }
+        try {
+          await sourceVideo.play();
+          await previewVideo.play();
+          // When playback starts successfully mark as loaded and update the export button
+          videoLoaded = true;
+          updateExportButton();
+        } catch (err) {
+          // Autoplay may fail; user will need to click play
+        }
+      }
+      webcamButton.addEventListener('click', async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+          loadStream(stream);
+        } catch (err) {
+          alert('Unable to access webcam: ' + err.message);
+        }
+      });
+      async function loadStream(stream) {
+        await setVideoSource(stream, true);
+        fileButton.textContent = 'Webcam';
+        // Mark that we are using a webcam and show the duration selector
+        isWebcam = true;
+        durationLabel.style.display = 'inline-block';
+        durationSelect.style.display = 'inline-block';
+        // Set a sensible default clip length if none selected
+        if (!durationSelect.value) durationSelect.value = '10';
+      }
+      /* ============ Rendering ============ */
+      let pausePreview = false;
+      function render() {
+        requestAnimationFrame(render);
+        if (!sourceVideo || sourceVideo.readyState < 2) return;
+        const w = sourceVideo.videoWidth;
+        const h = sourceVideo.videoHeight;
+        if (w === 0 || h === 0) return;
+        if (outputCanvas.width !== w || outputCanvas.height !== h) {
+          outputCanvas.width = w;
+          outputCanvas.height = h;
+        }
+        // Draw blurred frame onto an offscreen canvas
+        // We use a single offscreen canvas to apply blur via context.filter
+        if (!render.off) {
+          render.off = document.createElement('canvas');
+          // Use willReadFrequently on the offscreen context since we read
+          // back pixels for colour mapping on every frame
+          render.offCtx = render.off.getContext('2d', { willReadFrequently: true });
+        }
+        const off = render.off;
+        const offCtx = render.offCtx;
+        off.width = w;
+        off.height = h;
+        offCtx.filter = `blur(${blurSlider.value || 0}px)`;
+        offCtx.drawImage(sourceVideo, 0, 0, w, h);
+        let frame = offCtx.getImageData(0, 0, w, h);
+        const data = frame.data;
+        const intensity = parseFloat(intensitySlider.value);
+        const pal = currentPalette;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          // grey intensity in range 0..1
+          let v = (r + g + b) / (3 * 255);
+          v = Math.min(1, v * intensity);
+          const idx = (v * 255) | 0;
+          const c = pal[idx];
+          data[i] = c[0];
+          data[i + 1] = c[1];
+          data[i + 2] = c[2];
+        }
+        offCtx.putImageData(frame, 0, 0);
+        // Draw to visible canvas if preview is enabled
+        if (!pausePreview) {
+          outputCtx.drawImage(off, 0, 0);
+          // add scanlines
+          outputCtx.save();
+          outputCtx.fillStyle = 'rgba(0,0,0,0.08)';
+          for (let y = 0; y < h; y += 4) {
+            outputCtx.fillRect(0, y, w, 1);
+          }
+          outputCtx.restore();
+          // Ensure the displayed canvas keeps the same aspect ratio as the source
+          // by adjusting its CSS height to match the intrinsic aspect ratio.  When
+          // the wrapper width changes (e.g. window resized), this keeps the
+          // thermal display from stretching or squashing the video content.
+          const displayWidth = outputCanvas.parentElement.clientWidth;
+          if (displayWidth) {
+            const expectedHeight = displayWidth * (h / w);
+            outputCanvas.style.height = expectedHeight + 'px';
+          }
+        }
+        // During export, also draw to capture canvas
+        if (exporting && captureCtx) {
+          captureCtx.drawImage(off, 0, 0, captureCanvas.width, captureCanvas.height);
+          if (exportFormat === 'gif') {
+            // Capture frame for GIF encoding
+            gifFrames.push(captureCtx.getImageData(0, 0, captureCanvas.width, captureCanvas.height));
+          }
+        }
+        // update progress bar if exporting
+        if (exporting) {
+          if (isWebcam && exportDuration > 0) {
+            // For webcam, progress is based on elapsed time relative to the selected duration
+            const elapsed = (Date.now() - exportStartTime) / 1000;
+            const pct = Math.min(1, elapsed / exportDuration) * 100;
+            progressBar.style.width = pct.toFixed(1) + '%';
+            if (elapsed >= exportDuration) {
+              stopExport();
+            }
+          } else if (sourceVideo.duration && !isNaN(sourceVideo.duration) && sourceVideo.duration !== Infinity) {
+            const pct = Math.min(1, sourceVideo.currentTime / sourceVideo.duration) * 100;
+            progressBar.style.width = pct.toFixed(1) + '%';
+            if (sourceVideo.currentTime >= sourceVideo.duration) {
+              // auto stop at end
+              stopExport();
+            }
+          } else {
+            // Indeterminate progress: animate bar for live sources with unknown duration
+            const now = Date.now();
+            const width = ((now / 100) % 100);
+            progressBar.style.width = width + '%';
+          }
+        }
+      }
+      render();
+      /*
+        Synchronise the hidden processing video (sourceVideo) with the on‑screen
+        preview video when the user interacts with the player controls.  This
+        ensures that when the preview is played, paused or scrubbed, the
+        thermal processing output follows exactly.  Without this hook the
+        hidden video may continue playing in the background and the right
+        panel would not restart when the user restarts the left panel.
+      */
+      function syncHiddenToPreview() {
+        // Set currentTime of source to match preview.  Use try/catch to
+        // gracefully handle unseekable streams (e.g. webcams)
+        try {
+          sourceVideo.currentTime = previewVideo.currentTime;
+        } catch (_) {}
+      }
+      previewVideo.addEventListener('play', () => {
+        if (!exporting) {
+          syncHiddenToPreview();
+          try { sourceVideo.play(); } catch (_) {}
+        }
+      });
+      previewVideo.addEventListener('pause', () => {
+        if (!exporting) {
+          try { sourceVideo.pause(); } catch (_) {}
+        }
+      });
+      previewVideo.addEventListener('seeked', () => {
+        if (!exporting) syncHiddenToPreview();
+      });
+      previewVideo.addEventListener('ended', () => {
+        if (!exporting) {
+          try { sourceVideo.pause(); } catch (_) {}
+          // Reset processing video to beginning so next play starts fresh
+          try { sourceVideo.currentTime = 0; } catch (_) {}
+        }
+      });
+      /* ============ Export handling ============ */
+      let exporting = false;
+      let exportFormat = 'video';
+      let captureCanvas, captureCtx;
+      let mediaRecorder;
+      let recordedChunks = [];
+      let gifFrames = [];
+      let folderHandle = null;
+      formatSelect.addEventListener('change', () => {
+        exportFormat = formatSelect.value;
+      });
+      scaleSelect.addEventListener('change', () => {
+        // no immediate effect; used at export time
+      });
+      startButton.addEventListener('click', async () => {
+        if (exporting) return;
+        if (!sourceVideo || sourceVideo.readyState < 2) { alert('No video loaded'); return; }
+        // If a folder is selected, request write permission within the click
+        // handler.  This call must happen in a user activation event; otherwise
+        // subsequent calls to getFileHandle will fail with a SecurityError.
+        if (folderHandle && typeof folderHandle.requestPermission === 'function') {
+          try {
+            const perm = await folderHandle.requestPermission({ mode: 'readwrite' });
+            if (perm !== 'granted') {
+              alert('Permission to write to the selected folder was denied. Export cancelled.');
+              return;
+            }
+          } catch (err) {
+            console.warn('Permission request failed', err);
+            alert('Unable to obtain permission to write to the selected folder.');
+            return;
+          }
+        }
+        startExport();
+      });
+      stopButton.addEventListener('click', () => {
+        if (!exporting) return;
+        stopExport();
+      });
+      function pauseExport() {
+        if (exporting) stopExport(true);
+      }
+      function startExport() {
+        exporting = true;
+        // Record the start time of the export so progress can be measured for webcam
+        exportStartTime = Date.now();
+        // Determine duration: for webcam use the user-selected clip length; for files use 0 (auto until end of file)
+        if (isWebcam) {
+          const durVal = parseInt(durationSelect.value, 10);
+          exportDuration = isNaN(durVal) ? 10 : durVal;
+        } else {
+          exportDuration = 0;
+        }
+        pausePreview = true; // hide preview during export
+        progressContainer.style.display = 'block';
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        fileButton.disabled = true;
+        webcamButton.disabled = true;
+        // Create capture canvas at scaled size
+        const scale = parseFloat(scaleSelect.value);
+        const w = outputCanvas.width;
+        const h = outputCanvas.height;
+        captureCanvas = document.createElement('canvas');
+        captureCanvas.width = Math.max(1, Math.round(w * scale));
+        captureCanvas.height = Math.max(1, Math.round(h * scale));
+        // For GIF exports limit both dimensions so that the larger of width or
+        // height does not exceed 480px.  Previously we only limited the
+        // width, which allowed very tall frames (portrait videos) to exceed
+        // reasonable sizes.  Excessively large frames can cause the encoder
+        // to run out of memory and result in blank outputs.  By scaling
+        // uniformly based on the maximum dimension we preserve aspect ratio
+        // and keep memory usage predictable.
+        if (exportFormat === 'gif') {
+          const maxDim = 480;
+          const maxSide = Math.max(captureCanvas.width, captureCanvas.height);
+          if (maxSide > maxDim) {
+            const ratio = maxDim / maxSide;
+            captureCanvas.width = Math.max(1, Math.round(captureCanvas.width * ratio));
+            captureCanvas.height = Math.max(1, Math.round(captureCanvas.height * ratio));
+          }
+        }
+        // Use willReadFrequently here as we will read pixels repeatedly when
+        // building GIF frames
+        captureCtx = captureCanvas.getContext('2d', { willReadFrequently: true });
+        // Disable smoothing on the capture context so that scaled GIF frames
+        // preserve palette colours exactly.  Without this the browser will
+        // interpolate pixels and the encoded GIF will show noise when scaled.
+        captureCtx.imageSmoothingEnabled = false;
+        recordedChunks = [];
+        gifFrames = [];
+        const fps = parseInt(fpsSelect.value, 10);
+        if (exportFormat === 'video') {
+          const stream = captureCanvas.captureStream(fps);
+          try {
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+          } catch (e) {
+            try {
+              mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+            } catch (e2) {
+              alert('Your browser does not support WebM encoding');
+              exporting = false;
+              return;
+            }
+          }
+          mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) recordedChunks.push(e.data); };
+          mediaRecorder.onstop = async () => {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            finalizeExport(blob, 'webm');
+          };
+          mediaRecorder.start();
+        }
+
+        // ensure the hidden source video is playing so frames advance during export
+        try { sourceVideo.play(); } catch (err) {}
+      }
+      async function stopExport(internal = false) {
+        if (!exporting) return;
+        exporting = false;
+        stopButton.disabled = true;
+        // Re-enable source selectors; start button state will be set via updateExportButton()
+        fileButton.disabled = false;
+        webcamButton.disabled = false;
+        pausePreview = false;
+        progressBar.style.width = '0%';
+        progressContainer.style.display = 'none';
+        if (exportFormat === 'video' && mediaRecorder) {
+          mediaRecorder.stop();
+        } else if (exportFormat === 'gif') {
+          // Ensure at least one frame exists before encoding; if no frames were
+          // captured (e.g. the export was started/stopped quickly) push the
+          // current frame into gifFrames.  Without this the GIF may be empty
+          // and the file will appear broken.
+          if (gifFrames.length === 0 && captureCtx) {
+            try {
+              const id = captureCtx.getImageData(0, 0, captureCanvas.width, captureCanvas.height);
+              gifFrames.push(id);
+            } catch (_) {}
+          }
+          const fps = parseInt(fpsSelect.value, 10);
+          try {
+            const blob = encodeGIF(gifFrames, captureCanvas.width, captureCanvas.height, fps);
+            finalizeExport(blob, 'gif');
+          } catch (err) {
+            console.error('GIF encoding failed', err);
+            // fallback: save nothing
+            finalizeExport(new Blob([], { type: 'image/gif' }), 'gif');
+          }
+        }
+        // Update start button state once export has concluded
+        updateExportButton();
+      }
+      function showToast(message, url) {
+        toastMessage.textContent = message;
+        toastLink.href = url;
+        toast.style.display = 'block';
+      }
+      toastClose.addEventListener('click', () => { toast.style.display = 'none'; });
+      async function finalizeExport(blob, ext) {
+        const fileName = `thermal_export_${Date.now()}.${ext}`;
+        let url;
+        let message;
+        if (folderHandle) {
+          try {
+            // Write to the chosen directory.  Some browsers require the `write()`
+            // call to use an object with a `type` and `data` property.  To
+            // maximise compatibility we detect support and fall back accordingly.
+            const fileHandle = await folderHandle.getFileHandle(fileName, { create: true });
+            const writable = await fileHandle.createWritable();
+            if (typeof writable.write === 'function') {
+              // If the method accepts a blob directly, use it.  Otherwise wrap
+              // the blob in an object to satisfy browsers that implement the
+              // newer writable stream API.
+              try {
+                await writable.write(blob);
+              } catch (_) {
+                await writable.write({ type: 'write', data: blob });
+              }
+            }
+            await writable.close();
+            // Build a simple HTML listing of the directory contents instead of
+            // linking directly to the saved file.  Many browsers block direct
+            // links to local files, so this gives the user an overview of
+            // everything in the selected directory and confirms the file was
+            // created.  The listing includes the just‑created file.
+            const entries = [];
+            for await (const entry of folderHandle.entries()) {
+              entries.push(entry[0] || entry.name);
+            }
+            const listing = '<!DOCTYPE html><meta charset="utf-8"><title>' + fileName + ' folder</title>' +
+              '<h2>Files in "' + (folderHandle.name || 'selected') + '"</h2>' +
+              '<ul>' + entries.map(n => '<li>' + n + '</li>').join('') + '</ul>';
+            const folderBlob = new Blob([listing], { type: 'text/html' });
+            const folderUrl = URL.createObjectURL(folderBlob);
+            message = `Export complete: saved in folder \"${folderHandle.name || 'selected'}\"`;
+            showToast(message, folderUrl);
+            return;
+          } catch (err) {
+            console.error('Error writing to folder', err);
+            // If writing fails, fall back to normal download.  Do not set
+            // folderHandle to null so the user can try again without
+            // reselecting the directory.
+          }
+        }
+        // Fallback: create a URL from the in-memory blob and let the user download it
+        url = URL.createObjectURL(blob);
+        message = `Export complete: ${fileName}`;
+        showToast(message, url);
+      }
+      /* GIF encoding implementation (simple LZW, 256 colour) */
+      function encodeGIF(frames, width, height, fps) {
+        /*
+          Simple GIF encoder tuned for our thermal viewer.
+          The original implementation attempted to encode every captured frame at
+          full resolution and full frame rate, which led to extremely heavy
+          processing and, in many browsers, would either run out of memory or
+          throw an exception.  To make GIF export more robust, we perform two
+          optimisations:
+          1.  We sample frames so that we never encode more than `fps * 10`
+              frames (approximately ten seconds of animation).  Longer clips
+              automatically skip frames evenly across the sequence.  This keeps
+              the encoder from choking on dozens or hundreds of full‑resolution
+              frames.
+          2.  We build a reverse lookup map for palette colours, which speeds up
+              the conversion from RGBA to palette indices.  Without this map we
+              would naively scan through all 256 palette entries for each pixel
+              resulting in O(N*256) operations per frame.  A hash map reduces
+              this to O(N) and therefore helps tremendously for larger images.
+          The result is a more responsive GIF exporter that trades off some
+          temporal resolution when the clip is long or recorded at a high FPS.
+        */
+        // Clone the current palette and pad to 256 entries
+        const pal = currentPalette.slice();
+        while (pal.length < 256) pal.push([0, 0, 0]);
+        // Build a reverse lookup map for RGB→index
+        const colorIndex = new Map();
+        for (let i = 0; i < pal.length; i++) {
+          const c = pal[i];
+          colorIndex.set(c[0] + ',' + c[1] + ',' + c[2], i);
+        }
+        // Determine how many frames we are willing to encode.
+        // Originally we attempted to encode up to 10 seconds worth of
+        // animation (fps * 10 frames).  However, on long or high‑framerate
+        // clips this can consume hundreds of megabytes of memory and cause
+        // the encoder to throw, resulting in a zero‑byte GIF.  To keep
+        // exports reliable, cap the total number of frames to at most
+        // 200 regardless of the recording FPS or duration.  This still
+        // yields a smooth animation for shorter clips while preventing
+        // runaway memory usage on longer ones.  Longer sequences are
+        // downsampled evenly.
+        const maxFrames = Math.min(fps * 10, 200);
+        const frameSkip = Math.max(1, Math.ceil(frames.length / maxFrames));
+        const sampledFrames = [];
+        for (let i = 0; i < frames.length; i += frameSkip) {
+          sampledFrames.push(frames[i]);
+        }
+        // Adjust the effective FPS based on the sampling factor so that the
+        // animation still plays back in real time.  Each sampled frame
+        // represents `frameSkip` original frames.
+        const effectiveFps = Math.max(1, Math.round(fps / frameSkip));
+        const delay = Math.max(2, Math.round(100 / effectiveFps)); // hundredths of a second
+        // Prepare the global colour table
+        const globalCT = new Uint8Array(256 * 3);
+        for (let i = 0; i < 256; i++) {
+          globalCT[i * 3] = pal[i][0];
+          globalCT[i * 3 + 1] = pal[i][1];
+          globalCT[i * 3 + 2] = pal[i][2];
+        }
+        // Helper to collect bytes
+        const parts = [];
+        const push = (...args) => { parts.push(...args); };
+        // GIF Header
+        push(71, 73, 70, 56, 57, 97); // GIF89a
+        push(width & 0xFF, (width >> 8) & 0xFF);
+        push(height & 0xFF, (height >> 8) & 0xFF);
+        // Packed fields: global table flag (1), colour resolution (7), sort flag (0), global table size (7)
+        // Packed fields: global colour table flag (1), colour resolution (7),
+        // sort flag (0), global table size (7).  The colour resolution bits
+        // indicate the number of bits per primary colour minus one (7 for
+        // 8‑bit colour).  Using the correct colour resolution helps some
+        // decoders interpret the palette correctly.  Previously this was set
+        // incorrectly to 0, which could cause blank images.  This value is
+        // 0b11110111 (0xF7).
+        push(0b11110111);
+        push(0); // background index
+        push(0); // pixel aspect ratio
+        // Global colour table
+        for (let i = 0; i < globalCT.length; i++) push(globalCT[i]);
+        // Netscape application extension to enable looping
+        push(0x21, 0xFF, 0x0B);
+        push(...[78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48]); // NETSCAPE2.0
+        push(0x03, 0x01, 0x00, 0x00, 0x00);
+        // LZW compression helper (unchanged from original implementation)
+        function lzwEncode(indices) {
+          const minCodeSize = 8;
+          const clearCode = 1 << minCodeSize;
+          const endOfInfo = clearCode + 1;
+          let codeSize = minCodeSize + 1;
+          let dict = {};
+          for (let i = 0; i < clearCode; i++) dict[String.fromCharCode(i)] = i;
+          let nextCode = endOfInfo + 1;
+          let data = [];
+          let prefix = '';
+          function outputCode(code) {
+            for (let i = 0; i < codeSize; i++) {
+              data.push(code & 1);
+              code >>= 1;
+            }
+          }
+          outputCode(clearCode);
+          for (let i = 0; i < indices.length; i++) {
+            const k = String.fromCharCode(indices[i]);
+            const pk = prefix + k;
+            if (dict.hasOwnProperty(pk)) {
+              prefix = pk;
+            } else {
+              outputCode(dict[prefix]);
+              dict[pk] = nextCode++;
+              prefix = k;
+              if (nextCode === (1 << codeSize)) {
+                if (codeSize < 12) {
+                  codeSize++;
+                }
+              }
+              if (nextCode >= 4095) {
+                outputCode(clearCode);
+                dict = {};
+                for (let j = 0; j < clearCode; j++) dict[String.fromCharCode(j)] = j;
+                nextCode = endOfInfo + 1;
+                codeSize = minCodeSize + 1;
+              }
+            }
+          }
+          if (prefix !== '') outputCode(dict[prefix]);
+          outputCode(endOfInfo);
+          // Pack bits into bytes and subblocks
+          const bytes = [];
+          let acc = 0, bits = 0;
+          for (let i = 0; i < data.length; i++) {
+            acc |= data[i] << bits;
+            bits++;
+            if (bits === 8) {
+              bytes.push(acc);
+              acc = 0; bits = 0;
+            }
+          }
+          if (bits > 0) bytes.push(acc);
+          // Break into subblocks
+          const blocks = [];
+          for (let i = 0; i < bytes.length; i += 255) {
+            const slice = bytes.slice(i, i + 255);
+            blocks.push(slice);
+          }
+          let result = [minCodeSize];
+          blocks.forEach(block => {
+            result.push(block.length);
+            result.push(...block);
+          });
+          result.push(0); // block terminator
+          return result;
+        }
+        // Encode each sampled frame
+        for (let f = 0; f < sampledFrames.length; f++) {
+          const img = sampledFrames[f];
+          // Convert RGBA to palette indices using the reverse map
+          const idxArray = new Uint8Array(width * height);
+          for (let i = 0, p = 0; i < img.data.length; i += 4, p++) {
+            const r = img.data[i];
+            const g = img.data[i + 1];
+            const b = img.data[i + 2];
+            const key = r + ',' + g + ',' + b;
+            const idx = colorIndex.get(key);
+            idxArray[p] = idx !== undefined ? idx : 0;
+          }
+          // Graphics Control Extension
+        // Graphics Control Extension.  The packed field here uses a disposal
+        // method of 0 (no disposal specified) and no transparency.  Some
+        // decoders interpret non‑zero disposal methods differently and may
+        // render blank frames if set incorrectly.  Use 0x00 for broad
+        // compatibility.
+        push(0x21, 0xF9, 0x04, 0x00, delay & 0xFF, (delay >> 8) & 0xFF, 0x00, 0x00);
+          // Image Descriptor
+          push(0x2C);
+          // image left, top
+          push(0x00, 0x00, 0x00, 0x00);
+          push(width & 0xFF, (width >> 8) & 0xFF);
+          push(height & 0xFF, (height >> 8) & 0xFF);
+          push(0x00); // no local colour table
+          // Image Data
+          const lzw = lzwEncode(idxArray);
+          // Avoid using the spread operator on potentially large arrays when
+          // appending image data.  Using spread with tens of thousands of
+          // arguments triggers "Maximum call stack size exceeded" in some
+          // browsers because each element becomes a separate argument to
+          // Array.prototype.push().  Instead, append elements manually.
+          for (let i = 0; i < lzw.length; i++) {
+            push(lzw[i]);
+          }
+        }
+        // GIF trailer
+        push(0x3B);
+        return new Blob([new Uint8Array(parts)], { type: 'image/gif' });
+      }
+      /* Folder selection */
+      folderButton.addEventListener('click', async () => {
+        if (!window.showDirectoryPicker) {
+          alert('Folder selection is not supported in this browser. The export will download instead.');
+          return;
+        }
+        try {
+          folderHandle = await window.showDirectoryPicker();
+          // Display the name of the selected directory to give the user feedback
+          folderLabel.textContent = folderHandle.name || 'Folder selected';
+          // Update export button state now that a folder has been selected
+          updateExportButton();
+        } catch (err) {
+          console.warn(err);
+        }
+        // If the user cancels folder selection, ensure the export button remains disabled
+        if (!folderHandle) {
+          updateExportButton();
+        }
+      });
+      // Drag and drop support on the page body
+      document.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+      document.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file) loadVideoFile(file);
+      });
+    })();
+  </script>
+</body>
+</html>
