@@ -31,6 +31,22 @@
                 <p class="stage-description">Eliminate armed hostiles. Avoid civilians. Find hidden targets in the thermal feed. Time is critical.</p>
                 
                 <div class="thermal-container" id="thermalContainer">
+                    <!-- Pause/Start Screen Overlay -->
+                    <div class="hunt-start-screen" id="huntStartScreen">
+                        <div class="hunt-briefing">
+                            <h3>MISSION BRIEFING</h3>
+                            <p>You have 30 seconds to locate and eliminate armed targets.</p>
+                            <p><strong>OBJECTIVES:</strong></p>
+                            <ul>
+                                <li>Click on thermal signatures of armed hostiles (red)</li>
+                                <li>Avoid civilian targets (blue)</li>
+                                <li>Find hidden targets in the thermal feed</li>
+                            </ul>
+                            <p><strong>WARNING:</strong> Each civilian casualty adds 30 seconds to your penalty timer.</p>
+                            <button id="beginHuntButton" class="begin-button">BEGIN HUNT</button>
+                        </div>
+                    </div>
+                    
                     <!-- Video Background Layer -->
                     <div class="thermal-video-layer">
                         <video class="thermal-video" id="thermalVideo1" autoplay loop muted playsinline>

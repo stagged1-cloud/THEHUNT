@@ -181,7 +181,6 @@ function initializeStage1() {
     generateThermalTargets();
     generateHiddenVideoTargets();
     initializeVideoSwitch();
-    startHuntTimer();
     updateHuntDisplay();
     startThermalAnimation();
     
@@ -190,6 +189,23 @@ function initializeStage1() {
     
     // Add mouse move event for cursor feedback
     canvas.addEventListener('mousemove', handleCursorFeedback);
+    
+    // Setup begin button
+    const beginButton = document.getElementById('beginHuntButton');
+    if (beginButton) {
+        beginButton.addEventListener('click', beginHunt);
+    }
+}
+
+function beginHunt() {
+    // Hide the start screen
+    const startScreen = document.getElementById('huntStartScreen');
+    if (startScreen) {
+        startScreen.style.display = 'none';
+    }
+    
+    // Start the timer
+    startHuntTimer();
 }
 
 function generateThermalTargets() {
