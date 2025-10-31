@@ -193,27 +193,17 @@ function drawThermalScene() {
     // Clear canvas (transparent to let videos show through)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Add subtle thermal overlay (very transparent)
+    // Add very subtle thermal overlay
     const gradient = ctx.createRadialGradient(400, 300, 0, 400, 300, 400);
-    gradient.addColorStop(0, 'rgba(0, 17, 0, 0.1)');
-    gradient.addColorStop(0.5, 'rgba(0, 8, 0, 0.2)');
-    gradient.addColorStop(1, 'rgba(0, 3, 0, 0.3)');
+    gradient.addColorStop(0, 'rgba(0, 17, 0, 0.05)');
+    gradient.addColorStop(0.5, 'rgba(0, 8, 0, 0.1)');
+    gradient.addColorStop(1, 'rgba(0, 3, 0, 0.15)');
     
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Add thermal noise
-    for (let i = 0; i < 200; i++) {
-        ctx.fillStyle = `rgba(0, ${50 + Math.random() * 50}, 0, ${Math.random() * 0.1})`;
-        ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1, 1);
-    }
-    
-    // Draw thermal targets
-    thermalTargets.forEach(target => {
-        if (target.active) {
-            drawThermalTarget(target);
-        }
-    });
+    // NO VISIBLE SPHERES - targets are tracked invisibly for click detection only
+    // thermalTargets are still updated for hit detection but not drawn
     
     // Add screen effects
     drawThermalEffects();
