@@ -171,6 +171,7 @@ function initializeStage1() {
     huntTimer = 20;
     
     // Initialize canvas
+    canvas = document.getElementById('thermalCanvas');
     ctx = canvas.getContext('2d');
     
     // Set canvas size
