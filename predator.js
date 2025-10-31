@@ -442,22 +442,35 @@ function handleHiddenTargetClick(target) {
 }
 
 function initializeVideoSwitch() {
-    // Alternate between thermal videos
+    // Cycle between three thermal videos
     const video1 = document.getElementById('thermalVideo1');
     const video2 = document.getElementById('thermalVideo2');
+    const video3 = document.getElementById('thermalVideo3');
     
-    if (video1 && video2) {
-        video1.style.opacity = '0.7';
-        video2.style.opacity = '0.2';
+    if (video1 && video2 && video3) {
+        let currentVideo = 0;
+        
+        // Initial state
+        video1.style.opacity = '0.8';
+        video2.style.opacity = '0.1';
+        video3.style.opacity = '0.1';
         
         setInterval(() => {
-            if (video1.style.opacity === '0.7') {
-                video1.style.opacity = '0.2';
-                video2.style.opacity = '0.7';
-            } else {
-                video1.style.opacity = '0.7';
-                video2.style.opacity = '0.2';
-            }
+            // Fade out all videos
+            video1.style.opacity = '0.1';
+            video2.style.opacity = '0.1';
+            video3.style.opacity = '0.1';
+            
+            // Cycle to next video
+            currentVideo = (currentVideo + 1) % 3;
+            
+            // Fade in current video
+            setTimeout(() => {
+                if (currentVideo === 0) video1.style.opacity = '0.8';
+                else if (currentVideo === 1) video2.style.opacity = '0.8';
+                else if (currentVideo === 2) video3.style.opacity = '0.8';
+            }, 500);
+            
         }, 5000); // Switch every 5 seconds
     }
 }
